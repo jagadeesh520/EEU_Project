@@ -16,7 +16,8 @@ import FAQ from './src/screens/FAQ';
 import ViewBillHistoryTable from './src/screens/ViewBillHistoryTable';
 import ViewPaymentHistoryTable from './src/screens/ViewPaymentHistoryTable';
 import NewRegisteration from './src/screens/NewRegistration';
-
+import Payment from './src/screens/Payment';
+import ForgetPassword from './src/screens/ForgetPassword';
 import CommonComponent from './src/CommonComponent/CommonComponent';
 import {ImagePath} from './src/CommonComponent/ImagePath'; 
 import MultipleOption from './src/CommonComponent/MultipleOption'; 
@@ -107,6 +108,8 @@ export default App = () => {
               <Stack.Screen name="ViewBillHistoryTable" component={ViewBillHistoryTable}/> 
               <Stack.Screen name="ViewPaymentHistoryTable" component={ViewBillHistoryTable}/> 
               <Stack.Screen name="NewRegisteration"component={NewRegisteration}/>
+              <Stack.Screen name="Payment"component={Payment}/>
+              <Stack.Screen name="ForgetPassword"component={ForgetPassword}/>
             </Stack.Navigator> 
           </NavigationContainer>
         </Provider>

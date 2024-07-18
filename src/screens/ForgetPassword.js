@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useToast } from 'react-native-toast-notifications';
 
-const Reset = ({navigation}) => {
+const ForgetPassword = ({navigation}) => {
     const toast = useToast();
     const { t, i18n } = useTranslation();
     const {theme, styles, changeTheme} = Styles()
@@ -84,21 +84,9 @@ const Reset = ({navigation}) => {
         })
             .then((response) => response.json())
             .then(async (responseData) => {
+                console.log(responseData, "responseData---->", responseData.Record.ValidationStatus)
                 if (responseData.Record.ValidationStatus === 'Password Successfully Updated') {
                   showToast('success', responseData.Record.ValidationStatus);
-                  Alert.alert(
-                    '',
-                    t('Password Successfully Updated'),
-                    [
-                      {
-                        text: 'Yes', onPress: () =>{
-                          navigation.navigate('Login'),
-                          setVisible(false);
-                        }
-                      },
-                      { text: 'No', onPress: () => console.log('OK Pressed') },
-                    ]
-                );
                   navigation.navigate("Login")
                   setNewPassword("")
                   setAnswer("")
@@ -114,14 +102,14 @@ const Reset = ({navigation}) => {
     return (
         <View style={styles.StartMain}>
            <View style={styles.ResetMainContainer}>
-             {/* <TouchableOpacity style={{ left: 0, position: 'absolute', top: 30 }} onPress={() =>{ navigation.navigate("Login") }}>
+             <TouchableOpacity style={{ left: 0, position: 'absolute', top: 30 }} onPress={() =>{ navigation.navigate("Login") }}>
                    <Image source={ImagePath.Left} />
-             </TouchableOpacity> */}
+             </TouchableOpacity>
              <Image source={ImagePath.Logo} />
              <Text style={styles.StartMainHeader}>{t("Ethiopian Electric Utility")}</Text>
            </View>
            <View style={styles.ResetSubContainer1}>
-           <Text style={styles.StartMainHeader}>{t("Reset Password")}</Text>
+           <Text style={styles.StartMainHeader}>{t("Forget Password")}</Text>
           <View style={styles.Margin_20}>
           <Text style={styles.LoginSubTxt}>{t("New Password")}</Text>  
           <TextInput
@@ -143,32 +131,22 @@ const Reset = ({navigation}) => {
            <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t("Answer")}</Text>   
             <TextInput
-            placeholder={t("Enter answer")}
+            placeholder={t("Enter password")}
             value={answer}
             maxLength={15}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
-            onChangeText={(text) =>{ 
-              setAnswer(text) 
-              if(answerError == "Answer can't be empty" && text != "") {
-                setAnswerError("")
-              }
-            }}
+            onChangeText={(text) =>{ setAnswer(text) }}
            />
            <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>{answerError}</Text>
            </View>
-           <View style={styles.RaiseComplaintMain2}>
-              <TouchableOpacity style={styles.ResetCancelBtn1} onPress={() => { navigation.navigate('Dashboard') }}>
-                  <Text style={styles.ComplaintsBtnTxt1}>{t("CANCEL")}</Text>
-              </TouchableOpacity> 
-              <TouchableOpacity style={[styles.RaiseComplaintBtn, { marginLeft: 10 }]} onPress={() =>{ resetOnClick() }}>
-                  <Text style={styles.RaiseComplaintBtnTxt}>{t("SUBMIT")}</Text>
-              </TouchableOpacity> 
-            </View>
+           <TouchableOpacity style={styles.RegisterBtn} onPress={() => { resetOnClick() }}>
+              <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>
+           </TouchableOpacity> 
            </View>
           
         </View>
     );
 };
 
-export default Reset;
+export default ForgetPassword;

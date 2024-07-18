@@ -159,7 +159,10 @@
         "Install type": "Install type",
         "Select the install type": "Select the install type",
         "ID Softcopy Upload": "ID Softcopy Upload",
-        "Applied load": "Applied load"
-        
+        "Applied load": "Applied load",
+        "UNPAID BILL": "UNPAID BILL",
+        "PROCEED TO PAYMENT": "PROCEED TO PAYMENT",
+        "Forget Password": "Forget Password",
+        "CANCEL": "CANCEL"
     } 
 }

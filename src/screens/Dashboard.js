@@ -239,8 +239,8 @@ const Dashboard = ({navigation, route}) => {
                      <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + ":"}</Text>
                      <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData.Invoice_Amount}</Text>
                     </View>
-                    <TouchableOpacity disabled={true} style={styles.DashboardPayBillBtn} onPress={() =>{ navigation.navigate("BillDue") }}>
-                         <Text style={styles.DashboardPayBillBtnTxt}>{t("PAY BILL")}</Text>
+                    <TouchableOpacity disabled={false} style={styles.DashboardPayBillBtn} onPress={() =>{ navigation.navigate("Payment") }}>
+                         <Text style={styles.DashboardPayBillBtnTxt}>{t("UNPAID BILL")}</Text>
                     </TouchableOpacity> 
                   </View>
               </View>

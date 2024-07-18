@@ -158,6 +158,10 @@
         "Install type": "የመጫኛ ዓይነት",
         "Select the install type": "የመጫኛውን አይነት ይምረጡ",
         "ID Softcopy Upload": "መታወቂያ የሶፍት ኮፒ ጭነት",
-        "Applied load": "የተተገበረ ጭነት"
+        "Applied load": "የተተገበረ ጭነት",
+        "UNPAID BILL": "ያልተከፈለ ሂሳብ",
+        "PROCEED TO PAYMENT": "ወደ ክፍያ ይቀጥሉ",
+        "Forget Password": "የይለፍ ቃል እርሳ",
+        "CANCEL": "ሰርዝ"
     } 
 }

@@ -182,8 +182,8 @@ const Login = ({navigation}) => {
             >
               <Text style={styles.RegisterBtnTxt}>{t("LOGIN")}</Text>
            </TouchableOpacity> 
-           <TouchableOpacity style={styles.Margin_20} onPress={ () => { navigation.navigate("Reset") }}>
-              <Text style={styles.LoginResetTxt}>{t("Reset Password")}</Text>
+           <TouchableOpacity style={styles.Margin_20} onPress={ () => { navigation.navigate("ForgetPassword") }}>
+              <Text style={styles.LoginResetTxt}>{t("Forget Password")}</Text>
            </TouchableOpacity>
            <View style={styles.Margin_20}>
               <Text style={styles.LoginAccTxt}>{t("Don’t have an account?")}</Text>

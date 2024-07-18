@@ -181,14 +181,14 @@ const Styles = () => {
             marginTop: wp(10)
         },
         DashboardPayBillBtn: {
-            // backgroundColor: '#F29037', 
-            backgroundColor: '#E8E9EB',
+            backgroundColor: '#F29037', 
+            // backgroundColor: '#E8E9EB',
             borderRadius: wp(20),
             paddingVertical: wp(10),
             paddingHorizontal: wp(20)
         },
         DashboardPayBillBtnTxt: {
-            color: '#666666',
+            color: '#FFF',
             fontSize: wp(14),
             fontWeight: '500'
         },
@@ -490,14 +490,23 @@ const Styles = () => {
             backgroundColor: '#F29037',
             borderRadius: wp(20),
             paddingVertical: wp(10),
-            paddingHorizontal: wp(20)
+            paddingHorizontal: wp(20),
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: wp(200)
         },
         BillDuePayBillBtnTxt: {
             color: '#FFF',
             fontSize: wp(14),
             fontWeight: '500'
         },
-
+        BillDuePayBillMain: { 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            marginTop: wp(30)
+        },
         // Complaints
         ComplaintsMain: {
             display: 'flex',
@@ -594,6 +603,19 @@ const Styles = () => {
             color: '#FFF',
             fontSize: wp(16),
             fontWeight: '500'
+        },
+        ResetCancelBtn1: {
+            backgroundColor: '#FFFF',
+            borderRadius: wp(25),
+            paddingVertical: wp(15),
+            paddingHorizontal: wp(50),
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderWidth: wp(1),
+            borderColor: 'lightgray',
+            marginTop: wp(20)
+
         },
         ComplaintsBtn1: {
             backgroundColor: '#FFF',
