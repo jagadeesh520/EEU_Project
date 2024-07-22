@@ -164,7 +164,11 @@ const Login = ({ navigation }) => {
             <TextInput
               placeholder={t("Enter account number")}
               value={accNo}
-              onFocus={() => setShowModal(true)}
+              onFocus={() =>{
+                if(rememberData && rememberData.length > 0) { 
+                 setShowModal(true)
+                }
+              }}
               style={styles.LoginTextInput}
               onChangeText={(text) => {
                 setAccNo(text);
