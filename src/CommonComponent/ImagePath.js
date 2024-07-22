@@ -28,5 +28,6 @@ export const ImagePath = {
     RoundLeftArrow: require("../../assets/RoundLeftArrow.png"),
     RoundRightArrow: require("../../assets/RoundRightArrow.png"),
     Left: require("../../assets/Left.png"),
-    PaymentHistory: require("../../assets/PaymentHistory.png")
+    PaymentHistory: require("../../assets/PaymentHistory.png"),
+    UnpaidDemandNote: require("../../assets/UnpaidNote.png")
 } 

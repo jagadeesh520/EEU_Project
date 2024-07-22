@@ -105,7 +105,7 @@ const Dashboard = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    if (theme) {
+    if (theme != null) {
       setChecked(theme);
     }
   }, [theme]);
@@ -116,7 +116,6 @@ const Dashboard = ({navigation, route}) => {
     .then((response) =>
         response.json())
     .then(responseData => {
-      console.log(responseData, "responseData--->")
       setUnpaidDueData(responseData.MT_InvoiceDetails_OUT)
     })
   }
@@ -156,7 +155,6 @@ const Dashboard = ({navigation, route}) => {
     setThemeOpen(!isThemeOpen)
     changeTheme(checked);
   }
-  console.log(checked, "checked")
 
   return (
         <ScrollView style={styles.DashBoardMain}>
@@ -239,8 +237,8 @@ const Dashboard = ({navigation, route}) => {
                      <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + ":"}</Text>
                      <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData.Invoice_Amount}</Text>
                     </View>
-                    <TouchableOpacity disabled={false} style={styles.DashboardPayBillBtn} onPress={() =>{ navigation.navigate("Payment") }}>
-                         <Text style={styles.DashboardPayBillBtnTxt}>{t("UNPAID BILL")}</Text>
+                    <TouchableOpacity disabled={true} style={styles.DashboardPayBillBtn} onPress={() =>{ navigation.navigate("BillDue") }}>
+                         <Text style={styles.DashboardPayBillBtnTxt}>{t("PAY BILL")}</Text>
                     </TouchableOpacity> 
                   </View>
               </View>
@@ -274,8 +272,7 @@ const Dashboard = ({navigation, route}) => {
                    {renderQuickLinks(ImagePath.Bill_History, t('Bill History'), "BillHistory")}
                    {renderQuickLinks(ImagePath.PaymentHistory, t('Payment History'), "PaymentHistory")}
                    {renderQuickLinks(ImagePath.Complaints, t('Complaints'), "Complaints")}
-                   {/* {renderQuickLinks(ImagePath.Find, t('Find'))} */}
-
+                   {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Unpaid Demand Note'), "Payment")}
                 </View>
               </View>
 

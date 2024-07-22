@@ -181,8 +181,8 @@ const Styles = () => {
             marginTop: wp(10)
         },
         DashboardPayBillBtn: {
-            backgroundColor: '#F29037', 
-            // backgroundColor: '#E8E9EB',
+            // backgroundColor: '#F29037', 
+            backgroundColor: '#E8E9EB',
             borderRadius: wp(20),
             paddingVertical: wp(10),
             paddingHorizontal: wp(20)
@@ -263,7 +263,7 @@ const Styles = () => {
             justifyContent: 'space-between',
             paddingVertical: wp(10)
         },
-        LoginContainer: { display: "flex", flexDirection: "row", backgroundColor: "white", justifyContent: "center", alignItems: 'center', alignSelf: 'center', marginTop: wp(10), borderRadius: wp(3), paddingHorizontal: wp(12), width: wp(380) },
+        LoginContainer: { display: "flex", flexDirection: "row", backgroundColor: "white", justifyContent: "center", alignItems: 'center', alignSelf: 'center', borderRadius: wp(3), paddingHorizontal: wp(12), width: wp(380) },
 
         // Start Page
         StartMain: {
@@ -383,7 +383,7 @@ const Styles = () => {
             fontSize: wp(20),
             color: '#666666'
         },
-
+        ErrorMsg: { color: 'red', fontSize: wp(12), marginTop: wp(5) },
         // Common Profile Header
         CommonHeaderMain: {
             backgroundColor: themeObj.headerBackgroundColor,
@@ -744,6 +744,11 @@ const Styles = () => {
             fontSize: wp(14),
             color: '#333333',
         },
+        LoginSubTxt1: {
+            fontSize: wp(14),
+            color: '#333333',
+            fontWeight: '500'
+        },
         Margin_10: {
             marginTop: wp(10)
         },
@@ -952,7 +957,42 @@ const Styles = () => {
             fontWeight: 'bold',
             textAlign: 'center',
         },
-        registrationCameraBtn: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: wp(20) }
+        registrationCameraBtn: { 
+            display: 'flex', 
+            flexDirection: 'row', 
+            alignItems: 'center', 
+            marginTop: wp(20) 
+        },
+        switchContainer: { 
+            display: 'flex', 
+            flexDirection: 'row', 
+            justifyContent: 'center', 
+            alignItems: 'center' 
+        },
+        modalContainer: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+        },
+        modalContent: {
+            backgroundColor: '#fff',
+            padding: wp(20),
+            borderRadius: wp(5),
+            width: '80%',
+        },
+        modalHeader: {
+            fontSize: wp(15),
+            marginBottom: wp(10),
+        },
+        rememberItem: {
+            padding: wp(15),
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+        },
+        modalScrollContainer: {
+            maxHeight: hp(250),
+        },
     };
 
     return { theme, styles, changeTheme }

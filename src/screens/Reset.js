@@ -122,7 +122,11 @@ const Reset = ({navigation}) => {
            </View>
            <View style={styles.ResetSubContainer1}>
            <Text style={styles.StartMainHeader}>{t("Reset Password")}</Text>
+          
           <View style={styles.Margin_20}>
+          <View style={{ marginBottom: 20 }}>
+             <Text style={styles.LoginSubTxt}>{"Account Number :" + accountNo.CA_No}</Text>  
+          </View>
           <Text style={styles.LoginSubTxt}>{t("New Password")}</Text>  
           <TextInput
             placeholder={t("Enter new password")}
@@ -138,10 +142,10 @@ const Reset = ({navigation}) => {
             placeholderTextColor="#9E9E9E"
             maxLength={12}
            />
-           <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>{newPwdError}</Text>
+           <Text style={styles.ErrorMsg}>{newPwdError}</Text>
            </View>
            <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Answer")}</Text>   
+           <Text style={styles.LoginSubTxt}>{t("Answer ( Secret Ques Answer ) ")}</Text>   
             <TextInput
             placeholder={t("Enter answer")}
             value={answer}
@@ -155,10 +159,10 @@ const Reset = ({navigation}) => {
               }
             }}
            />
-           <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>{answerError}</Text>
+           <Text style={styles.ErrorMsg}>{answerError}</Text>
            </View>
            <View style={styles.RaiseComplaintMain2}>
-              <TouchableOpacity style={styles.ResetCancelBtn1} onPress={() => { navigation.navigate('Dashboard') }}>
+              <TouchableOpacity style={styles.ResetCancelBtn1} onPress={() => { navigation.navigate('BottomTab') }}>
                   <Text style={styles.ComplaintsBtnTxt1}>{t("CANCEL")}</Text>
               </TouchableOpacity> 
               <TouchableOpacity style={[styles.RaiseComplaintBtn, { marginLeft: 10 }]} onPress={() =>{ resetOnClick() }}>

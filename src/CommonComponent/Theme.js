@@ -72,6 +72,5 @@ export const useThemes = () => {
   };
 
   const themeObj = theme === 'dark' ? darkTheme : lightTheme;
-  console.log(theme,"theme")
   return {theme, themeObj, changeTheme: onChangeTheme};
 };

@@ -11,6 +11,8 @@ const ForgetPassword = ({navigation}) => {
     const toast = useToast();
     const { t, i18n } = useTranslation();
     const {theme, styles, changeTheme} = Styles()
+    const [ accNo, setAccNo] = useState("")
+    const [ accNoError, setAccNoError ] = useState("")
     const [ newPassword, setNewPassword] = useState("")
     const [ answer, setAnswer] = useState("")
     const [ newPwdError, setNewPwdError ] = useState("")
@@ -51,6 +53,10 @@ const ForgetPassword = ({navigation}) => {
     const validateInputs = () => {
       let valid = true;
 
+      if (accNo === '') {
+        setAccNoError(t("Account number can't be empty"));
+        valid = false;
+      } 
       if (newPassword == '') {
         setNewPwdError(t("New password can't be empty"));
           valid = false;
@@ -84,7 +90,6 @@ const ForgetPassword = ({navigation}) => {
         })
             .then((response) => response.json())
             .then(async (responseData) => {
-                console.log(responseData, "responseData---->", responseData.Record.ValidationStatus)
                 if (responseData.Record.ValidationStatus === 'Password Successfully Updated') {
                   showToast('success', responseData.Record.ValidationStatus);
                   navigation.navigate("Login")
@@ -99,6 +104,7 @@ const ForgetPassword = ({navigation}) => {
             });
     }
     }
+    console.log(newPwdError, "newPwdError")
     return (
         <View style={styles.StartMain}>
            <View style={styles.ResetMainContainer}>
@@ -110,7 +116,25 @@ const ForgetPassword = ({navigation}) => {
            </View>
            <View style={styles.ResetSubContainer1}>
            <Text style={styles.StartMainHeader}>{t("Forget Password")}</Text>
-          <View style={styles.Margin_20}>
+           <View style={styles.Margin_10}>
+            <Text style={styles.LoginSubTxt}>{ t("Account number")}</Text>  
+            <TextInput
+             placeholder={t("Enter account number")}
+             value={accNo}
+             style={styles.LoginTextInput}
+             onChangeText={(text) =>{
+               setAccNo(text) 
+               if(accNoError == "Account number can't be empty" && text != "") {
+                 setAccNoError("")
+               }
+             }}
+             keyboardType={"phone-pad"}
+             placeholderTextColor="#9E9E9E"
+             maxLength={12}
+            />
+           <Text style={styles.ErrorMsg}>{accNoError}</Text>
+           </View>
+          <View style={styles.Margin_10}>
           <Text style={styles.LoginSubTxt}>{t("New Password")}</Text>  
           <TextInput
             placeholder={t("Enter new password")}
@@ -126,19 +150,19 @@ const ForgetPassword = ({navigation}) => {
             placeholderTextColor="#9E9E9E"
             maxLength={12}
            />
-           <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>{newPwdError}</Text>
+           <Text style={styles.ErrorMsg}>{newPwdError}</Text>
            </View>
            <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Answer")}</Text>   
+           <Text style={styles.LoginSubTxt}>{t("Answer ( Secret Ques Answer ) ")}</Text>   
             <TextInput
-            placeholder={t("Enter password")}
+            placeholder={t("Enter Answer")}
             value={answer}
             maxLength={15}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ setAnswer(text) }}
            />
-           <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>{answerError}</Text>
+           <Text style={styles.ErrorMsg}>{answerError}</Text>
            </View>
            <TouchableOpacity style={styles.RegisterBtn} onPress={() => { resetOnClick() }}>
               <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>
