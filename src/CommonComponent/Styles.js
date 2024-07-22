@@ -929,6 +929,7 @@ const Styles = () => {
             color: '#666666',
             fontSize: wp(15)
         },
+        RememberMeText: { marginRight: wp(10), color: '#666666' },
         radioContainer: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -984,6 +985,7 @@ const Styles = () => {
         modalHeader: {
             fontSize: wp(15),
             marginBottom: wp(10),
+            color: '#666666'
         },
         rememberItem: {
             padding: wp(15),

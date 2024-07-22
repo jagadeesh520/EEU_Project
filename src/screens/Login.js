@@ -145,7 +145,7 @@ const Login = ({ navigation }) => {
 
   const renderItem = ({ item }) => ( 
     <TouchableOpacity onPress={() => selectRememberedCredentials(item)} style={styles.rememberItem}>
-      <Text>{item.accNumber}</Text>
+      <Text style={{ color: '#666666', fontSize: 14 }}>{item.accNumber}</Text>
       {/* <Text>{item.password}</Text> */}
     </TouchableOpacity>
   );
@@ -220,7 +220,7 @@ const Login = ({ navigation }) => {
             <Text style={styles.RegisterBtnTxt}>{t("LOGIN")}</Text>
           </TouchableOpacity>
           <View style={styles.switchContainer}>
-            <Text style={{ marginRight: 10 }}>Remember Me</Text>
+            <Text style={styles.RememberMeText}>Remember Me</Text>
             <Switch value={rememberMe} onValueChange={handleRememberMeToggle} />
           </View>
           <TouchableOpacity style={styles.Margin_20} onPress={() => navigation.navigate('ForgetPassword')}>
