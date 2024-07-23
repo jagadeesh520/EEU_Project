@@ -145,9 +145,9 @@ const Reset = ({navigation}) => {
            <Text style={styles.ErrorMsg}>{newPwdError}</Text>
            </View>
            <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Answer ( Secret Ques Answer ) ")}</Text>   
+           <Text style={styles.LoginSubTxt}>{t("Security Answer")}</Text>   
             <TextInput
-            placeholder={t("Enter answer")}
+            placeholder={t("Enter security answer")}
             value={answer}
             maxLength={15}
             style={styles.LoginTextInput}

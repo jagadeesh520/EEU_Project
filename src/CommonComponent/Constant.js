@@ -12,7 +12,7 @@ import React from 'react'
     RESET_PASSWORD: '/PasswordReset',
     REGISTERATION_ACCOUNT_VERIFY: '/CAValidationPost',
     NEW_ACCOUNT_REGISTERATION: '/NewRegistrationPost',
-    NEW_SERVICE_CREATION: '/NewServiceCreation'
-
+    NEW_SERVICE_CREATION: '/NewServiceCreation',
+    UNPAID_DEMAND_NOTE: '/UnpaidDemandNote'
  }
   

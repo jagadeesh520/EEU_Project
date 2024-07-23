@@ -27,28 +27,60 @@ const NewRegistration = ({navigation}) => {
     const [ password, setPassword ] = useState("")
     const [ accountStatus, setAccountStatus] = useState("")
     const [ genderOption, setGenderOption ] = useState([
-      { label: "Male",  value:"Male" },
-      { label: "Female", value:"Female"},
-      { label: "unknown", value:"unknown"}
+      { label: "Male",  value:"2" },
+      { label: "Female", value:"1"},
+      { label: "unknown", value:"Unknown"}
     ])
     const [ categoryOption, setCategoryOption ] = useState([
-      { label: "Prepaid",  value:"Prepaid" },
-      { label: "Postpaid",  value:"Postpaid" },
+      { label: "Postpaid",  value:"1" },
+      { label: "Prepaid",  value:"2" },
 
     ])
     const [ connectionTypeList, setConnectionListType ] = useState([
-      { label: "Regular",  value:"Regular" },
-      { label: "Temporary",  value:"Temporary" },
+      { label: "Regular",  value:"REG" },
+      { label: "Temporary",  value:"TEMP" },
+    ])
+    const [ titleOptions, setTitleOptions ] = useState([
+      { label: "Mr", value:"0002" },
+      { label: "Blank", value:"0047" },
+      { label: "Mrs",  value:"0004" },
+      { label: "W/RO",  value:"0005" },
+      { label: "W/RT",  value:"0006" },
+      { label: "ATO",  value:"0007" },
     ])
     const [ selectedConnectionType, setSelectedConnectionType ] = useState("")
-    
+    const [cscOptions, setCscOption ] = useState([
+      { label: "EAST AA CSC NO.2",  value:"AA01" },
+      { label: "SOUTH AA CSC NO.1",  value:"AB01" },
+      { label: "WEST AA CSC NO.1",  value:"AC01" },
+      { label: "NORTH AA CUSTOMER CSC .1",  value:"AD01" },
+      { label: "ADAMA DST ADAMA CSC NO.1",  value:"BA01" },
+      { label: "FINFINE DST SENDAFA CSC",  value:"BB01" },
+      { label: "SHASHEMEN NO 1CSC",  value:"BC01" },
+      { label: "CHIRO DISTRICT CHIRO CSC",  value:"BD01" },
+      { label: "JIMMA DST JIMMA CSC NO.1",  value:"BE01" },
+      { label: "NEKEMITE DST NEKEMT CSC",  value:"BF01" },
+      { label: "AMBO DST AMBO DST AMBO CSC",  value:"BG01" },
+      { label: "BALE ROBE DST BALE ROBE CSC",  value:"BH01" },
+      { label: "METU DST METU CSC",  value:"BI01" },
+      { label: "BAHIRDARDST BAHIR DAR 1 CSC",  value:"CA01" },
+      { label: "DESSIE DST DESSIE 1 CSC",  value:"CB01" },
+      { label: "BAHIRDARDST BAHIR DAR 1 CSC",  value:"CA01" },
+      { label: "GONDER DST GONDER 1 CSC",  value:"CC01" },
+      { label: "DEBERE BIRHAN NO 1 CSC",  value:"CD01" },
+      { label: "DEBEREMARKOS NO. 1 CSC",  value:"CE01" },
+      { label: "WOLEDIYA DST WOLEDIYA CSC",  value:"CF01" },
+    ])
     const [ installTypeOptions, setInstallTypeOptions ] = useState([
-      { label: "Active Staff Consumption",  value:"Active Staff Consumption" },
-      { label: "Domestic",  value:"Domestic" },
-      { label: "Food Process",  value:"Food Process" },
-      { label: "Mix building",  value:"Mix building" },
-      { label: "Street light",  value:"Street light" },
-      { label: "Bottled water factory",  value:"Bottled water factory" }
+      { label: "Active Staff Consumption",  value:"001" },
+      { label: "Domestic",  value:"023" },
+      { label: "Food Process",  value:"029" },
+      { label: "Mix building",  value:"082" },
+      { label: "Street light",  value:"086" },
+      { label: "Bottled water factory",  value:"089" }
+    ]);
+    const [ partnerTypeOptions, setPartnerTypeOptions ] = useState([
+      { label: "Others",  value:"0009" },
     ])
     const [ selectedInstallType, setSelectedInstallType ] = useState('')
     const [ appliedLoad, setAppliedLoad ] = useState('')
@@ -77,6 +109,8 @@ const NewRegistration = ({navigation}) => {
     const [ selectedImage, setSelectedImage ] = useState("")
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
+    const [selectPartnerType, setSelectPartnerType] = useState("");
+
   
     const clearData = () => {
       setTitle('');
@@ -108,7 +142,7 @@ const NewRegistration = ({navigation}) => {
         body: JSON.stringify({
             Record: {
               "PartnerCategory": "",
-              "PartnerType": "",
+              "PartnerType": selectPartnerType,
               "Title": title,
               "FirstName": firstName,
               "MiddleName": middleName,
@@ -360,8 +394,25 @@ const NewRegistration = ({navigation}) => {
            {renderTextInput(t("Last Name"), "Enter last name", lastName, setLastName)}
            {renderTextInput(t("Email"), "Enter email", email, setEmail)}
            {renderTextInput(t("Mobile No"), "Enter mobile no", mobileNo, setMobileNo)}
-           {renderTextInput(t("Title"), "Enter title", title, setTitle)}
-
+           <View style={styles.Margin_10}>
+            <Text style={styles.LoginSubTxt}>{t("Title")}</Text>   
+            <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Select the title")}
+                style={styles.QuesComplaintDropdown}
+                renderItem={renderItem}
+                data={titleOptions}
+                value={title}
+                onChange={item => {
+                    setTitle(item.value);
+                }}               
+           />
+           </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Please Select Gender")}</Text>   
             <Dropdown
@@ -386,7 +437,25 @@ const NewRegistration = ({navigation}) => {
            {renderTextInput(t("Kebele"), "Enter Kebele", kebele, setKebele)}
            {renderTextInput(t("Zone"), "Enter Zone", zone, setZone)}
            {renderTextInput(t("Region"), "Enter Region", region, setRegion)}
-           {renderTextInput(t("CSC Customer Service"), "Enter CSC Customer Service", custService, setCustService)}
+           <View style={styles.Margin_10}>
+            <Text style={styles.LoginSubTxt}>{t("CSC Customer Service")}</Text>   
+            <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Select the CSC Customer Service")}
+                style={styles.QuesComplaintDropdown}
+                renderItem={renderItem}
+                data={cscOptions}
+                value={custService}
+                onChange={item => {
+                  setCustService(item.value);
+                }}               
+           />
+           </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Prepaid/Postpaid")}</Text>   
             <Dropdown
@@ -466,6 +535,25 @@ const NewRegistration = ({navigation}) => {
             )}
            </View>
            {renderTextInput(t("Applied load"), "Enter Applied load", appliedLoad, setAppliedLoad)}
+           <View style={styles.Margin_10}>
+            <Text style={styles.LoginSubTxt}>{t("Partner type")}</Text>   
+            <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Select the partner type")}
+                style={styles.QuesComplaintDropdown}
+                renderItem={renderItem}
+                data={partnerTypeOptions}
+                value={selectPartnerType}
+                onChange={item => {
+                    setSelectPartnerType(item.value);
+                }}               
+           />
+           </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Install type")}</Text>   
             <Dropdown

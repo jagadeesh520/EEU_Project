@@ -82,14 +82,14 @@ const BillHistory = ({navigation}) => {
               </View>
             }  
            <View style={styles.DarkTheme}> 
-           { billHistoryData && billHistoryData.length > 0 ?    
+           { billHistoryData && billHistoryData.length > 0 && billHistoryData[0].Remarks != "No Bills Generated Yet" ?    
              <View style={{ padding: 20 }}>
               <TouchableOpacity onPress={() => navigation.navigate('ViewBillHistoryTable')} style={styles.linkButton}>
                 <Text style={styles.linkButtonText}>{'Click Here for Table View'}</Text>
               </TouchableOpacity>
              </View> : null 
            }
-            { billHistoryData && billHistoryData.length > 0 ? 
+            { billHistoryData && billHistoryData.length > 0 && billHistoryData[0].Remarks != "No Bills Generated Yet"? 
               <FlatList
                 data={getPaginatedData()}
                 renderItem={(list , index) => {
