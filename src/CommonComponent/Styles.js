@@ -247,6 +247,14 @@ const Styles = () => {
             backgroundColor: "#FFF",
             borderRadius: wp(15),
         },
+
+        DashboardPaymentInvoice: {
+            paddingVertical: wp(10),
+            paddingHorizontal: wp(20),
+            backgroundColor: "#FFF",
+            borderRadius: wp(15),
+        },
+
         DashboardPaymentSub: {
             display: 'flex',
             flexDirection: 'row',
