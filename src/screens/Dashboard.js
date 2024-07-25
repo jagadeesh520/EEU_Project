@@ -122,13 +122,19 @@ const Dashboard = ({ navigation, route }) => {
   }
 
   const getDemandBill = (value) => {
-    var url = constant.BASE_URL + constant.UNPAID_DEMAND_NOTE + '/' + value.CA_No
+    var url = constant.BASE_URL + constant.UNPAID_DEMAND_NOTE
     fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          ContractAccount: value.CA_No,
+        }
+      }),
     })
       .then((response) =>
         response.json())
       .then(responseData => {
-        setUnpaidDemandData(responseData.MT_UnpaidDemandNote_Res)
+        setUnpaidDemandData(responseData.MT_UnpaidDemandNote_Res.Record)
       })
   }
 
@@ -260,12 +266,12 @@ const Dashboard = ({ navigation, route }) => {
         <View style={{ marginTop: 20 }}>
           <View style={styles.DashboardPaymentInvoice}>
             <View style={styles.DashboardPaymentSub}>
-              <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Demand Bill") + " " }</Text>
+              <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Demand Bill") + " " +  moment(unpaidDemandData.PostDate, "YYYY/MM").format("MMMM YYYY")}</Text>
               {/* <Text style={styles.DashboardDueTxt}>{"Due in 5 days"}</Text> */}
             </View>
             <View style={styles.DashboardPayBillMain}>
               <View>
-                <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + ":"}</Text>
+                <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + ":" + unpaidDemandData.Amount}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
               <TouchableOpacity disabled={true} style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
