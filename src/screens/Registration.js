@@ -160,7 +160,7 @@ const Registration = ({navigation}) => {
             <TextInput
             placeholder={t("Enter mobile number")}
             value={mobileNo}
-            maxLength={15}
+            maxLength={10}
             editable={isDisabled}
             //editable = {accountStatus == "VALID CA" ? true : false}
             style={styles.LoginTextInput}
@@ -175,7 +175,6 @@ const Registration = ({navigation}) => {
             value={email}
             editable={isDisabled}
            // editable = {accountStatus == "VALID CA" ? true : false}
-            maxLength={15}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ setEmail(text) }}
@@ -235,7 +234,6 @@ const Registration = ({navigation}) => {
             <TextInput
             placeholder={t("Enter answer")}
             value={answer}
-            maxLength={15}
             editable={isDisabled}
             //editable = {accountStatus == "VALID CA" ? true : false}
             style={styles.LoginTextInput}

@@ -162,6 +162,12 @@
         "UNPAID BILL": "ያልተከፈለ ሂሳብ",
         "PROCEED TO PAYMENT": "ወደ ክፍያ ይቀጥሉ",
         "Forget Password": "የይለፍ ቃል እርሳ",
-        "CANCEL": "ሰርዝ"
+        "CANCEL": "ሰርዝ",
+        "Date Approved": "የተፈቀደበት ቀን",
+        "Date Requested": "የተጠየቀበት ቀን",
+        "External Request": "የውጭ ጥያቄ",
+        "Payer Phone": "ከፋይ ስልክ",
+        "Return Code": "የመመለሻ ኮድ",
+        "Return Message": "መልእክት ተመለስ"
     } 
 }

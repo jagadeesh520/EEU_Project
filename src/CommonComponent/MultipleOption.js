@@ -22,7 +22,7 @@ const MultipleOption = ({navigation}) => {
         [
           {
             text: 'Yes', onPress: () =>{
-              navigation.navigate('StartScreen'),
+              navigation.navigate('Login'),
               setVisible(false);
             }
           },

@@ -20,7 +20,7 @@ const Styles = () => {
 
     const topBarBackgroundcolor = themeObj.topBarBackgroundcolor;
     const textColorSecondary = themeObj.textColorSecondary;
-
+    
 
     const styles = {
         barStyle: themeObj.content,
@@ -175,7 +175,7 @@ const Styles = () => {
             fontWeight: '500'
         },
         DashboardUSDTxt: {
-            color: '#000',
+            color: '#666666',
             fontSize: wp(18),
             fontWeight: '500',
             marginTop: wp(10)
@@ -212,7 +212,7 @@ const Styles = () => {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: wp(20),
+            marginTop: wp(10),
             marginBottom: wp(20)
         },
         RegisterBtnTxt: {
@@ -514,6 +514,22 @@ const Styles = () => {
             justifyContent: 'center', 
             alignItems: 'center',
             marginTop: wp(30)
+        },
+        UnpaidModalTitle: {
+            fontSize: wp(15),
+            color: '#666666',
+            marginTop: wp(10)
+        },
+        UnpaidModalText: {
+            fontSize: wp(14),
+            color: '#212121',
+            marginTop: wp(10)
+        },
+        unpaidModalContainer: {
+            display: 'flex', 
+            flexDirection: 'row', 
+            justifyContent: 'space-between', 
+            marginTop: wp(10) 
         },
         // Complaints
         ComplaintsMain: {
@@ -910,6 +926,21 @@ const Styles = () => {
             elevation: 5,
             width: wp(280),
             height: wp(280)
+
+        },
+        unpaidModalView: {
+            backgroundColor: 'white',
+            borderRadius: wp(20),
+            padding: wp(35),
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
+            width: wp(380),
 
         },
         modalViewCamera: {

@@ -111,13 +111,29 @@ const NewRegistration = ({navigation}) => {
     const [show, setShow] = useState(false);
     const [selectPartnerType, setSelectPartnerType] = useState("");
 
-  
+    const [invalidFirstName, setInvalidFirstName] = useState("");
+    const [invalidLastName, setInvalidLastName] = useState("");
+    const [invalidTitle, setInvalidTitle] = useState("");
+    const [invalidEmail, setInvalidEmail] = useState("");
+    const [invalidMobileNo, setInvalidMobileNo] = useState("");
+    const [invalidGender, setInvalidGender] = useState("");
+    const [invalidHouseNumber, setInvalidHouseNumber] = useState("");
+    const [invalidLandmark, setInvalidLandmark] = useState("");
+    const [invalidKebele, setInvalidKebele] = useState("");
+    const [invalidZone, setInvalidZone] = useState("");
+    const [invalidRegion, setInvalidRegion] = useState("");
+    const [invalidConnectionType, setInvalidConnectionType] = useState("");
+    const [invalidAppliedLoad, setInvalidAppliedLoad] = useState("");
+    const [invalidInstallType, setInvalidInstallType] = useState("");
+    const [invalidImage, setInvalidImage] = useState("");
+    const [invalidCusService, setInvalidCusService] = useState("");
+    const [invalidCategory, setInvalidCategory ] = useState("");
+    const [invalidPartnerType, setInvalidPartnerType] = useState("")
     const clearData = () => {
       setTitle('');
       setFirstName('');
       setLastName('');
       setMiddleName('');
-
       setEmail('');
       setMobileNo('');
       setSelectedGender('');
@@ -136,7 +152,123 @@ const NewRegistration = ({navigation}) => {
       setSelectedImage('');
       setImageName('');
     }
+    const validateInputs = () => {
+      let valid = true;
+  
+      if (firstName === '') {
+        setInvalidFirstName(t("First name can't be empty"));
+        valid = false;
+      } else {
+        setInvalidFirstName('');
+      }
+      if (lastName === '') {
+        setInvalidLastName(t("Last name can't be empty"));
+        valid = false;
+      } else {
+        setInvalidLastName('');
+      }
+      if (title === '') {
+        setInvalidTitle(t("Title can't be empty"));
+        valid = false;
+      } else {
+        setInvalidTitle('');
+      }
+      if ( email== '') {
+        setInvalidEmail(t("Email can't be empty"));
+        valid = false;
+      } else {
+        setInvalidEmail('');
+      }
+      if ( mobileNo == '') {
+        setInvalidMobileNo(t("Mobile number can't be empty"));
+        valid = false;
+      } else {
+        setInvalidMobileNo('');
+      }
+      if ( selectedGender == '') {
+        setInvalidGender(t("Gender can't be empty"));
+        valid = false;
+      } else {
+        setInvalidGender('');
+      }
+      if ( houseNumber == '') {
+        setInvalidHouseNumber(t("House number can't be empty"));
+        valid = false;
+      } else {
+        setInvalidHouseNumber('');
+      }
+      if ( landmark == '') {
+        setInvalidLandmark(t("Landmark can't be empty"));
+        valid = false;
+      } else {
+        setInvalidLandmark('');
+      }
+      if ( kebele == '') {
+        setInvalidKebele(t("Kebele can't be empty"));
+        valid = false;
+      } else {
+        setInvalidKebele('');
+      }
+      if ( zone == '') {
+        setInvalidZone(t("Zone can't be empty"));
+        valid = false;
+      } else {
+        setInvalidZone('');
+      }
+      if ( region == '') {
+        setInvalidRegion(t("Region can't be empty"));
+        valid = false;
+      } else {
+        setInvalidRegion('');
+      }
+      if ( custService == '') {
+        setInvalidCusService(t("Customer service can't be empty"));
+        valid = false;
+      } else {
+        setInvalidCusService('');
+      }
+
+      if ( selectedConnectionType == '') {
+        setInvalidConnectionType(t("Connection type can't be empty"));
+        valid = false;
+      } else {
+        setInvalidConnectionType('');
+      }
+      if (selectedCategory === '') {
+        setInvalidCategory(t("Category can't be empty"));
+        valid = false;
+      } else {
+        setInvalidCategory('');
+      }
+      if ( appliedLoad == '') {
+        setInvalidAppliedLoad(t("Applied Load can't be empty"));
+        valid = false;
+      } else {
+        setInvalidAppliedLoad('');
+      }
+      if (selectedInstallType === '') {
+        setInvalidInstallType(t("Install type can't be empty"));
+        valid = false;
+      } else {
+        setInvalidInstallType('');
+      }
+      if (selectedImage === '') {
+        setInvalidImage(t("ID Softcopy can't be empty"));
+        valid = false;
+      } else {
+        setInvalidImage('');
+      }
+      if (selectPartnerType === '') {
+        setInvalidPartnerType(t("PartnerType can't be empty"));
+        valid = false;
+      } else {
+        setInvalidPartnerType('');
+      }
+  
+      return valid;
+    };
     const onPressRegistration = () => {
+      if (validateInputs()) { 
       fetch(constant.BASE_URL + constant.NEW_SERVICE_CREATION, {
         method: 'POST',
         body: JSON.stringify({
@@ -172,11 +304,11 @@ const NewRegistration = ({navigation}) => {
     
             },
         }),
-    })
+      })
         .then((response) => response.json())
         .then(async (responseData) => {
           var data = responseData.MT_NewServiceConnection_Res
-          if(data.Record == "") { 
+          if(data.Record == "") {
             showToast('success', 'New service has been successfully created');
             clearData()
           }
@@ -184,7 +316,7 @@ const NewRegistration = ({navigation}) => {
         .catch((error) => {
           console.log('error', error);
         });
-    
+    }
     }
     const renderItem = (item) => {
       return (
@@ -210,7 +342,7 @@ const NewRegistration = ({navigation}) => {
     //   }
     // };
   
-    const renderTextInput = (name, placeholder, value, updateState) => {
+    const renderTextInput = (name, placeholder, value, updateState, ErrorMsg, setErrorMsg) => {
         return(
           <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t(name)}</Text>   
@@ -222,12 +354,13 @@ const NewRegistration = ({navigation}) => {
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ 
-              // if(name === "Applied load") {
-              //   handleNumberChange()
-              // } 
+              if(ErrorMsg?.length > 0 && text != "") {
+                setErrorMsg("")
+              }
                updateState(text) 
             }}
            />
+           <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
           </View>
         )
     }
@@ -376,7 +509,8 @@ const NewRegistration = ({navigation}) => {
         },
         closeButton: true,
       });
-    };   
+    }; 
+    console.log(invalidConnectionType,"conne type")  
     return (
         <View style={styles.StartMain}>
            <View style={styles.RegisterMainContainer}>
@@ -389,11 +523,11 @@ const NewRegistration = ({navigation}) => {
            <ScrollView style={styles.RegisterSubContainer1}>
            <View style={styles.RegisterSub}>
            <Text style={styles.StartMainHeader}>{t("New Connection Request")}</Text>
-           {renderTextInput(t("First Name"), "Enter first name", firstName, setFirstName)}
+           {renderTextInput(t("First Name"), "Enter first name", firstName, setFirstName, invalidFirstName, setInvalidFirstName)}
            {renderTextInput(t("Middle Name"), "Enter middle name", middleName, setMiddleName)}
-           {renderTextInput(t("Last Name"), "Enter last name", lastName, setLastName)}
-           {renderTextInput(t("Email"), "Enter email", email, setEmail)}
-           {renderTextInput(t("Mobile No"), "Enter mobile no", mobileNo, setMobileNo)}
+           {renderTextInput(t("Last Name"), "Enter last name", lastName, setLastName, invalidLastName, setInvalidLastName)}
+           {renderTextInput(t("Email"), "Enter email", email, setEmail, invalidEmail, setInvalidEmail)}
+           {renderTextInput(t("Mobile No"), "Enter mobile no", mobileNo, setMobileNo, invalidMobileNo, setInvalidMobileNo)}
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Title")}</Text>   
             <Dropdown
@@ -410,8 +544,12 @@ const NewRegistration = ({navigation}) => {
                 value={title}
                 onChange={item => {
                     setTitle(item.value);
+                    if((item.value).length > 0) {
+                      setInvalidTitle("")
+                    }
                 }}               
            />
+           <Text style={styles.ErrorMsg}>{invalidTitle}</Text>
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Please Select Gender")}</Text>   
@@ -429,14 +567,18 @@ const NewRegistration = ({navigation}) => {
                 value={selectedGender}
                 onChange={item => {
                     setSelectedGender(item.value);
+                    if((item.value)?.length > 0 ) {
+                      setInvalidGender("")
+                    }
                 }}               
            />
+           <Text style={styles.ErrorMsg}>{invalidGender}</Text>
            </View>
-           {renderTextInput(t("House No"), "Enter House No", houseNumber, setHouseNumber)}
-           {renderTextInput(t("Landmark"), "Enter Landmark", landmark, setLandMark)}
-           {renderTextInput(t("Kebele"), "Enter Kebele", kebele, setKebele)}
-           {renderTextInput(t("Zone"), "Enter Zone", zone, setZone)}
-           {renderTextInput(t("Region"), "Enter Region", region, setRegion)}
+           {renderTextInput(t("House No"), "Enter House No", houseNumber, setHouseNumber, invalidHouseNumber, setInvalidHouseNumber)}
+           {renderTextInput(t("Landmark"), "Enter Landmark", landmark, setLandMark, invalidLandmark, setInvalidLandmark)}
+           {renderTextInput(t("Kebele"), "Enter Kebele", kebele, setKebele, invalidKebele, setInvalidKebele)}
+           {renderTextInput(t("Zone"), "Enter Zone", zone, setZone, invalidZone, setInvalidZone)}
+           {renderTextInput(t("Region"), "Enter Region", region, setRegion, invalidRegion, setInvalidRegion)}
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("CSC Customer Service")}</Text>   
             <Dropdown
@@ -453,8 +595,12 @@ const NewRegistration = ({navigation}) => {
                 value={custService}
                 onChange={item => {
                   setCustService(item.value);
+                  if((item.value)?.length > 0 ) {
+                    setInvalidCusService("")
+                  }
                 }}               
            />
+            <Text style={styles.ErrorMsg}>{invalidCusService}</Text>
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Prepaid/Postpaid")}</Text>   
@@ -472,8 +618,12 @@ const NewRegistration = ({navigation}) => {
                 value={selectedCategory}
                 onChange={item => {
                     setSelectedCategory(item.value);
+                    if((item.value)?.length > 0 ) {
+                      setInvalidCategory("")
+                    }
                 }}               
            />
+            <Text style={styles.ErrorMsg}>{invalidCategory}</Text>
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Connection type")}</Text>   
@@ -491,8 +641,12 @@ const NewRegistration = ({navigation}) => {
                 value={selectedConnectionType}
                 onChange={item => {
                     setSelectedConnectionType(item.value);
+                    if((item.value)?.length > 0 ) {
+                      setInvalidConnectionType("")
+                    }
                 }}               
            />
+            <Text style={styles.ErrorMsg}>{invalidConnectionType}</Text>
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Connection start date")}</Text>   
@@ -534,7 +688,7 @@ const NewRegistration = ({navigation}) => {
              />
             )}
            </View>
-           {renderTextInput(t("Applied load"), "Enter Applied load", appliedLoad, setAppliedLoad)}
+           {renderTextInput(t("Applied load"), "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Partner type")}</Text>   
             <Dropdown
@@ -551,8 +705,13 @@ const NewRegistration = ({navigation}) => {
                 value={selectPartnerType}
                 onChange={item => {
                     setSelectPartnerType(item.value);
+                    if((item.value)?.length > 0 ) {
+                      setInvalidPartnerType('')
+                    }
+                    
                 }}               
            />
+           <Text style={styles.ErrorMsg}>{invalidPartnerType}</Text>
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Install type")}</Text>   
@@ -570,10 +729,14 @@ const NewRegistration = ({navigation}) => {
                 value={selectedInstallType}
                 onChange={item => {
                     setSelectedInstallType(item.value);
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidInstallType("")
+                    }
                 }}               
            />
+            <Text style={styles.ErrorMsg}>{invalidInstallType}</Text>
            </View>
-           {imageName && imageName ? <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName}</Text> : null }
+           {imageName && imageName ? <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName}</Text> : <Text style={[styles.ErrorMsg, { marginTop: 20 }]}>{invalidImage}</Text> }
            <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption(true) }}>
               <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload")}</Text>
               <Upload name={'upload'} size={25}/>

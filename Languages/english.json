@@ -163,6 +163,13 @@
         "UNPAID BILL": "UNPAID BILL",
         "PROCEED TO PAYMENT": "PROCEED TO PAYMENT",
         "Forget Password": "Forget Password",
-        "CANCEL": "CANCEL"
+        "CANCEL": "CANCEL",
+        "Date Approved": "Date Approved",
+        "Date Requested": "Date Requested",
+        "External Request": "External Request",
+        "Payer Phone": "Payer Phone",
+        "Return Code": "Return Code",
+        "Return Message": "Return Message"
+
     } 
 }

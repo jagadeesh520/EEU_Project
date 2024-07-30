@@ -250,12 +250,12 @@ const Dashboard = ({ navigation, route }) => {
         {/* Latest Payment Details */}
         <View style={styles.DashboardPaymentCon}>
           <View style={styles.DashboardPaymentSub}>
-            <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Invoice Bill") + " " + moment(unpaidDueData.BILL_MONTH, "YYYY/MM").format("MMMM YYYY")}</Text>
+            <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Invoice Bill ") + moment(unpaidDueData.BILL_MONTH, "YYYY/MM").format("MMMM YYYY")}</Text>
             {/* <Text style={styles.DashboardDueTxt}>{"Due in 5 days"}</Text> */}
           </View>
           <View style={styles.DashboardPayBillMain}>
             <View>
-              <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + ":"}</Text>
+              <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + " : "}</Text>
               <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData.Invoice_Amount}</Text>
             </View>
             <TouchableOpacity disabled={true} style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
@@ -266,12 +266,12 @@ const Dashboard = ({ navigation, route }) => {
         <View style={{ marginTop: 20 }}>
           <View style={styles.DashboardPaymentInvoice}>
             <View style={styles.DashboardPaymentSub}>
-              <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Demand Bill") + " " +  moment(unpaidDemandData.PostDate, "YYYY/MM").format("MMMM YYYY")}</Text>
+              <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Demand Bill ") + (unpaidDemandData?.PostDate ?  moment(unpaidDemandData.PostDate, "YYYY/MM").format("MMMM YYYY"): "/")}</Text>
               {/* <Text style={styles.DashboardDueTxt}>{"Due in 5 days"}</Text> */}
             </View>
             <View style={styles.DashboardPayBillMain}>
               <View>
-                <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + ":" + unpaidDemandData.Amount}</Text>
+                <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + " : " + ( unpaidDemandData.Amount ? unpaidDemandData.Amount : "0" )}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
               <TouchableOpacity disabled={true} style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
