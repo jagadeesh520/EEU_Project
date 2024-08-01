@@ -222,7 +222,7 @@ const Login = ({ navigation }) => {
           <View style={styles.switchContainer}>
             <Text style={styles.RememberMeText}>Remember Me</Text>
             <Switch 
-              trackColor={{ false: "#F29037", true: "#63AA5A" }}
+              trackColor={{ false: "#D3D3D3", true: "#63AA5A" }}
               thumbColor={rememberMe ? "#F29037" : "#63AA5A"}
               value={rememberMe} 
               onValueChange={handleRememberMeToggle} 
@@ -254,7 +254,9 @@ const Login = ({ navigation }) => {
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />
-            
+            {/* <Button mode="contained" onPress={() => setShowModal(false)}>
+              Close
+            </Button> */}
           </View>
         </View>
       </Modal>

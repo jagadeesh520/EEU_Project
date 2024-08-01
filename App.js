@@ -51,18 +51,12 @@ const IdleTimer = ({ navigation }) => {
 
         if (elapsed >= 300000) { // 5 minutes in milliseconds
           Alert.alert(
-            'Are you still there?',
-            'You have been inactive for a while. Do you want to continue?',
-            [
-              {
-                text: 'No',
-                onPress: () => { navigation.navigate('Login') },
-                style: 'cancel',
-              },
-              { text: 'Yes', onPress: () => { navigation.navigate('BottomTab') } },
-            ],
-            { cancelable: false }
-          );
+              '',
+              "Your session has expired due to inactivity. Please log in again to resume.",
+              [
+                { text: 'OK', onPress: () => navigation.navigate('Login') },
+              ]
+            );
         }
       }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, TextInput } from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import {ImagePath} from '../CommonComponent/ImagePath';
@@ -7,21 +7,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constant } from '../CommonComponent/Constant';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-
+import { sha256, sha256Bytes } from 'react-native-sha256';
 // create a component
 const Payment = ({navigation}) => {
     const { t, i18n } = useTranslation();
-    const {theme, styles, changeTheme} = Styles()
-    const [ unpaidDueData, setUnpaidDueData ] = useState({})
-    const [ asyncData, setAsyncData ] = useState({})
-    const [ isPayment, setIsPayment ] = useState(false)
+    const {theme, styles, changeTheme} = Styles();
+    const [ unpaidDueData, setUnpaidDueData ] = useState({});
+    const [ asyncData, setAsyncData ] = useState({});
+    const [ isPayment, setIsPayment ] = useState(false);
+    const [ isPaymentResponse, setIsPaymentResponse ] = useState(false);
+    const [hashPassword, setHash] = useState('');
+    const [ mobileNo, setMobileNo ] = useState('');
     const onBackPress = () => {
         navigation.goBack("BottomTab")
     }
-    const [ unpaidDueData, setUnpaidDueData ] = useState({})
     useEffect (()=> {
       retrieveData()
-    }, [])
+    }, [])  
+    const handleHash = async (data) => {
+      try {
+        const datas = ("a4504fb1-428f-4365-8e01-947013be9f36" + data.Ref_No)
+        const sha256Hash = await sha256(datas);
+        console.log(sha256Hash, "sha256Hash------>", datas)
+        setHash(sha256Hash);
+      } catch (error) {
+        console.error('Error generating hash:', error);
+      }
+    };
     const getCurrentBill = (value)=>{
       var url = constant.BASE_URL + constant.UNPAID_DEMAND_NOTE
       fetch(url, {
@@ -37,6 +49,7 @@ const Payment = ({navigation}) => {
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res
         setUnpaidDueData(data.Record)
+        handleHash(data.Record)
       })
     }
     
@@ -54,26 +67,55 @@ const Payment = ({navigation}) => {
     };
     const onPressPaymentProceed = () =>{
       var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
-      console.log(url, "unpaid")
+      const data = {
+        "authorization": {
+          "merchantCode": "220261",
+          "merchantTillNumber": "22026100",
+          "requestId": unpaidDueData.Ref_No,
+          "requestSignature": hashPassword
+      },
+      "paymentRequest": {
+          "payerPhone": mobileNo,
+          "reason": "EEU payment",
+          "amount": unpaidDueData.Amount,
+          "externalReference": unpaidDueData.CA,
+          "callbackUrl": ":http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS"
+      }
+      }
+      console.log(url, "unpaid", data)
       fetch(url, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
           body: JSON.stringify({
-            Record: {
-              merchantCode: '220261',
-              merchantTillNumber: '22026100',
-              requestId: '',
-              requestSignature: 'a4504fb1-428f-4365-8e01-947013be9f36',
-              PaymentRequest: '',
-              externalReference: asyncData.CA_No,
-            }
-          }),
+           "data" : { 
+            "authorization": {
+              "merchantCode": "220261",
+              "merchantTillNumber": "22026100",
+              "requestId": unpaidDueData.Ref_No,
+              "requestSignature": hashPassword
+          },
+          "paymentRequest": {
+              "payerPhone": mobileNo,
+              "reason": "EEU payment",
+              "amount": unpaidDueData.Amount,
+              "externalReference": unpaidDueData.CA,
+              "callbackUrl": ":http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS"
+          }
+          }
+          })
         })
       .then((response) =>
           response.json())
       .then(responseData => {
+        setIsPaymentResponse(true)
         console.log(responseData, "responseData--->")
-      })
+      }).catch = (error) =>{
+        console.log(error,"error--->")
+      }
     }
+    console.log(unpaidDueData, "unpaidDueData----->")
     return (
         <View>
             <CommonHeader title={t("Unpaid Demand Note")} onBackPress ={onBackPress}/>
@@ -126,10 +168,11 @@ const Payment = ({navigation}) => {
                <TouchableOpacity style={styles.BillDuePayBillBtn} 
                 onPress={() =>{ 
                   setIsPayment(true)
+
                   onPressPaymentProceed()
                 }}
                >
-                  <Text style={styles.BillDuePayBillBtnTxt}>{"PROCEED TO PAYMENT"}</Text>
+                  <Text style={styles.BillDuePayBillBtnTxt}>{"PAY THROUGH AWASH"}</Text>
                </TouchableOpacity>
              </View>    
             </View>
@@ -137,12 +180,12 @@ const Payment = ({navigation}) => {
             <Modal
               // animationType="slide"
               transparent={true}
-              visible={isPayment}
+              visible={isPaymentResponse}
               onRequestClose={() => {
-                setIsPayment(!isPayment);
+                setIsPaymentResponse(!isPaymentResponse);
               }}
             >
-            <TouchableWithoutFeedback onPress={() => setIsPayment(false)}>  
+            <TouchableWithoutFeedback onPress={() => setIsPaymentResponse(false)}>  
              <View style={styles.modalMainView}>
                 <View style={styles.unpaidModalView}>
                    <Text style={{color: '#666666', fontSize: 20, }}>{"PAYMENT DETAILS"}</Text>
@@ -170,6 +213,37 @@ const Payment = ({navigation}) => {
                        <Text style={styles.UnpaidModalTitle}>{t("Return Message")}</Text>
                        <Text style={styles.UnpaidModalText}>{" : " +"Testdfdfdf"}</Text>
                      </View>
+                </View>
+             </View>
+            </TouchableWithoutFeedback> 
+            </Modal>  
+            <Modal
+              // animationType="slide"
+              transparent={true}
+              visible={isPayment}
+              onRequestClose={() => {
+                setIsPayment(!isPayment);
+              }}
+            >
+            <TouchableWithoutFeedback onPress={() => setIsPayment(!isPayment)}>  
+             <View style={styles.modalMainView}>
+                <View style={[styles.unpaidModalView, { flexDirection: 'column' }]}>
+                   <Text style={{color: '#666666', fontSize: 20, }}>{"PAY THROUGH AWASH"}</Text>
+                   <View style={styles.Margin_20}>
+                     <Text style={styles.LoginSubTxt}>{t("Mobile Number")}</Text>  
+                     <TextInput
+                       placeholder={"+251 - 00000000000"}
+                       value={mobileNo}
+                       style={styles.LoginTextInput}
+                       onChangeText={(text) =>{ setMobileNo(text) }}
+                       keyboardType={"phone-pad"}
+                       placeholderTextColor="#9E9E9E"
+                       maxLength={12}
+                     />
+                   </View>
+                   <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor:'#63AA5A' }]} onPress={() => { onPressPaymentProceed() }}>
+                       <Text style={[styles.RegisterBtnTxt, { color: '#FFF' }]}>{t("SUBMIT")}</Text>
+                   </TouchableOpacity> 
                 </View>
              </View>
             </TouchableWithoutFeedback> 
