@@ -41,8 +41,9 @@ const PaymentHistory = ({navigation}) => {
         // console.error(error);
       }
     };
-    const getPaymentHistory = (value)=>{
-      fetch('http://197.156.76.70:8080/PaymentHistoryProd', {
+    const getPaymentHistory = (value) => {
+      var url = constant.BASE_URL + constant.PAYMENT_HISTORY_GET
+      fetch(url, {
         method: 'POST',
         body: JSON.stringify({
           Record: {
@@ -50,14 +51,13 @@ const PaymentHistory = ({navigation}) => {
           }
         }),
       })
-      .then((response) =>
+        .then((response) =>
           response.json())
-      .then(responseData => {
-        setLoading(false)
-        setPaymentHistoryData(responseData.Record)
-        setTotalData(responseData.Record)
-        console.log(responseData.Record, "responseData.Record")
-      })
+        .then(responseData => {
+          setLoading(false)
+          setPaymentHistoryData(responseData.Record)
+          setTotalData(responseData.Record)
+        })  
     }
     const getPaginatedData = () => {
       const startIndex = currentPage * 1;
@@ -75,7 +75,6 @@ const PaymentHistory = ({navigation}) => {
         setCurrentPage(currentPage - 1);
       }
     };
-    console.log(currentPage, "check--->")
     return (
       <ScrollView style={styles.DashBoardMain}>
             <CommonHeader title={"Payment History"} onBackPress ={onBackPress}/>
@@ -96,7 +95,6 @@ const PaymentHistory = ({navigation}) => {
                 data={getPaginatedData()}
                 renderItem={(list , index) => {
                   const formattedDate = moment(list.item.PaymentDate, "YYYY/MM/DD").format("MMM / YYYY");
-                  console.log(list, "list--->")
                 return( 
             <View style={{ padding: 20, width: '100%' }}>
               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>

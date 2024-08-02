@@ -109,7 +109,8 @@ const Payment = ({navigation}) => {
       .then((response) =>
           response.json())
       .then(responseData => {
-        setIsPaymentResponse(true)
+        // setIsPaymentResponse(true);
+        // setIsPayment(false);
         console.log(responseData, "responseData--->")
       }).catch = (error) =>{
         console.log(error,"error--->")
@@ -172,8 +173,10 @@ const Payment = ({navigation}) => {
                   onPressPaymentProceed()
                 }}
                >
-                  <Text style={styles.BillDuePayBillBtnTxt}>{"PAY THROUGH AWASH"}</Text>
+                  <Text style={styles.BillDuePayBillBtnTxt}>{"PAY VIA AWASH"}</Text>
                </TouchableOpacity>
+               <Text style={styles.BillDuePayBillBtnTxt1}>{"(Only for AWASH BANK a/c holders)"}</Text>
+
              </View>    
             </View>
             </View>: null }
@@ -232,7 +235,7 @@ const Payment = ({navigation}) => {
                    <View style={styles.Margin_20}>
                      <Text style={styles.LoginSubTxt}>{t("Mobile Number")}</Text>  
                      <TextInput
-                       placeholder={"+251 - 00000000000"}
+                       placeholder={"+251 000000000"}
                        value={mobileNo}
                        style={styles.LoginTextInput}
                        onChangeText={(text) =>{ setMobileNo(text) }}

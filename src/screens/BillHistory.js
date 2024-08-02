@@ -40,17 +40,19 @@ const BillHistory = ({navigation}) => {
         // console.error(error);
       }
     };
-    const getBillHistory = async (value) => {
-      fetch("http://197.156.76.70:8080/BillingHistoryProd", {
+   
+    const getBillHistory = (value) => {
+      var url = constant.BASE_URL + constant.BILL_HISTORY_GET
+      fetch(url, {
         method: 'POST',
-          body: JSON.stringify({
-            Record: {
-              ContractAccount: value.CA_No,
-            }
-          }),
-        })
+        body: JSON.stringify({
+          Record: {
+            ContractAccount: value.CA_No,
+          }
+        }),
+      })
         .then((response) =>
-            response.json())
+          response.json())
         .then(responseData => {
           setTotalData(responseData.Record)
           setBillHistoryData(responseData.Record)

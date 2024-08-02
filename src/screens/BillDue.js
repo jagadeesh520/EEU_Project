@@ -19,7 +19,7 @@ const BillDue = ({navigation}) => {
       retrieveData()
     }, [])
     const getCurrentBill = (value)=>{
-      var url = constant.BASE_URL + constant.UNPAID_BILL + '/' + value.CA_No
+      var url = constant.BASE_URL + constant.INVOICE_BILL + '/' + value.CA_No
       fetch( url, {
       })
       .then((response) =>

@@ -169,7 +169,12 @@
         "External Request": "External Request",
         "Payer Phone": "Payer Phone",
         "Return Code": "Return Code",
-        "Return Message": "Return Message"
+        "Return Message": "Return Message",
+        "Pending Demand Note": "Pending Demand Note",
+        "Pending Invoice": "Pending Invoice",
+        "VIEW ALL": "VIEW ALL",
+        "Last Paid": "Last Paid",
+        "Previous Bill": "Previous Bill"
 
     } 
 }

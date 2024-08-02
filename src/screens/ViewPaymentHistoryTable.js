@@ -50,8 +50,9 @@ export default function ViewPaymentHistoryTable ({ navigation }) {
       );
     });
   };
-  const getPaymentHistory = (value)=>{
-    fetch(constant.BASE_URL + constant.PAYMENT_HISTORY_GET, {
+  const getPaymentHistory = (value) => {
+    var url = constant.BASE_URL + constant.PAYMENT_HISTORY_GET
+    fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         Record: {
@@ -59,14 +60,14 @@ export default function ViewPaymentHistoryTable ({ navigation }) {
         }
       }),
     })
-    .then((response) =>
+      .then((response) =>
         response.json())
-    .then(responseData => {
-      setLoading(false)
-      setData(responseData.Record)
-    })
+      .then(responseData => {
+        setLoading(false)
+        setData(responseData.Record)
+      })  
   }
-
+  
   const retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('accountData');

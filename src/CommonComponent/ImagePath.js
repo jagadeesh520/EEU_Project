@@ -29,5 +29,6 @@ export const ImagePath = {
     RoundRightArrow: require("../../assets/RoundRightArrow.png"),
     Left: require("../../assets/Left.png"),
     PaymentHistory: require("../../assets/PaymentHistory.png"),
-    UnpaidDemandNote: require("../../assets/UnpaidNote.png")
+    UnpaidDemandNote: require("../../assets/UnpaidNote.png"),
+    FlagImageBackground: require("../../assets/background_image.png")
 } 

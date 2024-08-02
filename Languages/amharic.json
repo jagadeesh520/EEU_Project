@@ -168,6 +168,11 @@
         "External Request": "የውጭ ጥያቄ",
         "Payer Phone": "ከፋይ ስልክ",
         "Return Code": "የመመለሻ ኮድ",
-        "Return Message": "መልእክት ተመለስ"
+        "Return Message": "መልእክት ተመለስ",
+        "Pending Invoice": "በመጠባበቅ ላይ ያለ ደረሰኝ",
+        "Pending Demand Note": "በመጠባበቅ ላይ ያለ የፍላጎት ማስታወሻ",
+        "VIEW ALL": "ሁሉንም ይመልከቱ",
+        "Last Paid": "ለመጨረሻ ጊዜ የተከፈለው።",
+        "Previous Bill": "የቀድሞ ቢል"
     } 
 }

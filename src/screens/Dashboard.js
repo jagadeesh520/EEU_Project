@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Linking, BackHandler, Alert, Modal, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Linking, BackHandler, Alert, Modal, StatusBar, ImageBackground } from 'react-native';
 import Styles from './../CommonComponent/Styles';
 import { ImagePath } from './../CommonComponent/ImagePath';
 import { useThemes, darkTheme, lightTheme } from './../CommonComponent/Theme';
@@ -48,10 +48,12 @@ const Dashboard = ({ navigation, route }) => {
     { label: 'Amharic', value: 'am' }
   ]);
 
-  const [unpaidDueData, setUnpaidDueData] = useState({})
-  const [unpaidDemandData, setUnpaidDemandData] = useState({})
-  const [isThemeOpen, setThemeOpen] = useState(false)
+  const [unpaidDueData, setUnpaidDueData] = useState({});
+  const [unpaidDemandData, setUnpaidDemandData] = useState({});
+  const [isThemeOpen, setThemeOpen] = useState(false);
   const [checked, setChecked] = useState(theme);
+  const [paymentHistoryData, setPaymentHistoryData] = useState([]);
+  const [billHistoryData, setBillHistoryData] = useState([]);
 
   useEffect(() => {
     retrieveData();
@@ -137,7 +139,39 @@ const Dashboard = ({ navigation, route }) => {
         setUnpaidDemandData(responseData.MT_UnpaidDemandNote_Res.Record)
       })
   }
-
+  const getPaymentHistory = (value) => {
+    var url = constant.BASE_URL + constant.PAYMENT_HISTORY_GET
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          ContractAccount: value.CA_No,
+        }
+      }),
+    })
+      .then((response) =>
+        response.json())
+      .then(responseData => {
+        setPaymentHistoryData(responseData.Record)
+      })
+  }
+  const getBillHistory = (value) => {
+    var url = constant.BASE_URL + constant.BILL_HISTORY_GET
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          ContractAccount: value.CA_No,
+        }
+      }),
+    })
+      .then((response) =>
+        response.json())
+      .then(responseData => {
+        setBillHistoryData(responseData.Record);
+      })
+  }
+ 
   const retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('accountData');
@@ -145,12 +179,14 @@ const Dashboard = ({ navigation, route }) => {
         setAccountData(JSON.parse(value));
         getCurrentBill(JSON.parse(value))
         getDemandBill(JSON.parse(value));
+        getPaymentHistory(JSON.parse(value));
+        getBillHistory(JSON.parse(value));
       }
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   const renderQuickLinks = (buttonImage, buttonText, navigationName) => {
     return (
       <View>
@@ -180,7 +216,13 @@ const Dashboard = ({ navigation, route }) => {
     <ScrollView style={styles.DashBoardMain}>
       {/* Profile Bar */}
       <StatusBar animated={true} barStyle={'dark-content'} backgroundColor={styles.statusBarColor} />
+      <ImageBackground 
+          source={ImagePath.FlagImageBackground} // Replace with your image URL
+          style={styles.flagBackground}
+          imageStyle={{ resizeMode: 'cover' }}
+        >
       <View style={styles.DashboardProContainer}>
+       
         <View style={styles.DashboardProSubContainer}>
           <Profile name='person-circle-outline' size={48} color={'#666666'} />
           {/* <Image source={ImagePath.Profile} style={styles.DashboardProfileImage} /> */}
@@ -191,7 +233,7 @@ const Dashboard = ({ navigation, route }) => {
         </View>
         <View style={styles.DashboardNotificationContainer}>
 
-          <Image source={ImagePath.Flag} style={styles.DashboardProfileFlag} />
+          {/* <Image source={ImagePath.Flag} style={styles.DashboardProfileFlag} /> */}
           {/* <TouchableOpacity style={{ marginLeft: 30 }} onPress={() => { setVisible(true) }}>
                       <Image source={theme.mode == "dark" ? ImagePath.Notification : ImagePath.Notification_Light} style={styles.DashboardProfileNotification} />
                     </TouchableOpacity> */}
@@ -226,6 +268,7 @@ const Dashboard = ({ navigation, route }) => {
           <Text style={styles.CallText}>{905}</Text>
         </TouchableOpacity>
       </View>
+      </ImageBackground>
       {/* Account Number Bar */}
       <View style={styles.DashboardAccContainer}>
         <Text style={styles.DashBoradProfilAccText}>{t("BP") + ": " + accountData.BP_No}</Text>
@@ -250,57 +293,70 @@ const Dashboard = ({ navigation, route }) => {
         {/* Latest Payment Details */}
         <View style={styles.DashboardPaymentCon}>
           <View style={styles.DashboardPaymentSub}>
-            <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Invoice Bill ") + moment(unpaidDueData.BILL_MONTH, "YYYY/MM").format("MMMM YYYY")}</Text>
+            <Text style={styles.DashboardHeaderTxt1}>{t("Pending Invoice") + " "+( unpaidDueData?.BILL_MONTH ? moment(unpaidDueData.BILL_MONTH, "YYYY/MM").format("MMMM YYYY") : "")}</Text>
             {/* <Text style={styles.DashboardDueTxt}>{"Due in 5 days"}</Text> */}
           </View>
           <View style={styles.DashboardPayBillMain}>
             <View>
               <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + " : "}</Text>
-              <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData.Invoice_Amount}</Text>
+              <Text style={styles.DashboardUSDTxt}>{"ETB "+ (unpaidDueData?.Invoice_Amount ? unpaidDueData?.Invoice_Amount : 0)}</Text>
             </View>
-            <TouchableOpacity disabled={true} style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
-              <Text style={styles.DashboardPayBillBtnTxt}>{t("PAY BILL")}</Text>
+            <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
+              <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW DETAILS")}</Text>
+              <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
             </TouchableOpacity>
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
           <View style={styles.DashboardPaymentInvoice}>
             <View style={styles.DashboardPaymentSub}>
-              <Text style={styles.DashboardSubHeaderTxt1}>{t("Unpaid Demand Bill ") + (unpaidDemandData?.PostDate ?  moment(unpaidDemandData.PostDate, "YYYY/MM").format("MMMM YYYY"): "/")}</Text>
+              <Text style={styles.DashboardHeaderTxt1}>{t("Pending Demand Note")}</Text>
               {/* <Text style={styles.DashboardDueTxt}>{"Due in 5 days"}</Text> */}
             </View>
             <View style={styles.DashboardPayBillMain}>
               <View>
-                <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + " : " + ( unpaidDemandData.Amount ? unpaidDemandData.Amount : "0" )}</Text>
+                <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + ( unpaidDemandData.Amount ? unpaidDemandData.Amount : 0 )}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
-              <TouchableOpacity disabled={true} style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
-                <Text style={styles.DashboardPayBillBtnTxt}>{t("PAY BILL")}</Text>
+              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
+                <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW DETAILS")}</Text>
+                <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
               </TouchableOpacity>
             </View>
           </View>
         </View>
 
+        
+
         {/* Previous Payment Section */}
         <View style={{ marginTop: 20 }}>
           <View style={styles.DashboardMainContainer}>
             <Text style={styles.DashboardSubHeaderTxt}>{t("Previous payment")}</Text>
-            <TouchableOpacity onPress={() => { navigation.navigate("PaymentHistory") }}>
+            {/* <TouchableOpacity onPress={() => { navigation.navigate("PaymentHistory") }}>
               <View style={styles.DashboardViewCon}>
                 <Text style={styles.DashboardViewallTxt}>{t("View all")}</Text>
                 <Image source={ImagePath.RightArrow} />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={styles.DashBoardSubHeader}>
             <View>
-              <Text style={styles.DashboardSubHeaderPaidTxt}>{t("Paid")}</Text>
-              <Text style={styles.DashboardUSDTxt}>{"ETB 0"}</Text>
+              <Text style={styles.DashboardSubHeaderPaidTxt}>{t("Last Paid")}</Text>
+              <Text style={styles.DashboardUSDTxt}>{"ETB " + paymentHistoryData ? (paymentHistoryData[0]?.PaymentAmount ? (paymentHistoryData[0]?.PaymentAmount).trim() : 0) : 0}</Text>
             </View>
-            <TouchableOpacity style={styles.DashboardViewAllBtn} onPress={() => { navigation.navigate("BillHistory") }}>
-              <Text style={styles.DashboardViewAllBtnTxt}>{t("VIEW BILL")}</Text>
+            <TouchableOpacity style={styles.DashboardViewAllBtn} onPress={() => { navigation.navigate("PaymentHistory") }}>
+              <Text style={styles.DashboardViewAllBtnTxt}>{t("VIEW ALL")}</Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <View style={styles.DashBoardSubHeader}>
+            <View>
+              <Text style={styles.DashboardSubHeaderPaidTxt}>{t("Previous Bill")}</Text>
+              <Text style={styles.DashboardUSDTxt}>{"ETB " + billHistoryData ? (billHistoryData[0]?.Amount ? (billHistoryData[0]?.Amount).trim() : 0) : 0}</Text>
+            </View>
+            <TouchableOpacity style={styles.DashboardViewAllBtn} onPress={() => { navigation.navigate("BillHistory") }}>
+              <Text style={styles.DashboardViewAllBtnTxt}>{t("VIEW ALL")}</Text>
+            </TouchableOpacity>
         </View>
 
         {/* Quick Link Section */}

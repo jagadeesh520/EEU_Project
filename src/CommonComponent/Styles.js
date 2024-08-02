@@ -31,7 +31,7 @@ const Styles = () => {
             backgroundColor: themeObj.themeBackgroundColor,
         },
         DashboardProContainer: {
-            backgroundColor: topBarBackgroundcolor,
+            // backgroundColor: topBarBackgroundcolor,
             paddingVertical: wp(10),
             paddingHorizontal: wp(20),
             display: 'flex',
@@ -41,7 +41,7 @@ const Styles = () => {
 
         },
         LanguageContainer: {
-            backgroundColor: topBarBackgroundcolor,
+            // backgroundColor: topBarBackgroundcolor,
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -71,7 +71,7 @@ const Styles = () => {
             width: wp(36)
         },
         DashBoradWelcomText: {
-            color: '#7BFF66',
+            color: '#D30000',
             fontSize: wp(14),
             marginLeft: wp(10)
         },
@@ -169,6 +169,11 @@ const Styles = () => {
             color: '#666666',
             fontSize: wp(14)
         },
+        DashboardHeaderTxt1: {
+            color: '#666666',
+            fontSize: wp(18),
+            fontWeight: 'bold'
+        },
         DashboardDueTxt: {
             color: '#E74A4B',
             fontSize: wp(14),
@@ -181,16 +186,22 @@ const Styles = () => {
             marginTop: wp(10)
         },
         DashboardPayBillBtn: {
-            // backgroundColor: '#F29037', 
-            backgroundColor: '#E8E9EB',
+            backgroundColor: '#F29037', 
+            // backgroundColor: '#E8E9EB',
             borderRadius: wp(20),
             paddingVertical: wp(10),
-            paddingHorizontal: wp(20)
+            paddingHorizontal: wp(15),
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         DashboardPayBillBtnTxt: {
             color: '#FFF',
             fontSize: wp(14),
-            fontWeight: '500'
+            fontWeight: '500',
+            marginRight: wp(10)
+
         },
         RegisterBtn: {
             backgroundColor: '#63AA5A',
@@ -509,6 +520,12 @@ const Styles = () => {
             fontSize: wp(14),
             fontWeight: '500'
         },
+        BillDuePayBillBtnTxt1: {
+            color: '#F29037', 
+            fontSize: wp(12), 
+            fontWeight: 'bold',
+            marginTop: wp(10)
+        },    
         BillDuePayBillMain: { 
             display: 'flex', 
             justifyContent: 'center', 
@@ -1034,6 +1051,11 @@ const Styles = () => {
         modalScrollContainer: {
             maxHeight: hp(250),
         },
+        flagBackground: {
+            flex: 1,
+            resizeMode: 'cover', // Adjusts the image to cover the entire background
+            justifyContent: 'center',
+        }
     };
 
     return { theme, styles, changeTheme }

@@ -18,6 +18,10 @@ import ViewPaymentHistoryTable from './src/screens/ViewPaymentHistoryTable';
 import NewRegisteration from './src/screens/NewRegistration';
 import Payment from './src/screens/Payment';
 import ForgetPassword from './src/screens/ForgetPassword';
+import FindCSC from './src/screens/FindCSC';
+
+import Location from 'react-native-vector-icons/FontAwesome5';
+
 import CommonComponent from './src/CommonComponent/CommonComponent';
 import { ImagePath } from './src/CommonComponent/ImagePath'; 
 import MultipleOption from './src/CommonComponent/MultipleOption'; 
@@ -26,7 +30,7 @@ import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-native-paper';
 import Styles from './src/CommonComponent/Styles';
 // Navigation
-import { NavigationContainer, useNavigation, useIsFocused } from '@react-navigation/native'; 
+import { NavigationContainer, useNavigation, useIsFocused, useNavigationState } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -34,7 +38,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // Idle Timer Component
-const IdleTimer = ({ navigation }) => {
+const IdleTimer = ({ navigation, routeName }) => {
   const [idleTime, setIdleTime] = useState(0);
   const appState = useRef(AppState.currentState);
   const idleTimer = useRef(null);
@@ -49,7 +53,7 @@ const IdleTimer = ({ navigation }) => {
         const currentTime = Date.now();
         const elapsed = currentTime - idleTime;
 
-        if (elapsed >= 300000) { // 5 minutes in milliseconds
+        if (elapsed >= 300000 && routeName !== 'Login' && routeName !== 'StartScreen') { // 5 minutes in milliseconds
           Alert.alert(
               '',
               "Your session has expired due to inactivity. Please log in again to resume.",
@@ -75,7 +79,7 @@ const IdleTimer = ({ navigation }) => {
         clearInterval(idleTimer.current);
       }
     };
-  }, [idleTime, navigation]);
+  }, [idleTime, navigation, routeName]);
 
   return null; // This component doesn't render anything
 };
@@ -110,8 +114,17 @@ const App = () => {
           )
         }}
         />
+         <Tab.Screen name={t("Find CSC")} component={FindCSC} options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            // <Image source={ImagePath.FQA} tintColor={focused ? '#F29037' : "#666666"} style={{ width: 22, height: 23 }} />
+            <Location name={"search-location"} size={17} color={focused ? '#F29037' : "#666666"}/>
+
+          )
+        }}
+        />
         <Tab.Screen name={t("Contact Us")} component={ContactUs} options={{
           tabBarIcon: ({ focused, color, size }) => (
+            // <Location name={"search-location"} size={20}/>
             <Image source={ImagePath.ContactUs} tintColor={focused ? '#F29037' : "#666666"} style={{ width: 15, height: 20 }} />
           )
         }}/>
@@ -121,10 +134,16 @@ const App = () => {
 
   const RootNavigator = () => {
     const navigation = useNavigation();
+    const routeName = useNavigationState(state => {
+      if (state && state.routes && state.routes.length > 0) {
+        return state.routes[state.index].name;
+      }
+      return null;
+    });
 
     return (
       <>
-        <IdleTimer navigation={navigation} />
+        {routeName && <IdleTimer navigation={navigation} routeName={routeName} />}
         <Stack.Navigator initialRouteName="StartScreen" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="StartScreen" component={StartScreen} />
@@ -142,7 +161,7 @@ const App = () => {
           <Stack.Screen name="ContactUs" component={ContactUs} /> 
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="ViewBillHistoryTable" component={ViewBillHistoryTable} /> 
-          <Stack.Screen name="ViewPaymentHistoryTable" component={ViewBillHistoryTable} /> 
+          <Stack.Screen name="ViewPaymentHistoryTable" component={ViewPaymentHistoryTable} /> 
           <Stack.Screen name="NewRegisteration" component={NewRegisteration} />
           <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />

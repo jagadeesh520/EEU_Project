@@ -216,9 +216,6 @@ const Login = ({ navigation }) => {
             </View>
             <Text style={{ color: 'red', fontSize: 12, marginTop: 5, marginLeft: 35 }}>{passwordError}</Text>
           </View>
-          <TouchableOpacity style={styles.RegisterBtn} onPress={submitOnClick}>
-            <Text style={styles.RegisterBtnTxt}>{t("LOGIN")}</Text>
-          </TouchableOpacity>
           <View style={styles.switchContainer}>
             <Text style={styles.RememberMeText}>Remember Me</Text>
             <Switch 
@@ -228,6 +225,9 @@ const Login = ({ navigation }) => {
               onValueChange={handleRememberMeToggle} 
             />
           </View>
+          <TouchableOpacity style={styles.RegisterBtn} onPress={submitOnClick}>
+            <Text style={styles.RegisterBtnTxt}>{t("LOGIN")}</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.Margin_20} onPress={() => navigation.navigate('ForgetPassword')}>
             <Text style={styles.LoginResetTxt}>{t("Forget Password ?")}</Text>
           </TouchableOpacity>
@@ -235,10 +235,10 @@ const Login = ({ navigation }) => {
             <Text style={styles.LoginAccTxt}>{t("Don’t have an account?")}</Text>
           </View>
           <TouchableOpacity style={styles.LoginCreateBtn} onPress={() => navigation.navigate('Registration')}>
-            <Text style={styles.LoginCreateTxt}>{t("CREATE ACCOUNT")}</Text>
+            <Text style={styles.LoginCreateTxt}>{t("CREATE LOGIN ACCOUNT")}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.LoginCreateBtn} onPress={() => navigation.navigate('NewRegisteration')}>
-            <Text style={styles.LoginCreateTxt}>{t("NEW SERVICE")}</Text>
+            <Text style={styles.LoginCreateTxt}>{t("APPLY FOR NEW SERVICE")}</Text>
           </TouchableOpacity>
           <View style={styles.FooterContainer}>
             <Text style={styles.FooterText}>{"© Copyright 2024"}</Text>
