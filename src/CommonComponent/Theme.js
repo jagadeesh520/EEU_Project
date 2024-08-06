@@ -70,7 +70,7 @@ export const useThemes = () => {
       console.error('Error resetting AsyncStorage:', error);
     }
   };
-
+  
   const themeObj = theme === 'dark' ? darkTheme : lightTheme;
   return {theme, themeObj, changeTheme: onChangeTheme};
 };

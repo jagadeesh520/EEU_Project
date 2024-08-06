@@ -77,7 +77,7 @@ const PaymentHistory = ({navigation}) => {
     };
     return (
       <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={"Payment History"} onBackPress ={onBackPress}/>
+            <CommonHeader title={"Payment History"} onBackPress ={onBackPress} navigation={navigation}/>
             {isLoading &&
               < View style={styles.Loader}>
                 <ActivityIndicator size="large" />

@@ -27,10 +27,12 @@ const Dashboard = ({ navigation, route }) => {
     { label: 'Light', value: 'light' },
     { label: 'Dark', value: 'dark' }
   ];
-
+  const languageOption = [
+    { label: "Eng",  value:"Eng" },
+    { label: "አማርኛ", value:"አማርኛ"}
+  ] 
   const { theme, themeObj } = useThemes();
   const { styles, changeTheme } = Styles()
-  const [selectLanguage, setSelectLanguage] = useState("");
   const [accountData, setAccountData] = useState({})
   const [energySavingTips, setEnergySavingTips] = useState([
     'Switch to LED Bulbs',
@@ -42,19 +44,15 @@ const Dashboard = ({ navigation, route }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [language, setLanguage] = useState([
-    { label: 'Language', value: '' },
-    { label: 'English', value: 'en' },
-    { label: 'Amharic', value: 'am' }
-  ]);
 
+  
   const [unpaidDueData, setUnpaidDueData] = useState({});
   const [unpaidDemandData, setUnpaidDemandData] = useState({});
   const [isThemeOpen, setThemeOpen] = useState(false);
   const [checked, setChecked] = useState(theme);
   const [paymentHistoryData, setPaymentHistoryData] = useState([]);
   const [billHistoryData, setBillHistoryData] = useState([]);
-
+  const [ selectedLang, setSelectedLang] = useState('')
   useEffect(() => {
     retrieveData();
     const transitionDuration = 4000; // Duration between transitions in milliseconds
@@ -211,7 +209,7 @@ const Dashboard = ({ navigation, route }) => {
     setThemeOpen(!isThemeOpen)
     changeTheme(checked);
   }
-
+  
   return (
     <ScrollView style={styles.DashBoardMain}>
       {/* Profile Bar */}
@@ -237,36 +235,39 @@ const Dashboard = ({ navigation, route }) => {
           {/* <TouchableOpacity style={{ marginLeft: 30 }} onPress={() => { setVisible(true) }}>
                       <Image source={theme.mode == "dark" ? ImagePath.Notification : ImagePath.Notification_Light} style={styles.DashboardProfileNotification} />
                     </TouchableOpacity> */}
-          <MultipleOption navigation={navigation} showLogout={true} resetPwd={true} />
         </View>
 
       </View>
-
+      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <View style={{ marginLeft: 10 }}>
+        <MultipleOption navigation={navigation} showLogout={true} resetPwd={true} />
+      </View>
       <View style={styles.LanguageContainer}>
         <TouchableOpacity style={styles.ThemeButton} onPress={() => { setThemeOpen(!isThemeOpen) }}>
           <ThemeIcon name={"sun"} size={25} color={'#666666'} />
         </TouchableOpacity>
         <Dropdown
-          placeholderStyle={styles.RaiseComplaintDropdownTxt}
-          selectedTextStyle={styles.RaiseComplaintDropdownTxt}
-          inputSearchStyle={styles.RaiseComplaintDropdownTxt}
-          iconStyle={styles.RaiseComplaintDropdownTxt}
-          labelField="label"
-          valueField="value"
-          placeholder="Language"
-          style={styles.LanguageDropdown}
-          renderItem={renderItem}
-          data={availableLanguage.map(language => ({ label: language, value: language }))}
-          value={selectLanguage}
-          onChange={(item) => {
-            setSelectLanguage(item.value);
-            i18n.changeLanguage(item.value)
-          }}
-        />
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Language")}
+                style={styles.LanguageDropdown}
+                renderItem={renderItem}
+                data={languageOption}
+                value={selectedLang}
+                onChange={item => {
+                  setSelectedLang(item.value);
+                  i18n.changeLanguage(item.value)
+                }}               
+           />
         <TouchableOpacity style={styles.callButton} onPress={() => { Linking.openURL(`tel:${905}`) }} >
           <Image source={require("../../assets/Call.png")} style={styles.CallIcon} />
           <Text style={styles.CallText}>{905}</Text>
         </TouchableOpacity>
+      </View>
       </View>
       </ImageBackground>
       {/* Account Number Bar */}
@@ -318,7 +319,7 @@ const Dashboard = ({ navigation, route }) => {
                 <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + ( unpaidDemandData.Amount ? unpaidDemandData.Amount : 0 )}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
-              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
+              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("Payment") }}>
                 <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW DETAILS")}</Text>
                 <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
               </TouchableOpacity>
@@ -326,22 +327,59 @@ const Dashboard = ({ navigation, route }) => {
           </View>
         </View>
 
+        {/* Previous Payment Section */}
+        <View style={{ marginTop: 20 }}>
+          <View style={styles.DashboardPaymentInvoice}>
+            <View style={styles.DashboardPaymentSub}>
+              <Text style={styles.DashboardHeaderTxt1}>{t("Last Paid")}</Text>
+              {/* <Text style={styles.DashboardDueTxt}>{"Due in 5 days"}</Text> */}
+            </View>
+            <View style={styles.DashboardPayBillMain}>
+              <View>
+                <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + ( paymentHistoryData ? (paymentHistoryData[0]?.PaymentAmount ? (paymentHistoryData[0]?.PaymentAmount).trim() : 0) : 0 )}</Text>
+                {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
+              </View>
+              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("PaymentHistory") }}>
+                <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW ALL")}</Text>
+                <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <View style={styles.DashboardPaymentInvoice}>
+            <View style={styles.DashboardPaymentSub}>
+              <Text style={styles.DashboardHeaderTxt1}>{t("Last Bill")}</Text>
+              {/* <Text style={styles.DashboardDueTxt}>{"Due in 5 days"}</Text> */}
+            </View>
+            <View style={styles.DashboardPayBillMain}>
+              <View>
+                <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + billHistoryData ? (billHistoryData[0]?.Amount ? (billHistoryData[0]?.Amount).trim() : 0) : 0}</Text>
+                {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
+              </View>
+              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillHistory") }}>
+                <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW ALL")}</Text>
+                <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
         
 
-        {/* Previous Payment Section */}
+        {/* Previous Payment Section
         <View style={{ marginTop: 20 }}>
           <View style={styles.DashboardMainContainer}>
             <Text style={styles.DashboardSubHeaderTxt}>{t("Previous payment")}</Text>
-            {/* <TouchableOpacity onPress={() => { navigation.navigate("PaymentHistory") }}>
+            <TouchableOpacity onPress={() => { navigation.navigate("PaymentHistory") }}>
               <View style={styles.DashboardViewCon}>
                 <Text style={styles.DashboardViewallTxt}>{t("View all")}</Text>
                 <Image source={ImagePath.RightArrow} />
               </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
           <View style={styles.DashBoardSubHeader}>
             <View>
-              <Text style={styles.DashboardSubHeaderPaidTxt}>{t("Last Paid")}</Text>
+              <Text style={styles.DashboardSubHeaderPaidTxt}>{t("Last Bill")}</Text>
               <Text style={styles.DashboardUSDTxt}>{"ETB " + paymentHistoryData ? (paymentHistoryData[0]?.PaymentAmount ? (paymentHistoryData[0]?.PaymentAmount).trim() : 0) : 0}</Text>
             </View>
             <TouchableOpacity style={styles.DashboardViewAllBtn} onPress={() => { navigation.navigate("PaymentHistory") }}>
@@ -349,6 +387,9 @@ const Dashboard = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.DashboardMainContainer}>
+            <Text style={styles.DashboardSubHeaderTxt}>{t("Previous Bill")}</Text>
+          </View>
         <View style={styles.DashBoardSubHeader}>
             <View>
               <Text style={styles.DashboardSubHeaderPaidTxt}>{t("Previous Bill")}</Text>
@@ -357,7 +398,7 @@ const Dashboard = ({ navigation, route }) => {
             <TouchableOpacity style={styles.DashboardViewAllBtn} onPress={() => { navigation.navigate("BillHistory") }}>
               <Text style={styles.DashboardViewAllBtnTxt}>{t("VIEW ALL")}</Text>
             </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Quick Link Section */}
         <View style={{ marginTop: 20 }}>

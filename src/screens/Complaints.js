@@ -123,7 +123,7 @@ const Complaints = ({navigation}) => {
       };
     return (
       <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={ isRaiseComplaint ? t("Raise Complaint") : t("Complaint")} onBackPress ={onBackPress}/>
+            <CommonHeader title={ isRaiseComplaint ? t("Raise Complaint") : t("Complaint")} onBackPress ={onBackPress} navigation={navigation}/>
             {isLoading &&
               < View style={styles.Loader}>
                 <ActivityIndicator size="large" />
@@ -145,11 +145,14 @@ const Complaints = ({navigation}) => {
                   { complaintData && complaintData.length > 0 && complaintData.map((data, index) =>{ 
                   return( 
                    <View style={styles.ComplaintListSub}>
-                    <Text style={styles.ComplaintListHeader}>{data.ComplaintTitle}</Text>
+                    <Text style={styles.ComplaintListHeader}>{"Complaint No : " + data.ComplaintNumber}</Text>
+                    <Text style={styles.ComplaintListHeader}>{data.ComplaintCategory}</Text>
+                    <Text style={[styles.RaiseComplaintDropdownTxt, { marginRight: 5, marginTop: 20}]}>{"Complaint Raised Date: " + data?.ComplaintRaisedDate}</Text>
                     <View style={styles.ComplaintListSubHeader}>
                       <Text style={styles.RaiseComplaintDropdownTxt}>{data.ComplaintTitle}</Text>
+                      {data?.ComplaintTitle ? <Image source={ImagePath.Line} style={{ height: 10, margin: 10 }}/> : null }
                       <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                         <Text style={[styles.RaiseComplaintDropdownTxt, { marginRight: 5}]}>{data.ComplaintCloseDate}</Text>
+                         <Text style={[styles.RaiseComplaintDropdownTxt, { marginRight: 5}]}>{data?.ComplaintCloseDate}</Text>
                          <Image source={ImagePath.Line} style={{ height: 10 }}/>
                          <View style={{marginLeft: 5, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '50%'}}><Text style={[styles.RaiseComplaintDropdownTxt, {marginLeft: 5}]}>{t("Status") + ": " + data.ComplaintStatus}</Text></View>
                       </View>

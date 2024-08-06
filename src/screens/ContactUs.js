@@ -13,7 +13,7 @@ const Share = ({ navigation }) => {
   }
   return (
     <ScrollView style={styles.DashBoardMain}>
-      <CommonHeader title={t("Contact Us")} onBackPress ={onBackPress}/>
+      <CommonHeader title={t("Contact Us")} onBackPress ={onBackPress} navigation={navigation} navigation={navigation}/>
       {/* <View style={styles.ContactheaderMain}>
         <TouchableOpacity
            style={styles.Contactbackicon}

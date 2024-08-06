@@ -119,7 +119,7 @@ const Payment = ({navigation}) => {
     console.log(unpaidDueData, "unpaidDueData----->")
     return (
         <View>
-            <CommonHeader title={t("Unpaid Demand Note")} onBackPress ={onBackPress}/>
+            <CommonHeader title={t("Unpaid Demand Note")} onBackPress ={onBackPress} navigation={navigation}/>
             { unpaidDueData && Object.keys(unpaidDueData).length > 0 ?
             <View>
             <View style={styles.BillDueMain}> 

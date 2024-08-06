@@ -116,7 +116,6 @@ const App = () => {
         />
          <Tab.Screen name={t("Find CSC")} component={FindCSC} options={{
           tabBarIcon: ({ focused, color, size }) => (
-            // <Image source={ImagePath.FQA} tintColor={focused ? '#F29037' : "#666666"} style={{ width: 22, height: 23 }} />
             <Location name={"search-location"} size={17} color={focused ? '#F29037' : "#666666"}/>
 
           )
@@ -124,7 +123,6 @@ const App = () => {
         />
         <Tab.Screen name={t("Contact Us")} component={ContactUs} options={{
           tabBarIcon: ({ focused, color, size }) => (
-            // <Location name={"search-location"} size={20}/>
             <Image source={ImagePath.ContactUs} tintColor={focused ? '#F29037' : "#666666"} style={{ width: 15, height: 20 }} />
           )
         }}/>
@@ -144,7 +142,7 @@ const App = () => {
     return (
       <>
         {routeName && <IdleTimer navigation={navigation} routeName={routeName} />}
-        <Stack.Navigator initialRouteName="StartScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="StartScreen" component={StartScreen} />
           <Stack.Screen name="Dashboard" component={Dashboard} />

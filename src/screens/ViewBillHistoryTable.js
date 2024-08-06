@@ -125,7 +125,7 @@ const ViewBillHistoryTable = ({ navigation }) => {
   }
   return (
     <ScrollView style={styles.DashBoardMain}>
-      <CommonHeader title={t("Bill History")} onBackPress ={onBackPress}/>
+      <CommonHeader title={t("Bill History")} onBackPress ={onBackPress} navigation={navigation}/>
       <View style={styles.details}>
         {isLoading && (
               <View style={[styles.indicator, styles.horizontal]}>

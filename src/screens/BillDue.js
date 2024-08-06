@@ -15,20 +15,22 @@ const BillDue = ({navigation}) => {
         navigation.goBack("BottomTab")
     }
     const [ unpaidDueData, setUnpaidDueData ] = useState({})
+
+    const getCurrentBill = (value) => {
+      var url = constant.BASE_URL + constant.INVOICE_BILL + '/' + value.CA_No
+      console.log(url, "url")
+      fetch(url, {
+      })
+        .then((response) =>
+          response.json())
+        .then(responseData => {
+          setUnpaidDueData(responseData.MT_InvoiceDetails_OUT)
+          console.log(responseData, "responseData")
+        })
+    }
     useEffect (()=> {
       retrieveData()
     }, [])
-    const getCurrentBill = (value)=>{
-      var url = constant.BASE_URL + constant.INVOICE_BILL + '/' + value.CA_No
-      fetch( url, {
-      })
-      .then((response) =>
-          response.json())
-      .then(responseData => {
-        setUnpaidDueData(responseData.MT_InvoiceDetails_OUT)
-      })
-    }
-    
   
     const retrieveData = async () => {
       try {
@@ -42,7 +44,7 @@ const BillDue = ({navigation}) => {
     };
     return (
         <View>
-            <CommonHeader title={t("Bill Due")} onBackPress ={onBackPress}/>
+            <CommonHeader title={t("Bill Due")} onBackPress ={onBackPress} navigation={navigation}/>
             { unpaidDueData && Object.keys(unpaidDueData).length > 0 ?
             <View>
             <View style={styles.BillDueMain}> 
@@ -59,7 +61,7 @@ const BillDue = ({navigation}) => {
              <View style={{ marginVertical: 20 }}><Image source={ImagePath.DotLines}/></View>
 
             
-             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                <View style={styles.BillDueSubCon}>
                   <Text style={styles.BillDueTitle}>{t("Billing Month")}</Text>
                   <Text style={styles.BillDueTxt}>{unpaidDueData.BILL_MONTH}</Text>
@@ -83,7 +85,7 @@ const BillDue = ({navigation}) => {
              <View style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between' }}>
                <View style={styles.BillDueSubCon}>
                   <Text style={styles.BillDueTitle}>{t("Invoice Amount")}</Text>
-                  <Text style={styles.BillDueTxt}>{ unpaidDueData.Invoice_Amount ? ((unpaidDueData.Invoice_Amount).trim()).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }</Text>
+                  <Text style={styles.BillDueTxt}>{ unpaidDueData && Object.keys(unpaidDueData).length > 0 ? unpaidDueData.Invoice_Amount ? (((unpaidDueData?.Invoice_Amount).toString()).trim()).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" : ""}</Text>
                </View>
                {/* <TouchableOpacity style={styles.BillDuePayBillBtn} onPress={() =>{ navigation.navigate("BillDue") }}>
                   <Text style={styles.BillDuePayBillBtnTxt}>{"MAKE PAYMENT"}</Text>

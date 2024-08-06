@@ -315,7 +315,7 @@ const Styles = () => {
             color: '#121212',
             fontSize: wp(20),
             fontWeight: 'bold',
-            marginTop: wp(20)
+            marginVertical: wp(20)
         },
         StartGetBtn: {
             backgroundColor: '#F29037',

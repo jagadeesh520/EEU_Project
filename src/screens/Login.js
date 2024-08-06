@@ -9,13 +9,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Dropdown } from 'react-native-element-dropdown';
 
 // Component
 const Login = ({ navigation }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const toast = useToast();
   const { theme, styles, changeTheme } = Styles();
-  
+  const languageOption = [
+    { label: "Eng",  value:"Eng" },
+    { label: "አማርኛ", value:"አማርኛ"}
+  ];
+  const [ selectedLang, setSelectedLang] = useState('');
   const [accNo, setAccNo] = useState('');
   const [password, setPassword] = useState('');
   const [accNoError, setAccNoError] = useState('');
@@ -149,12 +154,35 @@ const Login = ({ navigation }) => {
       {/* <Text>{item.password}</Text> */}
     </TouchableOpacity>
   );
-
+  const renderItems = (item) => {
+    return (
+      <View style={styles.RaiseComplaintItem}>
+        <Text style={styles.RaiseComplaintDropdownTxt}>{item.value}</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.StartMain}>
       <View style={styles.StartSubContainer}>
         <Image source={ImagePath.Logo} />
         <Text style={styles.StartMainHeader}>{t("Ethiopian Electric Utility")}</Text>
+        <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Language")}
+                style={styles.LanguageDropdown}
+                renderItem={renderItems}
+                data={languageOption}
+                value={selectedLang}
+                onChange={item => {
+                  setSelectedLang(item.value);
+                  i18n.changeLanguage(item.value)
+                }}               
+           />
       </View>
       <ScrollView style={styles.StartSubContainer1}>
         <View style={styles.StartSub}>
@@ -217,7 +245,7 @@ const Login = ({ navigation }) => {
             <Text style={{ color: 'red', fontSize: 12, marginTop: 5, marginLeft: 35 }}>{passwordError}</Text>
           </View>
           <View style={styles.switchContainer}>
-            <Text style={styles.RememberMeText}>Remember Me</Text>
+            <Text style={styles.RememberMeText}>{t("Remember Me")}</Text>
             <Switch 
               trackColor={{ false: "#D3D3D3", true: "#63AA5A" }}
               thumbColor={rememberMe ? "#F29037" : "#63AA5A"}

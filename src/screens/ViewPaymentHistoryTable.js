@@ -125,7 +125,7 @@ export default function ViewPaymentHistoryTable ({ navigation }) {
   }
   return (
     <ScrollView style={styles.DashBoardMain}>      
-      <CommonHeader title={"Payment History"} onBackPress ={onBackPress}/>
+      <CommonHeader title={"Payment History"} onBackPress ={onBackPress} navigation={navigation}/>
       <View style={styles.details}>
         <ScrollView>
           <View>

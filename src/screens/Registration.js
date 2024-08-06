@@ -5,8 +5,10 @@ import { ImagePath } from '../CommonComponent/ImagePath';
 import { useTranslation } from 'react-i18next';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useToast } from 'react-native-toast-notifications';
 
 const Registration = ({navigation}) => {
+    const toast = useToast();
     const { t, i18n } = useTranslation();
     const {theme, styles, changeTheme} = Styles()
     const [ newPassword, setNewPassword] = useState("")
@@ -33,7 +35,21 @@ const Registration = ({navigation}) => {
       setIsDisabled(isDisabled)
       console.log('No button clicked')
     }
-
+    const showToast = (type, message) => {
+      toast.show(message, {
+        type: type,
+        duration: 4000,
+        animationType: 'slide-in',
+        placement: 'bottom',
+        style: {
+          backgroundColor: type === 'success' ? 'green' : 'red',
+        },
+        textStyle: {
+          color: 'white',
+        },
+        closeButton: true,
+      });
+    }; 
     const onVerifyAccountId = () => {
 
       fetch('http://197.156.76.70:8080/CAValidationPost', {
@@ -87,6 +103,12 @@ const Registration = ({navigation}) => {
       })
         .then((response) => response.json())
         .then(responseData => {
+          console.log(responseData, "Success! Registration No. Generated.")
+          if (responseData.Record.Status == 'Success! Registration No. Generated.') {
+            //storeData(responseData.Record.ContractAccount)
+            showToast('success', responseData.Record.Status +" , Registration No: " + responseData.Record.RegistrationNo);
+
+          }
           if (responseData.Record.Status == 'Already Registered. Please Login') {
             //storeData(responseData.Record.ContractAccount)
             Alert.alert(
@@ -217,7 +239,7 @@ const Registration = ({navigation}) => {
                 iconStyle={styles.RaiseComplaintDropdownTxt}
                 labelField="label"
                 valueField="value"
-                placeholder="Select Secret Question"
+                placeholder={t("Select Secret Question")}
                 editable={isDisabled}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}

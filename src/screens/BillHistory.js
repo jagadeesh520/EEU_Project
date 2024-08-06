@@ -77,7 +77,7 @@ const BillHistory = ({navigation}) => {
     };
     return (
         <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={t("Bill History")} onBackPress ={onBackPress}/>
+            <CommonHeader title={t("Bill History")} onBackPress ={onBackPress} navigation={navigation}/>
             {isLoading &&
               < View style={styles.Loader}>
                 <ActivityIndicator size="large" />
