@@ -214,6 +214,17 @@ const Styles = () => {
             marginTop: wp(20),
             marginBottom: wp(20)
         },
+        PaymentBtn: {
+            backgroundColor: '#63AA5A',
+            borderRadius: wp(25),
+            paddingVertical: wp(10),
+            width: wp(150),
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: wp(20),
+            marginBottom: wp(20)
+        },
         RegisterBtnUpload: {
             backgroundColor: '#F29037',
             borderRadius: wp(25),
@@ -329,6 +340,7 @@ const Styles = () => {
             height: hp(44),
             width: wp(44)
         },
+        NewServiceHeader: { fontSize: wp(20), fontWeight: 'bold' },
         ResetMainContainer: {
             height: '25%',
             backgroundColor: '#E5EEE0',
@@ -715,15 +727,20 @@ const Styles = () => {
             justifyContent: 'center'
         },
         ComplaintListHeader: {
-            fontSize: wp(14),
+            fontSize: wp(16),
             fontWeight: 'bold',
             color: '#212121',
+            flexWrap: 'wrap'
+        },
+        ComplaintListHeaderValue: {
+            fontSize: wp(16),
+            fontWeight: '400',
+            color: '#666666',
             flexWrap: 'wrap'
         },
         ComplaintListDesMain: {
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
             flexWrap: 'wrap',
             paddingVertical: wp(20),
             borderBottomWidth: 1,
@@ -809,6 +826,13 @@ const Styles = () => {
             color: 'lightgrey',
             alignSelf: 'center',
             marginTop: wp(20)
+        },
+        NewLoader: {
+            display: 'flex',
+            // alignItems: 'center',
+            // justifyContent: 'center',
+            color: 'lightgrey',
+            alignSelf: 'center',
         },
         Loader: {
             display: 'flex',

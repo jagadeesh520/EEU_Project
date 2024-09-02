@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, TextInput, Alert } from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import {ImagePath} from '../CommonComponent/ImagePath';
@@ -11,24 +11,29 @@ import { sha256, sha256Bytes } from 'react-native-sha256';
 // create a component
 const Payment = ({navigation}) => {
     const { t, i18n } = useTranslation();
-    const {theme, styles, changeTheme} = Styles();
+    const { theme, styles, changeTheme} = Styles();
     const [ unpaidDueData, setUnpaidDueData ] = useState({});
     const [ asyncData, setAsyncData ] = useState({});
     const [ isPayment, setIsPayment ] = useState(false);
     const [ isPaymentResponse, setIsPaymentResponse ] = useState(false);
-    const [hashPassword, setHash] = useState('');
+    const [ hashPassword, setHash ] = useState('');
     const [ mobileNo, setMobileNo ] = useState('');
+    const [ requestID, setRequestID ] = useState('');
+    const [ isSubmit, setSubmit ] = useState(false);
+
     const onBackPress = () => {
         navigation.goBack("BottomTab")
     }
     useEffect (()=> {
       retrieveData()
-    }, [])  
+    }, [requestID])  
     const handleHash = async (data) => {
+      let currentDateTime = moment(new Date()).format('YYDDMMHHmmss');
+      var requestId = (data.CA +"_"+ currentDateTime);
+      setRequestID(requestId)
       try {
-        const datas = ("a4504fb1-428f-4365-8e01-947013be9f36" + data.Ref_No)
+        const datas = ("a4504fb1-428f-4365-8e01-947013be9f36" + requestId)
         const sha256Hash = await sha256(datas);
-        console.log(sha256Hash, "sha256Hash------>", datas)
         setHash(sha256Hash);
       } catch (error) {
         console.error('Error generating hash:', error);
@@ -65,58 +70,98 @@ const Payment = ({navigation}) => {
         console.error(error);
       }
     };
-    const onPressPaymentProceed = () =>{
+    const formatNumber = (number) => {
+      return number < 10 ? '0' + number : number.toString();
+    };
+    const onPressPaymentProceed = async () =>{
+
       var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
-      const data = {
+      let amount = unpaidDueData && Object.keys(unpaidDueData).length > 0 ? (unpaidDueData?.Amount).trim() : 0;
+      let externalReference = unpaidDueData && Object.keys(unpaidDueData).length > 0 ? (unpaidDueData?.Ref_No).toString() : "";
+      let currentDateTime = moment(new Date()).format('YYDDMMHHmmss');
+      // let externalRef = externalReference + "_" + currentDateTime;               
+      const payment_attempt_num = await AsyncStorage.getItem('payment_attempt_num');
+
+      let num_of_attempt = payment_attempt_num ? parseInt(payment_attempt_num) + 1 : 0;
+      const num_of_attempt_convertion = formatNumber(num_of_attempt);
+
+      await AsyncStorage.setItem('payment_attempt_num', num_of_attempt_convertion.toString());
+      
+      let externalRef = externalReference + "_" + num_of_attempt_convertion.toString();
+      
+      var data = {
         "authorization": {
           "merchantCode": "220261",
           "merchantTillNumber": "22026100",
-          "requestId": unpaidDueData.Ref_No,
+          "requestId": requestID,
           "requestSignature": hashPassword
       },
       "paymentRequest": {
+          "amount": amount,
+          "callbackUrl": "http://197.156.76.70:8080/paymentDataAWAS",
+          "externalReference": externalRef,
           "payerPhone": mobileNo,
-          "reason": "EEU payment",
-          "amount": unpaidDueData.Amount,
-          "externalReference": unpaidDueData.CA,
-          "callbackUrl": ":http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS"
-      }
+          "reason": externalReference
       }
-      console.log(url, "unpaid", data)
+    }
+    console.log(data, "data")
+    if(num_of_attempt <= 100) { 
       fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
           body: JSON.stringify({
-           "data" : { 
-            "authorization": {
-              "merchantCode": "220261",
-              "merchantTillNumber": "22026100",
-              "requestId": unpaidDueData.Ref_No,
-              "requestSignature": hashPassword
-          },
-          "paymentRequest": {
-              "payerPhone": mobileNo,
-              "reason": "EEU payment",
-              "amount": unpaidDueData.Amount,
-              "externalReference": unpaidDueData.CA,
-              "callbackUrl": ":http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS"
-          }
-          }
-          })
+              "authorization": {
+                  "merchantCode": "220261",
+                  "merchantTillNumber": "22026100",
+                  "requestId": requestID,
+                  "requestSignature": hashPassword
+              },
+              "paymentRequest": {
+                  "amount": amount,
+                  // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
+                  "callbackUrl": "http://197.156.76.70:8080/paymentDataAWAS",
+                  "externalReference": externalRef,
+                  "payerPhone": mobileNo,
+                  "reason": externalReference
+              }
         })
+      })
       .then((response) =>
           response.json())
       .then(responseData => {
         // setIsPaymentResponse(true);
-        // setIsPayment(false);
-        console.log(responseData, "responseData--->")
+        setIsPayment(false);
+        if(isPayment) { 
+         Alert.alert(
+          '',
+          "Return Code: " + responseData.returnCode + " Return Message: " + responseData.returnMessage,
+          [
+            { text: 'OK', onPress: () => {
+              if(responseData.returnMessage === "Validated") {
+                navigation.navigate("BottomTab") 
+              }
+            }},
+          ]
+         );
+       } 
+     
+      
       }).catch = (error) =>{
         console.log(error,"error--->")
       }
+    } else {
+      Alert.alert(
+        '',
+        `You have exceeded the maximum number of payment attempts. Please try again later.`,
+        [
+          { text: 'OK', onPress: () => { setIsPayment(false); }},
+        ]
+       );
+     
     }
-    console.log(unpaidDueData, "unpaidDueData----->")
+    }
     return (
         <View>
             <CommonHeader title={t("Unpaid Demand Note")} onBackPress ={onBackPress} navigation={navigation}/>
@@ -169,13 +214,11 @@ const Payment = ({navigation}) => {
                <TouchableOpacity style={styles.BillDuePayBillBtn} 
                 onPress={() =>{ 
                   setIsPayment(true)
-
-                  onPressPaymentProceed()
                 }}
                >
-                  <Text style={styles.BillDuePayBillBtnTxt}>{"PAY VIA AWASH"}</Text>
+                  <Text style={styles.BillDuePayBillBtnTxt}>{t("PAY VIA AWASH")}</Text>
                </TouchableOpacity>
-               <Text style={styles.BillDuePayBillBtnTxt1}>{"(Only for AWASH BANK a/c holders)"}</Text>
+               <Text style={styles.BillDuePayBillBtnTxt1}>{t("(Only for AWASH BANK a/c holders)")}</Text>
 
              </View>    
             </View>
@@ -231,7 +274,7 @@ const Payment = ({navigation}) => {
             <TouchableWithoutFeedback onPress={() => setIsPayment(!isPayment)}>  
              <View style={styles.modalMainView}>
                 <View style={[styles.unpaidModalView, { flexDirection: 'column' }]}>
-                   <Text style={{color: '#666666', fontSize: 20, }}>{"PAY THROUGH AWASH"}</Text>
+                   <Text style={{color: '#666666', fontSize: 20, }}>{t("PAY THROUGH AWASH")}</Text>
                    <View style={styles.Margin_20}>
                      <Text style={styles.LoginSubTxt}>{t("Mobile Number")}</Text>  
                      <TextInput
@@ -244,9 +287,14 @@ const Payment = ({navigation}) => {
                        maxLength={12}
                      />
                    </View>
-                   <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor:'#63AA5A' }]} onPress={() => { onPressPaymentProceed() }}>
+                   <View style = {{ display: 'flex', flexDirection: 'row' }}>
+                   <TouchableOpacity style={[styles.PaymentBtn, { backgroundColor:'#63AA5A' }]} onPress={() => { setIsPayment(false) }}>
+                       <Text style={[styles.RegisterBtnTxt, { color: '#FFF' }]}>{t("CANCEL")}</Text>
+                   </TouchableOpacity> 
+                   <TouchableOpacity style={[styles.PaymentBtn, { backgroundColor:'#63AA5A', marginLeft: 10 }]} onPress={() => { setSubmit(true); onPressPaymentProceed() }}>
                        <Text style={[styles.RegisterBtnTxt, { color: '#FFF' }]}>{t("SUBMIT")}</Text>
                    </TouchableOpacity> 
+                   </View>
                 </View>
              </View>
             </TouchableWithoutFeedback> 

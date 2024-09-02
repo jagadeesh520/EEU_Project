@@ -49,7 +49,6 @@ const IdleTimer = ({ navigation, routeName }) => {
         appState.current.match(/inactive|background/) &&
         nextAppState === 'active'
       ) {
-        console.log('App has come to the foreground!');
         const currentTime = Date.now();
         const elapsed = currentTime - idleTime;
 

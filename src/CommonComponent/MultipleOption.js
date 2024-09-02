@@ -55,7 +55,7 @@ const MultipleOption = ({ navigation }) => {
         anchor={
           <>
             <Icon onPress={openMenu} name="dots-three-horizontal" size={30} color={'#666666'} />
-            <Text style={{ color: '#000', fontSize: 12, marginBottom: 20, marginTop: -10 }}>Settings</Text>
+            <Text style={{ color: '#000', fontSize: 12, marginBottom: 20, marginTop: -10 }}>{t("Settings")}</Text>
           </>
         }
       >
@@ -95,7 +95,7 @@ const MultipleOption = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.okButton}
-                onPress={() => { onPressThemeOk(); }}
+                onPress={() => { onPressThemeOk() }}
               >
                 <Text style={styles.textStyle}>OK</Text>
               </TouchableOpacity>

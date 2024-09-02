@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput, ActivityIndicator, ScrollView, StyleSheet} from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import {ImagePath} from '../CommonComponent/ImagePath';
@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constant } from '../CommonComponent/Constant';
 import { useTranslation } from 'react-i18next';
 import { useToast } from 'react-native-toast-notifications';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 // create a component
 const Complaints = ({navigation}) => {
@@ -32,6 +33,7 @@ const Complaints = ({navigation}) => {
     const [ complaintDescription, setComplaintDescription ] = useState("")
     const [ complaintData, setComplaintData ] = useState([])
     const [isLoading, setLoading] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const {theme, styles, changeTheme} = Styles()
     const onBackPress = () => {
@@ -39,7 +41,8 @@ const Complaints = ({navigation}) => {
     }
     useEffect (()=> {
       retrieveData()
-    }, [])
+    }, []);
+  
     const getComplaintHistory = (value)=>{
       fetch(constant.BASE_URL + constant.COMPLAINT_LIST, {
         method: 'POST',
@@ -52,7 +55,16 @@ const Complaints = ({navigation}) => {
       .then((response) =>
           response.json())
       .then(responseData => {
-        setComplaintData(responseData.Record)
+        if (responseData?.Record) { 
+          let updatedComplaint = responseData.Record.map(item => {
+            return {
+              ...item,
+              isExpand: false
+            };
+          });
+          setComplaintData(updatedComplaint);
+        }
+        console.log(responseData.Record,"responseData.Record")
         setLoading(false)
       })
     }
@@ -63,6 +75,7 @@ const Complaints = ({navigation}) => {
         const value = await AsyncStorage.getItem('accountData');
         if (value !== null) {
           getComplaintHistory(JSON.parse(value));
+          setAccountData(JSON.parse(value))
         }
       } catch (error) {
         console.error(error);
@@ -121,6 +134,19 @@ const Complaints = ({navigation}) => {
           </View>
         );
       };
+      const toggleExpand = (index) => {
+        // Map through the complaintData to toggle the isExpand property for the clicked item
+        const updatedData = complaintData.map((item, idx) => {
+          if (index === idx) {
+            // Toggle the isExpand property only for the clicked item
+            return { ...item, isExpand: !item.isExpand };
+          }
+          return item;
+        });
+    
+        setComplaintData(updatedData);
+      };
+    
     return (
       <ScrollView style={styles.DashBoardMain}>
             <CommonHeader title={ isRaiseComplaint ? t("Raise Complaint") : t("Complaint")} onBackPress ={onBackPress} navigation={navigation}/>
@@ -128,7 +154,9 @@ const Complaints = ({navigation}) => {
               < View style={styles.Loader}>
                 <ActivityIndicator size="large" />
               </View>
-            }  
+            } 
+             <View style={styles.container}>
+    </View> 
            {complaintData && complaintData.length > 0 && !isRaiseComplaint ? 
               <View style={{ margin: 20 }}>
                 <View style={styles.ComplaintListMain}>
@@ -145,9 +173,54 @@ const Complaints = ({navigation}) => {
                   { complaintData && complaintData.length > 0 && complaintData.map((data, index) =>{ 
                   return( 
                    <View style={styles.ComplaintListSub}>
-                    <Text style={styles.ComplaintListHeader}>{"Complaint No : " + data.ComplaintNumber}</Text>
-                    <Text style={styles.ComplaintListHeader}>{data.ComplaintCategory}</Text>
-                    <Text style={[styles.RaiseComplaintDropdownTxt, { marginRight: 5, marginTop: 20}]}>{"Complaint Raised Date: " + data?.ComplaintRaisedDate}</Text>
+                    <TouchableOpacity style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' }} 
+                     onPress={() => toggleExpand(index)}
+                    >
+                    { data?.isExpand ?
+                      <Icon name={'minuscircleo'} size={20} /> : 
+                      <Icon name={'pluscircleo'} size={20} />
+                    }
+                  </TouchableOpacity>
+                   <View style={{ display: 'flex', flexDirection: 'row', flex: 1}}>  
+                    <View style={{ display: 'flex', flex: 0.5}}>
+                     <Text style={styles.ComplaintListHeader}>{"Complaint No "}</Text>
+                     <Text style={styles.ComplaintListHeaderValue}>{data.ComplaintNumber}</Text>
+                    </View>
+                    <View style={{ display: 'flex', flex: 0.5}}>
+                     <Text style={styles.ComplaintListHeader}>{"Complaint Status "}</Text>
+                     <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintStatus}</Text>
+                    </View>
+                   </View>
+                   {data.isExpand && (
+                   <View>
+                   <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>  
+                   <View style={{ display: 'flex', flex: 0.5, flexWrap: 'wrap'}}>
+                     <Text style={styles.ComplaintListHeader}>{"Complaint Title"}</Text>
+                     <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintTitle}</Text>
+                    </View>
+                    <View style={{ display: 'flex', flex: 0.5}}>
+                     <Text style={styles.ComplaintListHeader}>{"Complaint Category "}</Text>
+                     <Text style={styles.ComplaintListHeaderValue}>{data.ComplaintCategory}</Text>
+                    </View>
+                   </View>
+                   <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>  
+                   <View style={{ display: 'flex', flex: 0.5}}>
+                   <Text style={styles.ComplaintListHeader}>{"Comp. Raised Date "}</Text>
+                     <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintRaisedDate}</Text>
+                    </View>
+                    <View style={{ display: 'flex', flex: 0.5}}>
+                     <Text style={styles.ComplaintListHeader}>{"Comp. Closed Date "}</Text>
+                     <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintCloseDate}</Text>
+                    </View>
+                   </View>
+                   <View style={styles.ComplaintListDesMain}>
+                        <Text style={styles.ComplaintListHeader}>{"Complanit Resolution "}</Text>
+                        <Text style={styles.RaiseComplaintTxt}>{data.ComplaintResolution}</Text>
+                    </View>
+                    </View>
+                          )}
+
+                    {/* <Text style={[styles.RaiseComplaintDropdownTxt, { marginRight: 5, marginTop: 20}]}>{"Complaint Raised Date: " + data?.ComplaintRaisedDate}</Text>
                     <View style={styles.ComplaintListSubHeader}>
                       <Text style={styles.RaiseComplaintDropdownTxt}>{data.ComplaintTitle}</Text>
                       {data?.ComplaintTitle ? <Image source={ImagePath.Line} style={{ height: 10, margin: 10 }}/> : null }
@@ -156,11 +229,9 @@ const Complaints = ({navigation}) => {
                          <Image source={ImagePath.Line} style={{ height: 10 }}/>
                          <View style={{marginLeft: 5, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '50%'}}><Text style={[styles.RaiseComplaintDropdownTxt, {marginLeft: 5}]}>{t("Status") + ": " + data.ComplaintStatus}</Text></View>
                       </View>
-                    </View>
+                    </View> */}
 
-                    <View style={styles.ComplaintListDesMain}>
-                        <Text style={styles.RaiseComplaintTxt}>{data.ComplaintResolution}</Text>
-                    </View>
+                   
                     {/* <View style={styles.ComplaintListBtn}>
                       <TouchableOpacity style={[styles.ComplaintListEditBtn, { borderRightWidth: 1, borderRightColor: '#D9D9D' }]}>
                         <Text style={styles.ComplaintListEditTxt}>{t("Edit")}</Text>
@@ -243,3 +314,31 @@ const Complaints = ({navigation}) => {
 };
 
 export default Complaints;
+const styles = StyleSheet.create({
+  container: {
+    margin: 20,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  header: {
+    backgroundColor: '#007bff',
+    padding: 15,
+    alignItems: 'center',
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  content: {
+    padding: 15,
+    backgroundColor: '#f9f9f9',
+  },
+  contentText: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 10,
+  },
+});

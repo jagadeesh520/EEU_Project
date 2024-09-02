@@ -86,7 +86,7 @@ const PaymentHistory = ({navigation}) => {
             { paymentHistoryData && paymentHistoryData.length > 0 && paymentHistoryData[0].Remarks != "No Bills Generated Yet" ? 
              <View style={{ padding: 20 }}>
             <TouchableOpacity onPress={() => navigation.navigate('ViewPaymentHistoryTable')} style={styles.linkButton}>
-               <Text style={styles.linkButtonText}>{'Click Here for Table View'}</Text>
+               <Text style={styles.linkButtonText}>{t('Click Here for Table View')}</Text>
             </TouchableOpacity> 
 
             </View> : null }

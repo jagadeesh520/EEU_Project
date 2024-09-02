@@ -17,4 +17,3 @@ import React from 'react'
     UNPAID_DEMAND_NOTE: '/UnpaidDemandNote',
     UNPAID_DEMAND_NOTE_PAYMENT: '/MerchantRS/DebitRequest'
  }
-  

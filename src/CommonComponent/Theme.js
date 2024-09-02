@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {Appearance} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const lightTheme = {
-  mode: 'light', // Set the mode property for the light theme
+  mode: 'light',
   content: 'light-content',
   backgroundColor: '#E5EEE0',
   textColor: '#000',
@@ -17,16 +17,15 @@ export const lightTheme = {
   headerBackgroundColor: '#70B767',
   headerText: '#F2F2F2',
   imageNameColor: '#000'
-
 };
 
 export const darkTheme = {
-  mode: 'dark', // Set the mode property for the dark theme
+  mode: 'dark',
   content: 'dark-content',
   backgroundColor: '#666666',
-  textColor: '#000',
+  textColor: '#FFF',
   statusBarColor: '#63AA5A',
-  statusBarIconColor: '#000',
+  statusBarIconColor: '#FFF',
   topBarBackgroundcolor: '#70B767',
   textColorSecondary: '#FFF',
   themeBackgroundColor: '#70B767',
@@ -35,42 +34,45 @@ export const darkTheme = {
   headerBackgroundColor: '#5FA756',
   headerText: '#666666',
   imageNameColor: '#666666'
-
 };
 
-// Function to determine the current system theme
 export const useThemes = () => {
   const [theme, setTheme] = useState(Appearance.getColorScheme());
 
   useEffect(() => {
-    const onMount = async () => {
+    const fetchTheme = async () => {
       try {
-        const colorScheme = await AsyncStorage.getItem('SelectedTheme');
-        setTheme(colorScheme);
+        const storedTheme = await AsyncStorage.getItem('SelectedTheme');
+        if (storedTheme) {
+          setTheme(storedTheme);
+        } else {
+          setTheme(Appearance.getColorScheme());
+        }
       } catch (error) {
-        console.error('Error resetting AsyncStorage:', error);
+        console.error('Error fetching theme from AsyncStorage:', error);
       }
     };
 
-    onMount();
-  }, []);
+    fetchTheme();
 
-  useEffect(() => {
-    const subscription = Appearance.addChangeListener(({colorScheme}) => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
       setTheme(colorScheme);
     });
+
     return () => subscription.remove();
   }, []);
 
-  const onChangeTheme = async colorScheme => {
+  const changeTheme = async (selectedTheme) => {
+    console.log(selectedTheme, "selectedTheme", theme)
     try {
-      setTheme(colorScheme);
-      await AsyncStorage.setItem('SelectedTheme', colorScheme);
+      setTheme(selectedTheme);
+      await AsyncStorage.setItem('SelectedTheme', selectedTheme);
     } catch (error) {
-      console.error('Error resetting AsyncStorage:', error);
+      console.error('Error saving theme to AsyncStorage:', error);
     }
   };
-  
+
   const themeObj = theme === 'dark' ? darkTheme : lightTheme;
-  return {theme, themeObj, changeTheme: onChangeTheme};
+
+  return { theme, themeObj, changeTheme };
 };

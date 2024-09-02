@@ -106,10 +106,11 @@ const Login = ({ navigation }) => {
             storeData(responseData.Record);
             showToast('success', 'Login successful');
             navigation.navigate('BottomTab');
+
             if (rememberMe) {
               const value = await AsyncStorage.getItem('rememberData');
               const tempRememberMe = value ? JSON.parse(value) : [];
-              const accountExists = tempRememberMe.some(item => item.accNumber === accNo);
+              const accountExists = tempRememberMe ? tempRememberMe.some(item => item.accNumber === accNo) : false
 
               if (!accountExists) {
                 tempRememberMe.push({ accNumber: accNo, password: password });
