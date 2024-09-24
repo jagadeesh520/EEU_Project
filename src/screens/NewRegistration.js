@@ -471,7 +471,6 @@ const NewRegistration = ({navigation}) => {
                 },
               ]
             );
-            // showToast('success', 'New service has been successfully created, CA Number: ' + data.CANumber +" and Service Request Number: " + ServiceRequestNumber  );
             clearData()
           // }
         })
@@ -490,22 +489,6 @@ const NewRegistration = ({navigation}) => {
         </View>
       );
     };
-
-    // const handleNumberChange = (input) => {
-    //   // Allow only numbers and one decimal point in the input
-    //   const validNumber = input.match(/^\d*\.?\d*$/);
-    //   if (validNumber) {
-    //     setAppliedLoad(input);
-  
-    //     // Parse the input to a float and format it to 3 decimal places
-    //     const parsedNumber = parseFloat(input);
-    //     if (!isNaN(parsedNumber)) {
-    //       setAppliedLoad(parsedNumber.toFixed(3));
-    //     } else {
-    //       setAppliedLoad('0.000');
-    //     }
-    //   }
-    // };
   
     const renderTextInput = (name, placeholder, value, updateState, ErrorMsg, setErrorMsg) => {
         return(
@@ -581,31 +564,6 @@ const NewRegistration = ({navigation}) => {
               } else {
                 updateState(text) 
               }
-
-
-            //  if (name === "Applied load" && text !== "" && selectedPhaseType !== "") {
-  
-            //   const numericValue = parseFloat(text); // Convert text to number for comparison
-
-            //  if (selectedPhaseType === "1" && numericValue <= 7.5) {
-            //    updateState(numericValue);
-            //  } else {
-            //   setErrorMsg('Please enter a valid Applied load');
-            // }
-             
-            //  if (selectedPhaseType === "2" && (numericValue >= 7.5 && numericValue <= 25)) {
-            //    updateState(numericValue);
-  
-            //  } else {
-            //    setErrorMsg('Please enter a valid Applied load');
-            //  }
-            // } 
-            // else if (selectedPhaseType === "" && text !== "") {
-            //    setErrorMsg("Please select the phase type");
-            // } else { 
-            //    setErrorMsg("");
-            // }
-
               if(ErrorMsg?.length > 0 && text != "" && name != "Mobile No" && name != "Email" && name != "Applied load") {
                 setErrorMsg("")
               }

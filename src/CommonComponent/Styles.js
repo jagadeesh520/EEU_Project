@@ -1123,6 +1123,12 @@ const Styles = () => {
             flex: 1,
             resizeMode: 'cover', // Adjusts the image to cover the entire background
             justifyContent: 'center',
+        },
+        serviceShiftingMain: {
+           
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
         }
     };
 

@@ -19,6 +19,7 @@
         "Data does not exists":"ውሂብ የለም።",
         "Customer Name":"የደንበኛ ስም",
         "BP":"ቢፒ",
+        "CA": "ሲኤ",
         "Logout":"ውጣ",
         "Raise Complaint":"የቅሬታ ምዝገባ",
         "Complaint Title":"የቅሬታ ርዕስ",
@@ -231,7 +232,22 @@
         "Confirm that all fields are filled correctly": "ሁሉም መረጃ በትክክል ስለመሞላቱ አረጋግጥ",
         "Partner Category": "የአጋር ምድብ",
         "Please Select Gender": "እባክዎን ጾታ ይምረጡ",
-        "Select the Phase type": "የደረጃውን አይነት ይምረጡ"
-
+        "Select the Phase type": "የደረጃውን አይነት ይምረጡ",
+        "Request Description": "የጥያቄ መግለጫ",
+        "Enter Request Description": "የጥያቄ መግለጫ አስገባ",
+        "Category1": "ምድብ 1",
+        "Enter Category1": "ምድብ 1 አስገባ",
+        "ID Proof Upload": "የመታወቂያ ማረጋገጫ ሰቀላ",
+        "Ownership Proof Type": "የባለቤትነት ማረጋገጫ አይነት",
+        "Select the Ownership Proof Type": "የባለቤትነት ማረጋገጫ አይነት ይምረጡ",
+        "Ownership Proof Upload": "የባለቤትነት ማረጋገጫ ሰቀላ",
+        "Service Shifting": "የአገልግሎት ሽግግር",
+        "Service Request": "የአገልግሎት ጥያቄ",
+        "Services": "አገልግሎቶች",
+        "Name Change": "የስም ለውጥ",
+        "Load Change": "የመጫን ለውጥ",
+        "Dis/Reconnection": "ግንኙነትን አቋርጥ/እንደገና መገናኘት",
+        "Move Out SR": "SR ውጣ",
+        "Miscellaneous": "የተለያዩ"
     } 
 }

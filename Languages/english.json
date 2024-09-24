@@ -18,6 +18,7 @@
         "Data does not exists":"Data does not exists",
         "Customer Name":"Customer Name",
         "BP":"BP",
+        "CA": "CA",
         "Logout":"Logout",
         "Raise Complaint":"Complaint Registration",
         "Complaint Title":"Complaint Title",
@@ -231,6 +232,22 @@
         "Confirm that all fields are filled correctly": "Confirm that all fields are filled correctly",
         "Partner Category": "Partner Category",
         "Please Select Gender": "Please Select Gender",
-        "Select the Phase type": "Select the Phase type"
+        "Select the Phase type": "Select the Phase type",
+        "Request Description": "Request Description",
+        "Enter Request Description": "Enter Request Description",
+        "Category1": "Category1",
+        "Enter Category1": "Enter Category1",
+        "ID Proof Upload": "ID Proof Upload",
+        "Ownership Proof Type": "Ownership Proof Type",
+        "Select the Ownership Proof Type": "Select the Ownership Proof Type",
+        "Ownership Proof Upload": "Ownership Proof Upload",
+        "Service Shifting": "Service Shifting",
+        "Service Request": "Service Request",
+        "Services": "Services",
+        "Name Change": "Name Change",
+        "Load Change": "Load Change",
+        "Dis/Reconnection": "Dis/Reconnection",
+        "Move Out SR": "Move Out SR",
+        "Miscellaneous": "Miscellaneous"
     } 
 }
