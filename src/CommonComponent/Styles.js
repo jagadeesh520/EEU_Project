@@ -348,6 +348,12 @@ const Styles = () => {
             alignItems: 'center',
             justifyContent: 'center'
         },
+        NewServiceDocument: {
+            display: 'flex', 
+            flexDirection: 'row', 
+            justifyContent: 'center', 
+            alignItems: 'center' 
+        },
         ResetSubContainer1: {
             height: '75%',
             backgroundColor: '#FFFFFF',

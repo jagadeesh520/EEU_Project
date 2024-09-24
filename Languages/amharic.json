@@ -185,7 +185,7 @@
         "APPLY FOR NEW SERVICE": "ለአዲስ አገልግሎት ያመልክቱ",
         "Security Questions": "የደህንነት ጥያቄዎች",
         "Select Secret Question": "ሚስጥራዊ ጥያቄን ይምረጡ",
-        "Partner type": "የአጋር አይነት",
+        "Partner Type": "የአጋር አይነት",
         "Select the partner type": "የአጋር አይነት ይምረጡ",
         "Enter Zone": "ዞን አስገባ",
         "Enter first name": "የመጀመሪያ ስም አስገባ",
@@ -200,8 +200,8 @@
         "Select the CSC Customer Service": "የCSC የደንበኞች አገልግሎትን ይምረጡ",
         "ID Softcopy Upload": "መታወቂያ ሶፍት ኮፒ ሰቀላ",
         "Enter Region": "ክልል ግባ",
-        "Phase Type": "ደረጃ ዓይነት",
-        "Phase Type can't be empty": "የደረጃ አይነት ባዶ ሊሆን አይችልም።",
+        "Phase type": "ደረጃ ዓይነት",
+        "Phase type can't be empty": "የደረጃ አይነት ባዶ ሊሆን አይችልም።",
         "Personal Details": "የግል መረጃ",
         "Contact Details": "የእውቂያ ዝርዝሮች",
         "Address Details": "የአድራሻ ዝርዝሮች",
@@ -227,6 +227,11 @@
         "(Only for AWASH BANK a/c holders)": "(ለአዋሽ ባንክ አ/ሲ ባለቤቶች ብቻ)",
         "PAY THROUGH AWASH": "በአዋሽ በኩል ይክፈሉ።",
         "Settings": "ቅንብሮች",
-        "Click Here for Table View": "ለሠንጠረዥ እይታ እዚህ ጠቅ ያድርጉ"
+        "Click Here for Table View": "ለሠንጠረዥ እይታ እዚህ ጠቅ ያድርጉ",
+        "Confirm that all fields are filled correctly": "ሁሉም መረጃ በትክክል ስለመሞላቱ አረጋግጥ",
+        "Partner Category": "የአጋር ምድብ",
+        "Please Select Gender": "እባክዎን ጾታ ይምረጡ",
+        "Select the Phase type": "የደረጃውን አይነት ይምረጡ"
+
     } 
 }

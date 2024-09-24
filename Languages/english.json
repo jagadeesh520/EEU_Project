@@ -186,7 +186,7 @@
         "APPLY FOR NEW SERVICE": "APPLY FOR NEW SERVICE",
         "Security Questions": "Security Questions",
         "Select Secret Question": "Select Secret Question",
-        "Partner type": "Partner type",
+        "Partner Type": "Partner Type",
         "Select the partner type": "Select the partner type",
         "Enter Zone": "Enter Zone",
         "Enter first name": "Enter first name",
@@ -200,8 +200,8 @@
         "Enter Kebele": "Enter Kebele",
         "Select the CSC Customer Service": "Select the CSC Customer Service",
         "Enter Region": "Enter Region",
-        "Phase Type": "Phase Type",
-        "Phase Type can't be empty": "Phase Type can't be empty",
+        "Phase type": "Phase type",
+        "Phase type can't be empty": "Phase type can't be empty",
         "ID type": "ID type",
         "Select the ID type": "Select the ID type",
         "ID Number": "ID Number",
@@ -227,6 +227,10 @@
         "(Only for AWASH BANK a/c holders)": "(Only for AWASH BANK a/c holders)",
         "PAY THROUGH AWASH": "PAY THROUGH AWASH",
         "Settings": "Settings",
-        "Click Here for Table View": "Click Here for Table View"
+        "Click Here for Table View": "Click Here for Table View",
+        "Confirm that all fields are filled correctly": "Confirm that all fields are filled correctly",
+        "Partner Category": "Partner Category",
+        "Please Select Gender": "Please Select Gender",
+        "Select the Phase type": "Select the Phase type"
     } 
 }

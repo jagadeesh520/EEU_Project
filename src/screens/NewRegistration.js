@@ -16,6 +16,9 @@ import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { useToast } from 'react-native-toast-notifications';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Close from 'react-native-vector-icons/AntDesign';
+
 
 const NewRegistration = ({navigation}) => {
     const toast = useToast();
@@ -331,7 +334,7 @@ const NewRegistration = ({navigation}) => {
         setInvalidPartnerType('');
       }
       if (selectedPhaseType === '') {
-        setInvalidPhaseType(t("Phase Type can't be empty"));
+        setInvalidPhaseType(t("Phase type can't be empty"));
         valid = false;
       } else {
         setInvalidPhaseType('');
@@ -379,7 +382,6 @@ const NewRegistration = ({navigation}) => {
     };
     const onPressRegistration = () => {
       var validate = validateInputs()
-      console.log("test---->",validate)
 
       if (validateInputs()) { 
       const url = constant.BASE_URL + constant.NEW_SERVICE_CREATION
@@ -414,7 +416,6 @@ const NewRegistration = ({navigation}) => {
               "IDSoftCopyUpload": selectedImage,
               "PhaseType": selectedPhaseType
       }
-      console.log(data, "data----->")
       fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -454,18 +455,22 @@ const NewRegistration = ({navigation}) => {
       })
         .then((response) => response.json())
         .then(async (responseData) => {
-          console.log(responseData, "responseData ---> New service")
           var data = responseData.MT_NewServiceConnection_Res.Record
           let ServiceRequestNumber =   data?.ServiceRequestNumber ? data?.ServiceRequestNumber : "";
           setLoading(false)
           // if(data?.CANumber) {
             Alert.alert(
               '',
-              t('New service has been successfully created, CA Number: ') + data.CANumber + t(" and Service Request Number: ") + ServiceRequestNumber,
+              t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber),
               [
-                { text: 'OK', onPress: () => { setLoading(false); console.log('OK Pressed') }},
+                {
+                  text: 'COPY CA Number',
+                  onPress: () => {
+                    Clipboard.setString(String(data.CANumber)); // Copy CA Number as a string
+                  },
+                },
               ]
-             );
+            );
             // showToast('success', 'New service has been successfully created, CA Number: ' + data.CANumber +" and Service Request Number: " + ServiceRequestNumber  );
             clearData()
           // }
@@ -505,7 +510,7 @@ const NewRegistration = ({navigation}) => {
     const renderTextInput = (name, placeholder, value, updateState, ErrorMsg, setErrorMsg) => {
         return(
           <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t(name)}</Text>   
+           <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" ? "" : " *")}</Text>   
             <TextInput
             placeholder={t(placeholder)}
             value={value}
@@ -514,10 +519,96 @@ const NewRegistration = ({navigation}) => {
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ 
-              if(ErrorMsg?.length > 0 && text != "") {
+              if(name === "Mobile No") {
+                const MobRegex = text.replace(/[^0-9]/g, '');
+                if (MobRegex.length <= 10) {
+                  updateState(MobRegex);
+                  setErrorMsg('');
+                }
+                 // Set error message if the length is not valid
+                if (MobRegex.length < 9 || MobRegex.length > 10 && text.length > 1) {
+                  setErrorMsg('Phone number must be between 9 and 10 digits.');
+                } 
+                if( name === "Mobile No" && text == "" ){
+                  setErrorMsg('');
+                }
+              } else if (name === "Email") {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              
+                // Check if the input is empty first
+               
+                // If input is not empty, check for valid email pattern
+                if (!emailRegex.test(text)) {
+                  // Invalid email entered, set error message
+                  setErrorMsg('Please enter a valid email address.');
+                } else {
+                  setErrorMsg("");
+                }
+                if( name === "Email" && text == "" ){
+                  setErrorMsg('');
+                }
+                updateState(text);
+
+              } else if (name === "Applied load" && text !== "") {
+                const numericValue = parseFloat(text); // Convert text to number for comparison
+                if(selectedPhaseType == "") {
+
+                    setErrorMsg("Please select the phase type");
+
+                 } else if(selectedPhaseType === "1") {
+
+                    if( numericValue <= 7.5 ) {
+                        console.log("update", numericValue)
+                        updateState(numericValue);
+                        setErrorMsg("")
+                    } else {
+                        setErrorMsg('Please enter a valid Applied load');
+                    }
+                    
+                 } else if(selectedPhaseType === "2") {
+
+                  if( numericValue >= 7.5 && numericValue <= 25 ) {
+                      updateState(numericValue);
+                      setErrorMsg("")
+                  } else {
+                      setErrorMsg('Please enter a valid Applied load');
+                  }
+
+                }
+
+              } else if( name === "Applied load" && text == "") {
+                setErrorMsg("")
+              } else {
+                updateState(text) 
+              }
+
+
+            //  if (name === "Applied load" && text !== "" && selectedPhaseType !== "") {
+  
+            //   const numericValue = parseFloat(text); // Convert text to number for comparison
+
+            //  if (selectedPhaseType === "1" && numericValue <= 7.5) {
+            //    updateState(numericValue);
+            //  } else {
+            //   setErrorMsg('Please enter a valid Applied load');
+            // }
+             
+            //  if (selectedPhaseType === "2" && (numericValue >= 7.5 && numericValue <= 25)) {
+            //    updateState(numericValue);
+  
+            //  } else {
+            //    setErrorMsg('Please enter a valid Applied load');
+            //  }
+            // } 
+            // else if (selectedPhaseType === "" && text !== "") {
+            //    setErrorMsg("Please select the phase type");
+            // } else { 
+            //    setErrorMsg("");
+            // }
+
+              if(ErrorMsg?.length > 0 && text != "" && name != "Mobile No" && name != "Email" && name != "Applied load") {
                 setErrorMsg("")
               }
-               updateState(text) 
             }}
            />
            <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
@@ -683,9 +774,9 @@ const NewRegistration = ({navigation}) => {
            <ScrollView style={styles.RegisterSubContainer1}>
            <View style={styles.RegisterSub}>
            <Text style={styles.StartMainHeader}>{t("New Connection Request")}</Text>
-           <Text style={styles.NewServiceHeader}>{"Personal Details"}</Text>
+           <Text style={styles.NewServiceHeader}>{t("Personal Details")}</Text>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Partner Category")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("Partner Category") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -709,7 +800,7 @@ const NewRegistration = ({navigation}) => {
            <Text style={styles.ErrorMsg}>{invalidPartnerCategory}</Text>
            </View>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Partner Type")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("Partner Type") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -736,7 +827,7 @@ const NewRegistration = ({navigation}) => {
            { selectedPartnerCategory === "1" ? 
              <View>
                <View style={styles.Margin_10}>
-                 <Text style={styles.LoginSubTxt}>{t("Title")}</Text>   
+                 <Text style={styles.LoginSubTxt}>{t("Title")  + (" *")}</Text>   
                 <Dropdown
                  placeholderStyle={styles.RaiseComplaintDropdownTxt}
                  selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -762,7 +853,7 @@ const NewRegistration = ({navigation}) => {
               {renderTextInput(t("Middle Name"), "Enter middle name", middleName, setMiddleName)}
               {renderTextInput(t("Last Name"), "Enter last name", lastName, setLastName, invalidLastName, setInvalidLastName)}
               <View style={styles.Margin_10}>
-               <Text style={styles.LoginSubTxt}>{t("Please Select Gender")}</Text>   
+               <Text style={styles.LoginSubTxt}>{t("Please Select Gender") + (" *")}</Text>   
                <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -804,7 +895,7 @@ const NewRegistration = ({navigation}) => {
            {renderTextInput(t("Zone"), "Enter Zone", zone, setZone, invalidZone, setInvalidZone)}
            {/* {renderTextInput(t("Region"), "Enter Region", region, setRegion, invalidRegion, setInvalidRegion)} */}
            <View style={styles.Margin_10}>
-               <Text style={styles.LoginSubTxt}>{t("Region")}</Text>   
+               <Text style={styles.LoginSubTxt}>{t("Region") + (" *")}</Text>   
                <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -828,7 +919,7 @@ const NewRegistration = ({navigation}) => {
              </View>
            <Text style={styles.NewServiceHeader}>{t("Service Connection Details")}</Text>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Prepaid/Postpaid")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("Prepaid/Postpaid") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -851,7 +942,7 @@ const NewRegistration = ({navigation}) => {
             <Text style={styles.ErrorMsg}>{invalidCategory}</Text>
            </View>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Phase type")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("Phase type") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -875,7 +966,7 @@ const NewRegistration = ({navigation}) => {
            </View>
            
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Connection type")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("Connection type") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -943,7 +1034,7 @@ const NewRegistration = ({navigation}) => {
            {renderTextInput(t("Applied load"), "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
           
           <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Install type")}</Text>   
+           <Text style={styles.LoginSubTxt}>{t("Install type") + (" *")}</Text>   
            <Dropdown
                placeholderStyle={styles.RaiseComplaintDropdownTxt}
                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -966,7 +1057,7 @@ const NewRegistration = ({navigation}) => {
            <Text style={styles.ErrorMsg}>{invalidInstallType}</Text>
           </View>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("CSC Customer Service")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("CSC Customer Service") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -989,10 +1080,10 @@ const NewRegistration = ({navigation}) => {
             <Text style={styles.ErrorMsg}>{invalidCusService}</Text>
            </View>
            
-           <Text style={styles.NewServiceHeader}>{t("Identity Details")}</Text>
+           <Text style={styles.NewServiceHeader}>{t("Identity Details") + (" *")}</Text>
            
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("ID type")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("ID type")  + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -1017,7 +1108,16 @@ const NewRegistration = ({navigation}) => {
            {renderTextInput(t("ID Number"), "Enter ID Number", IDNumber, setIDNumber, invalidIDNumber, setInvalidIDNumber)}
            
 
-           {imageName && imageName ? <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName}</Text> : <Text style={[styles.ErrorMsg, { marginTop: 20 }]}>{invalidImage}</Text> }
+             <View>
+             {imageName && imageName ?
+              <View style={styles.NewServiceDocument}> 
+                <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName}</Text> 
+                <TouchableOpacity style={[ styles.Margin_10, {marginLeft: 5} ]} onPress={() => { setImageName('') }}>
+                    <Close name="closecircle" size={20} color={"black"}/>
+                </TouchableOpacity>
+              </View>  
+              : <Text style={[styles.ErrorMsg, { marginTop: 20 }]}>{invalidImage}</Text> }
+             </View>
            <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption(true) }}>
               <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload")}</Text>
               <Upload name={'upload'} size={25}/>
@@ -1030,11 +1130,24 @@ const NewRegistration = ({navigation}) => {
             }  
            <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
             onPress={() => { 
-              if (validateInputs()) { 
+              Alert.alert(
+                '',
+                t("Confirm that all fields are filled correctly"),
+                [
+                  {
+                    text: 'SUBMIT',
+                    onPress: () => {
+                      if (validateInputs()) { 
 
-               setLoading(true)
-              } 
-               onPressRegistration()
+                        setLoading(true)
+                       } 
+                        onPressRegistration()
+                    },
+                  },
+                  { text: 'CANCEL', onPress: () => console.log('Alert Closed') },
+                ]
+              );
+             
            }}>
               <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("REGISTER")}</Text>
             
