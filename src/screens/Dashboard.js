@@ -407,7 +407,7 @@ const Dashboard = ({ navigation, route }) => {
             {renderQuickLinks(ImagePath.Bill_History, t('Bill History'), "BillHistory")}
             {renderQuickLinks(ImagePath.PaymentHistory, t('Payment History'), "PaymentHistory")}
             {renderQuickLinks(ImagePath.Complaints, t('Complaints'), "Complaints")}
-            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Unpaid Demand Note'), "Payment")}
+            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Service Request'), "ServiceRequest")}
           </View>
         </View>
 

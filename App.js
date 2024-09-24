@@ -18,6 +18,13 @@ import ViewPaymentHistoryTable from './src/screens/ViewPaymentHistoryTable';
 import NewRegisteration from './src/screens/NewRegistration';
 import Payment from './src/screens/Payment';
 import ForgetPassword from './src/screens/ForgetPassword';
+import ServiceRequest from './src/screens/ServiceRequest';
+import ServiceShifting from './src/screens/ServiceShifting';
+import NameChange from './src/screens/NameChange';
+import LoadChange from './src/screens/LoadChange';
+import DisOrReconnection from './src/screens/DisOrReconnection';
+import MoveOutServiceRequest from './src/screens/MoveOutServiceRequest';
+import Miscellaneous from './src/screens/Miscellaneous';
 import FindCSC from './src/screens/FindCSC';
 
 import Location from 'react-native-vector-icons/FontAwesome5';
@@ -162,6 +169,13 @@ const App = () => {
           <Stack.Screen name="NewRegisteration" component={NewRegisteration} />
           <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="ServiceRequest" component={ServiceRequest} />
+          <Stack.Screen name="ServiceShifting" component={ServiceShifting}/>
+          <Stack.Screen name="NameChange" component={NameChange} />
+          <Stack.Screen name="LoadChange" component={LoadChange} />
+          <Stack.Screen name="DisOrReconnection" component={DisOrReconnection} />
+          <Stack.Screen name="MoveOutServiceRequest" component={MoveOutServiceRequest} />
+          <Stack.Screen name="Miscellaneous" component={Miscellaneous} />
         </Stack.Navigator>
       </>
     );
