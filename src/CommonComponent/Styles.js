@@ -126,6 +126,44 @@ const Styles = () => {
             fontWeight: 'bold',
             color: '#535353'
         },
+        ServiceSubHeaderTxt:{
+            fontSize: wp(16),
+            fontWeight: 'bold',
+            color: '#535353',
+            marginLeft: 20
+        },
+
+        ServiceSubHeader: {
+            padding: wp(20),
+            backgroundColor: "#FFF",
+            borderRadius: wp(15),
+            marginTop: wp(20),
+            display: 'grid',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginLeft:10,
+            marginRight:10,
+            flexWrap:'wrap'
+        },
+        
+        ServiceQuickLinkCon: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding:wp(20),
+            justifyContent: 'space-between',
+        },
+        ServiceQuickLnkText: {
+            fontSize: wp(10),
+            color: '#666666',
+            marginTop: wp(10)
+        },
+        ServiceQuickLinkImage: {
+            height: hp(30),
+            width: wp(30)
+        },
+
         DashboardSubHeaderPaidTxt: {
             fontSize: wp(16),
             fontWeight: 'bold',
