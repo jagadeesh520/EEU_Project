@@ -467,6 +467,7 @@ const NewRegistration = ({navigation}) => {
                   text: 'COPY CA Number',
                   onPress: () => {
                     Clipboard.setString(String(data.CANumber)); // Copy CA Number as a string
+                    navigation.navigate("Registration");
                   },
                 },
               ]
