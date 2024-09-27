@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Alert, ScrollView, Modal, StyleSheet, ActivityIndicator } from 'react-native';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
@@ -18,6 +18,7 @@ import moment from 'moment';
 import { useToast } from 'react-native-toast-notifications';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Close from 'react-native-vector-icons/AntDesign';
+import {data} from '../../Languages/data';
 
 
 const NewRegistration = ({navigation}) => {
@@ -107,7 +108,100 @@ const NewRegistration = ({navigation}) => {
       { label: "Organization",  value:"2" },
 
     ]);
-    const [ regionOptions, setRegionOptions ] = useState([
+
+    /* const data = [
+      {
+        label: "Afar",
+        value: "01",
+        zone: [
+          {
+            label: "01",
+            value: "01",
+            kebele: [
+              {
+                label: "Semara K/k",
+                value: "01",
+                csc:[
+                  {
+                    label: "FA01",
+                    value: "01"
+                  }
+                ]
+              },
+              {
+                label: "Logiya k/k",
+                value: "02",
+                csc: [
+                  {
+                     label: "FA01",
+                     value: "01"
+                  }
+                ]
+              },
+            ]
+          },
+          {
+            label: "02",
+            value: "02",
+            kebele : [
+              {
+                label: "Abeala Ketema",
+                value: "01",
+                csc: [
+                  {
+                     label: "FA01",
+                     value: "01"
+                  }
+                ]
+              }
+            ]
+
+  
+          }
+        ],
+      }, 
+      {
+        label: "Amhara",
+        value: "02",
+        zone: [
+          {
+            label: "01",
+            value: "01",
+            kebele: [
+              {
+                name: "Semara K/k",
+                csc: "FA01"
+              },
+              {
+                name: "Logiya k/k",
+                csc: "FA08"
+  
+              },
+            ]
+          },
+          {
+            name: "02",
+            kebele : [
+              {
+                name: "Abeala Ketema",
+                csc: "FA16"
+              }
+            ]
+  
+          },
+        ],
+      }
+    ];
+ */
+
+    
+const [selectedZone, setSelectedZone] = useState("");
+const [selectedKabele, setSelectedKabele] = useState("");
+const [selectedCsc, setSelectedCsc] = useState("");
+
+console.log("selectedCsc",selectedCsc)
+
+    const regionOptions = [
       { label: "Addis Ababa ", value:"01" },
       { label: "Afar", value:"02" },
       { label: "Amhara", value:"03" },
@@ -121,7 +215,8 @@ const NewRegistration = ({navigation}) => {
       { label: "Tigray",  value:"11" },
       { label: "Sidama",  value:"12" },
       { label: "South West",  value:"13" },
-    ]);
+    ];
+    
 
     const [ partnerTypeOptions, setPartnerTypeOptions ] = useState([
       { label: "Others",  value:"0009" },
@@ -144,6 +239,7 @@ const NewRegistration = ({navigation}) => {
     const [kebele, setKebele] = useState("");
     const [zone, setZone] = useState("");
     const [region, setRegion] = useState("");
+    const [csc, setCsc] = useState("");
     const [custService, setCustService] = useState("");
     const [mobileNo, setMobileNo] = useState("");
     const [isDocumentOption, setDocumentOption] = useState(false);
@@ -221,6 +317,7 @@ const NewRegistration = ({navigation}) => {
       setOrgName2("");
       setOrgName3("");
     }
+
     const validateInputs = () => {
       let valid = true;
   
@@ -720,6 +817,8 @@ const NewRegistration = ({navigation}) => {
         closeButton: true,
       });
     }; 
+    const zoneData =[];
+    console.log("zoneData",zoneData)
     console.log(selectedConnectionType,"conne type")  
     return (
         <View style={styles.StartMain}>
@@ -850,8 +949,8 @@ const NewRegistration = ({navigation}) => {
            <Text style={styles.NewServiceHeader}>{t("Address Details")}</Text>
            {renderTextInput(t("House No"), "Enter House No", houseNumber, setHouseNumber, invalidHouseNumber, setInvalidHouseNumber)}
            {renderTextInput(t("Landmark"), "Enter Landmark", landmark, setLandMark, invalidLandmark, setInvalidLandmark)}
-           {renderTextInput(t("Kebele"), "Enter Kebele", kebele, setKebele, invalidKebele, setInvalidKebele)}
-           {renderTextInput(t("Zone"), "Enter Zone", zone, setZone, invalidZone, setInvalidZone)}
+           {/* {renderTextInput(t("Kebele"), "Enter Kebele", kebele, setKebele, invalidKebele, setInvalidKebele)}
+           {renderTextInput(t("Zone"), "Enter Zone", zone, setZone, invalidZone, setInvalidZone)} */}
            {/* {renderTextInput(t("Region"), "Enter Region", region, setRegion, invalidRegion, setInvalidRegion)} */}
            <View style={styles.Margin_10}>
                <Text style={styles.LoginSubTxt}>{t("Region") + (" *")}</Text>   
@@ -865,10 +964,85 @@ const NewRegistration = ({navigation}) => {
                 placeholder={t("Enter Region")}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
-                data={regionOptions}
+                data={data}
                 value={region}
                 onChange={item => {
-                  setRegion(item.value);
+                   setRegion(item.value);
+                   zoneData.push(item.zone)
+                   setSelectedZone(...zoneData)
+                    if((item.value)?.length > 0 ) {
+                      setInvalidRegion("")
+                    }
+                }}        
+               />
+               <Text style={styles.ErrorMsg}>{invalidGender}</Text>
+             </View>
+             <View style={styles.Margin_10}>
+               <Text style={styles.LoginSubTxt}>{t("Zone") + (" *")}</Text>   
+               <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Enter Zone")}
+                style={styles.QuesComplaintDropdown}
+                renderItem={renderItem}
+                data={selectedZone?.length ? selectedZone : []}
+                value={zone}
+                onChange={item => {
+                  setZone(item.value);
+                  setSelectedKabele(item.kebele);
+                    if((item.value)?.length > 0 ) {
+                      setInvalidRegion("")
+                    }
+                }}               
+               />
+               <Text style={styles.ErrorMsg}>{invalidGender}</Text>
+             </View>
+             
+             <View style={styles.Margin_10}>
+               <Text style={styles.LoginSubTxt}>{t("Kebele") + (" *")}</Text>   
+               <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Enter Kebele")}
+                style={styles.QuesComplaintDropdown}
+                renderItem={renderItem}
+                data={selectedKabele?.length ? selectedKabele : []}
+                value={kebele}
+                onChange={item => {
+                  setKebele(item.value);
+                  setSelectedCsc(item.csc)
+                    if((item.value)?.length > 0 ) {
+                      setInvalidRegion("")
+                    }
+                }}               
+               />
+               <Text style={styles.ErrorMsg}>{invalidGender}</Text>
+             </View>
+             <View style={styles.Margin_10}>
+               <Text style={styles.LoginSubTxt}>{t("CSC") + (" *")}</Text>   
+               <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Enter CSC")}
+                style={styles.QuesComplaintDropdown}
+                renderItem={renderItem}
+                data={selectedCsc?.length ? selectedCsc : []}
+                value={csc}
+                onChange={item => {
+                  console.log("item",item.kebele)
+                  setCsc(item.value);
                     if((item.value)?.length > 0 ) {
                       setInvalidRegion("")
                     }
