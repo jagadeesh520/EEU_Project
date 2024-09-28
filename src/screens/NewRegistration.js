@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, Alert, ScrollView, Modal, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput, Alert, ScrollView, Modal, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
 import { useTranslation } from 'react-i18next';
@@ -147,14 +147,18 @@ const NewRegistration = ({navigation}) => {
     const [custService, setCustService] = useState("");
     const [mobileNo, setMobileNo] = useState("");
     const [isDocumentOption, setDocumentOption] = useState(false);
+    const [isDocumentOption2, setDocumentOption2] = useState(false);
     const [width, setWidth] = useState(200);
     const [height, setHeight] = useState(200);
     const [imageName, setImageName] = useState(null);
+    const [file2, setFile2] = useState(null);
+    const [imageName2, setImageName2] = useState(null);
     const [file, setFile] = useState(null);
     const { theme, themeObj } = useThemes();
     const [ connStartDate, setConnStartDate  ] = useState(new Date());
     const [ connEndDate, setConnEndDate  ] = useState(new Date());
     const [ selectedImage, setSelectedImage ] = useState("");
+    const [ selectedImage2, setSelectedImage2 ] = useState("");
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [selectPartnerType, setSelectPartnerType] = useState("");
@@ -190,6 +194,22 @@ const NewRegistration = ({navigation}) => {
     const [invalidOrgName2, setInvalidOrgName2] = useState("");
     const [invalidOrgName3, setInvalidOrgName3] = useState("");
     const [isLoading, setLoading]= useState(false);
+    const [isPreview, setIsPreview] = useState(false);
+
+    const [partnerCategory, setPartnerCategory] = useState("Person");
+    const [partnerType, setPartnerType] = useState("");
+    const [titleLabel, setTitleLabel] = useState("");
+    const [paidOption, setPaidOption] = useState("");
+    const [phaseType, setPhaseType] = useState("");
+    const [cscService, setCSCService] = useState("");
+    const [idType, setIDType] = useState("");
+    const [gender, setGender] = useState("");
+    const [reg, setReg]= useState("");  
+    const [connType, setConnType]= useState("");  
+    const [insType, setInsType] = useState("");
+    const [selectedImageName, setSelectedImageName] = useState("");
+
+    const [countryCode, setCountryCode] = useState("+251")
     const clearData = () => {
       setTitle('');
       setFirstName('');
@@ -212,6 +232,7 @@ const NewRegistration = ({navigation}) => {
       setSelectedInstallType('');
       setSelectedImage('');
       setImageName('');
+      setImageName2('');
       setSelectedPhaseType('');
       setSelectedIDType('');
       setIDNumber('');
@@ -459,9 +480,10 @@ const NewRegistration = ({navigation}) => {
           let ServiceRequestNumber =   data?.ServiceRequestNumber ? data?.ServiceRequestNumber : "";
           setLoading(false)
           // if(data?.CANumber) {
+          console.log(responseData, "data----->")
             Alert.alert(
               '',
-              t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber),
+              t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber) + "  "+ t("BP Number") + String(data.BPNumber),
               [
                 {
                   text: 'COPY CA Number',
@@ -493,6 +515,38 @@ const NewRegistration = ({navigation}) => {
   
     const renderTextInput = (name, placeholder, value, updateState, ErrorMsg, setErrorMsg) => {
         return(
+          <View>
+           { name === "Mobile No" ? 
+          <View style={styles.Margin_10}>
+            <Text style={styles.LoginSubTxt}>{t(name) + " *"}</Text>   
+           <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <TextInput style={styles.countryCodeInput} editable={false} value={countryCode}/> 
+            <TextInput
+            placeholder={t(placeholder)}
+            value={value}
+            maxLength={9}
+            style={[styles.LoginTextInput, {width: 220}]}
+            placeholderTextColor="#9E9E9E"
+            onChangeText={(text) =>{ 
+                const MobRegex = text.replace(/[^0-9]/g, '');
+                if (MobRegex.length <= 10) {
+                  updateState(MobRegex);
+                  setErrorMsg('');
+                }
+                 // Set error message if the length is not valid
+                if (MobRegex.length < 10 && text.length > 1) {
+                  setErrorMsg('Phone number must be 9 digits.');
+                }  
+                if(text[0] == 0) {
+                  setErrorMsg('Invalid mobile number');
+                }
+                if( name === "Mobile No" && text == "" ){
+                  setErrorMsg('');
+                }
+            }}
+          />
+          </View>
+          </View>:
           <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" ? "" : " *")}</Text>   
             <TextInput
@@ -503,20 +557,7 @@ const NewRegistration = ({navigation}) => {
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ 
-              if(name === "Mobile No") {
-                const MobRegex = text.replace(/[^0-9]/g, '');
-                if (MobRegex.length <= 10) {
-                  updateState(MobRegex);
-                  setErrorMsg('');
-                }
-                 // Set error message if the length is not valid
-                if (MobRegex.length < 9 || MobRegex.length > 10 && text.length > 1) {
-                  setErrorMsg('Phone number must be between 9 and 10 digits.');
-                } 
-                if( name === "Mobile No" && text == "" ){
-                  setErrorMsg('');
-                }
-              } else if (name === "Email") {
+              if (name === "Email") {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
               
                 // Check if the input is empty first
@@ -571,7 +612,8 @@ const NewRegistration = ({navigation}) => {
             }}
            />
            <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
-          </View>
+          </View> }
+         </View> 
         )
     }
     const requestPermission = async (permission) => {
@@ -624,7 +666,7 @@ const NewRegistration = ({navigation}) => {
         const imagePathParts = image.path.split('/');
         const imageFileName = imagePathParts[imagePathParts.length - 1];
         setImageName(imageFileName);
-        setSelectedImage(image.data)
+        setSelectedImage(`data:${image.mime};base64,${image.data}`);
       }).catch(error => {
         console.log(error);
       });
@@ -642,7 +684,7 @@ const NewRegistration = ({navigation}) => {
         setHeight(height);
         setWidth(width);
         setDocumentOption(false)
-        setSelectedImage(image.data)
+        setSelectedImage(`data:${image.mime};base64,${image.data}`);
         const imagePathParts = image.path.split('/');
         const imageFileName = imagePathParts[imagePathParts.length - 1];
         setImageName(imageFileName);
@@ -677,8 +719,106 @@ const NewRegistration = ({navigation}) => {
         });
         setFile(res);
         const selectedFile = res[0];
-        setFile(selectedFile);
+        setFile(selectedFile.uri);
         setImageName(selectedFile.name);
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          console.log('User cancelled the picker');
+        } else {
+          throw err;
+        }
+      }
+    }
+    const handleImagePicker2 = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          // Alert.alert(
+          //   '',
+          //   "The Gallery storage access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{} },
+          //   ]
+          // );
+         } 
+         openGallery2()
+      }
+     
+    };
+    openGallery2 = () => {
+      ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption2(false)
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName2(imageFileName);
+        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+    const openCamera2 = () => {
+      ImagePicker.openCamera({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,  
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption2(false)
+        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName2(imageFileName);
+       
+      }).catch(error => { 
+        console.log(error);
+      });
+    }
+    const handleCameraCapture2 = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          console.log("denied")
+          //  Alert.alert(
+          //   '',
+          //   "The Camera access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{}  },
+          //   ]
+          // );
+         } 
+      }
+      openCamera2()
+    };
+    const handlePDFUpload2 = async () => { 
+      try {
+        const res = await DocumentPicker.pick({
+          type: [DocumentPicker.types.pdf],
+        });
+        setFile2(res);
+        const selectedFile = res[0];
+        setFile2(selectedFile.uri);
+        setImageName2(selectedFile.name);
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
           console.log('User cancelled the picker');
@@ -720,7 +860,16 @@ const NewRegistration = ({navigation}) => {
         closeButton: true,
       });
     }; 
-    console.log(selectedConnectionType,"conne type")  
+    renderPreview = (label, value) => {
+      return(
+        <View style = {{ marginTop: 20, width: '80%', display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+          <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t(label) + (label === "Middle Name" ? "" : " *")}</Text>   
+          <Text style={[styles.LoginSubTxt, {flex: 0.1}]}>{":"}</Text>   
+          <Text style={[styles.LoginSubTxt, {flex: 0.3}]}>{value}</Text>   
+        </View>
+      )
+    }
+    console.log(file,"conne type", imageName)  
     return (
         <View style={styles.StartMain}>
            <View style={styles.RegisterMainContainer}>
@@ -730,6 +879,109 @@ const NewRegistration = ({navigation}) => {
              <Image source={ImagePath.Logo} style={styles.StartLogo} />
              <Text style={styles.RegisterMainHeader}>{t("Ethiopian Electric Utility")}</Text>
            </View>
+           { isPreview ? 
+              <ScrollView style={styles.RegisterSubContainer1}>
+                <View style={styles.RegisterSub}>
+                  <Text style={styles.StartMainHeader}>{t("New Connection Request")}</Text>
+                  <Text style={styles.NewServiceHeader}>{"Personal Details"}</Text>
+                  {renderPreview("Partner Category", partnerCategory)}
+                  {renderPreview("Partner Type", partnerType)}
+                  { selectedPartnerCategory === "1" ? (
+                   <>  
+                    {renderPreview("Title", titleLabel)}
+                    {renderPreview("First Name", firstName)}
+                    {renderPreview("Middle Name", middleName)}
+                    {renderPreview("Last Name", lastName)}
+                    {renderPreview("Please Select Gender", gender)}
+                   </>) : (
+                   <>
+                    {renderPreview("Organization Name1", orgName1)}
+                    {renderPreview("Organization Name2", orgName2)}
+                    {renderPreview("Organization Name3", orgName3)}
+                   </>)}
+
+                  <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{"Contact Details"}</Text>
+ 
+                  {renderPreview("Mobile No", mobileNo)}
+                  {renderPreview("Email", email)}
+                  <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Address Details")}</Text>
+
+                  {renderPreview("House No", houseNumber)}
+                  {renderPreview("Landmark", landmark)}
+                  {renderPreview("Kebele", kebele)}
+                  {renderPreview("Zone", zone)}
+                  {renderPreview("Region", reg )}
+                  {renderPreview("Prepaid/Postpaid", paidOption )}
+                  {renderPreview("Phase type", phaseType )}
+                  {/* {renderPreview("Connection start date", connStartDate )}
+                  {renderPreview("Connection end date", connEndDate )} */}
+                  {renderPreview("Applied load", appliedLoad )}
+                  {renderPreview("Install type", insType )}
+                  {renderPreview("CSC Customer Service", cscService )}
+
+                  <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Identity Details") + (" *")}</Text>
+
+                  {renderPreview("ID type", idType )}
+                  {renderPreview("ID Number", IDNumber )}
+                  <View style = {{ marginTop: 20, width: '80%', display: 'flex', flexDirection: 'row', flex: 1 }}>
+                    <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t("ID Softcopy Upload") + " 1" +  " *"}</Text>   
+                    <Text style={[styles.LoginSubTxt, {flex: 0.1}]}>{":"}</Text> 
+                    { selectedImage ?   
+                    <Image
+                      source={{ uri: selectedImage }}
+                      style={{ width: '100%', height: 100, marginBottom: 20, flex: 0.3 }}
+                      resizeMode="cover"
+                    />  : <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName}</Text>   }           
+                  </View>
+                  <View style = {{ marginTop: 20, width: '80%', display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t("ID Softcopy Upload")+ " 2"}</Text>   
+                    <Text style={[styles.LoginSubTxt, {flex: 0.1}]}>{":"}</Text> 
+                    { selectedImage2 ?   
+                    <Image
+                      source={{ uri: selectedImage2 }}
+                      style={{ width: '100%', height: 100, marginBottom: 20, flex: 0.3 }}
+                      resizeMode="cover"
+                    />  : <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName2}</Text>   }           
+                  </View>
+                  <View>
+                  <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
+                    onPress={() => { 
+                      Alert.alert(
+                        '',
+                        t("Confirm that all fields are filled correctly"),
+                        [
+                          {
+                           text: 'SUBMIT',
+                           onPress: () => {
+                             if (validateInputs()) { 
+                               setLoading(true)
+                             } 
+                             onPressRegistration()
+                          },
+                         },
+                       { text: 'CANCEL', onPress: () => console.log('Alert Closed') },
+                       ]
+                      ); 
+                    }}>
+                    <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("REGISTER")}</Text>
+                  </TouchableOpacity> 
+                  {isLoading &&
+                   < View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                     <ActivityIndicator size="small" />
+                     <Text style={{ marginLeft: 10}} >Processing....</Text>
+                    </View>
+                  }  
+                  <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#F29037', display:'flex', flexDirection: 'row' }]}
+                    onPress={() => {
+                      setIsPreview(false);
+                    }}
+                  >
+                    <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("GO BACK")}</Text>
+                  </TouchableOpacity> 
+                </View>
+              </View>
+          </ScrollView>
+           :
            <ScrollView style={styles.RegisterSubContainer1}>
            <View style={styles.RegisterSub}>
            <Text style={styles.StartMainHeader}>{t("New Connection Request")}</Text>
@@ -750,8 +1002,9 @@ const NewRegistration = ({navigation}) => {
                 value={selectedPartnerCategory}
                 onChange={item => {
                   setSelectedPartnerCategory(item.value);
+                  setPartnerCategory(item.label);
                     if((item.value)?.length > 0 ) {
-                      setInvalidPartnerCategory('')
+                      setInvalidPartnerCategory('');
                     }
                     
                 }}               
@@ -774,8 +1027,9 @@ const NewRegistration = ({navigation}) => {
                 value={selectPartnerType}
                 onChange={item => {
                     setSelectPartnerType(item.value);
+                    setPartnerType(item.label);
                     if((item.value)?.length > 0 ) {
-                      setInvalidPartnerType('')
+                      setInvalidPartnerType('');
                     }
                     
                 }}               
@@ -801,6 +1055,7 @@ const NewRegistration = ({navigation}) => {
                  value={title}
                  onChange={item => {
                     setTitle(item.value);
+                    setTitleLabel(item.label);
                     if((item.value).length > 0) {
                       setInvalidTitle("")
                     }
@@ -808,9 +1063,9 @@ const NewRegistration = ({navigation}) => {
                />
                <Text style={styles.ErrorMsg}>{invalidTitle}</Text>
             </View>
-              {renderTextInput(t("First Name"), "Enter first name", firstName, setFirstName, invalidFirstName, setInvalidFirstName)}
-              {renderTextInput(t("Middle Name"), "Enter middle name", middleName, setMiddleName)}
-              {renderTextInput(t("Last Name"), "Enter last name", lastName, setLastName, invalidLastName, setInvalidLastName)}
+              {renderTextInput("First Name", "Enter first name", firstName, setFirstName, invalidFirstName, setInvalidFirstName)}
+              {renderTextInput("Middle Name", "Enter middle name", middleName, setMiddleName)}
+              {renderTextInput("Last Name", "Enter last name", lastName, setLastName, invalidLastName, setInvalidLastName)}
               <View style={styles.Margin_10}>
                <Text style={styles.LoginSubTxt}>{t("Please Select Gender") + (" *")}</Text>   
                <Dropdown
@@ -827,6 +1082,7 @@ const NewRegistration = ({navigation}) => {
                 value={selectedGender}
                 onChange={item => {
                     setSelectedGender(item.value);
+                    setGender(item.label);
                     if((item.value)?.length > 0 ) {
                       setInvalidGender("")
                     }
@@ -836,22 +1092,22 @@ const NewRegistration = ({navigation}) => {
               </View>
              </View> : 
              <View>
-               {renderTextInput(t("Organization Name1"), "Enter Organization Name1", orgName1, setOrgName1, invalidOrgName1, setInvalidOrgName1)}
-               {renderTextInput(t("Organization Name2"), "Enter Organization Name2", orgName2, setOrgName2, invalidOrgName2, setInvalidOrgName2)}
-               {renderTextInput(t("Organization Name3"), "Enter Organization Name3", orgName3, setOrgName3, invalidOrgName3, setInvalidOrgName3)}
+               {renderTextInput("Organization Name1", "Enter Organization Name1", orgName1, setOrgName1, invalidOrgName1, setInvalidOrgName1)}
+               {renderTextInput("Organization Name2", "Enter Organization Name2", orgName2, setOrgName2, invalidOrgName2, setInvalidOrgName2)}
+               {renderTextInput("Organization Name3", "Enter Organization Name3", orgName3, setOrgName3, invalidOrgName3, setInvalidOrgName3)}
              </View>
             }
            
  
-           <Text style={styles.NewServiceHeader}>{t("Contact Details")}</Text>
-           {renderTextInput(t("Mobile No"), "Enter mobile no", mobileNo, setMobileNo, invalidMobileNo, setInvalidMobileNo)}
-           {renderTextInput(t("Email"), "Enter email", email, setEmail, invalidEmail, setInvalidEmail)}
+           <Text style={styles.NewServiceHeader}>{"Contact Details"}</Text>
+           {renderTextInput("Mobile No", "Enter mobile no", mobileNo, setMobileNo, invalidMobileNo, setInvalidMobileNo)}
+           {renderTextInput("Email", "Enter email", email, setEmail, invalidEmail, setInvalidEmail)}
 
            <Text style={styles.NewServiceHeader}>{t("Address Details")}</Text>
-           {renderTextInput(t("House No"), "Enter House No", houseNumber, setHouseNumber, invalidHouseNumber, setInvalidHouseNumber)}
-           {renderTextInput(t("Landmark"), "Enter Landmark", landmark, setLandMark, invalidLandmark, setInvalidLandmark)}
-           {renderTextInput(t("Kebele"), "Enter Kebele", kebele, setKebele, invalidKebele, setInvalidKebele)}
-           {renderTextInput(t("Zone"), "Enter Zone", zone, setZone, invalidZone, setInvalidZone)}
+           {renderTextInput("House No", "Enter House No", houseNumber, setHouseNumber, invalidHouseNumber, setInvalidHouseNumber)}
+           {renderTextInput("Landmark", "Enter Landmark", landmark, setLandMark, invalidLandmark, setInvalidLandmark)}
+           {renderTextInput("Kebele", "Enter Kebele", kebele, setKebele, invalidKebele, setInvalidKebele)}
+           {renderTextInput("Zone", "Enter Zone", zone, setZone, invalidZone, setInvalidZone)}
            {/* {renderTextInput(t("Region"), "Enter Region", region, setRegion, invalidRegion, setInvalidRegion)} */}
            <View style={styles.Margin_10}>
                <Text style={styles.LoginSubTxt}>{t("Region") + (" *")}</Text>   
@@ -869,9 +1125,10 @@ const NewRegistration = ({navigation}) => {
                 value={region}
                 onChange={item => {
                   setRegion(item.value);
+                  setReg(item.label);
                     if((item.value)?.length > 0 ) {
                       setInvalidRegion("")
-                    }
+                    }  
                 }}               
                />
                <Text style={styles.ErrorMsg}>{invalidGender}</Text>
@@ -893,6 +1150,7 @@ const NewRegistration = ({navigation}) => {
                 value={selectedCategory}
                 onChange={item => {
                     setSelectedCategory(item.value);
+                    setPaidOption(item.label);
                     if((item.value)?.length > 0 ) {
                       setInvalidCategory("")
                     }
@@ -916,6 +1174,7 @@ const NewRegistration = ({navigation}) => {
                 value={selectedPhaseType}
                 onChange={item => {
                     setSelectedPhaseType(item.value);
+                    setPhaseType(item.label)
                     if( (item.value)?.length > 0 ) {
                       setInvalidPhaseType("")
                     }
@@ -940,6 +1199,7 @@ const NewRegistration = ({navigation}) => {
                 value={selectedConnectionType}
                 onChange={item => {
                     setSelectedConnectionType(item.value);
+                    setConnType(item.label);
                     if((item.value)?.length > 0 ) {
                       setInvalidConnectionType("")
                     }
@@ -990,7 +1250,7 @@ const NewRegistration = ({navigation}) => {
             )}
            </View>
            </View>: null }
-           {renderTextInput(t("Applied load"), "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
+           {renderTextInput("Applied load", "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
           
           <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t("Install type") + (" *")}</Text>   
@@ -1008,6 +1268,7 @@ const NewRegistration = ({navigation}) => {
                value={selectedInstallType}
                onChange={item => {
                    setSelectedInstallType(item.value);
+                   setInsType(item.label);
                    if( (item.value)?.length > 0 ) {
                      setInvalidInstallType("")
                    }
@@ -1031,6 +1292,7 @@ const NewRegistration = ({navigation}) => {
                 value={custService}
                 onChange={item => {
                   setCustService(item.value);
+                  setCSCService(item.label);
                   if((item.value)?.length > 0 ) {
                     setInvalidCusService("")
                   }
@@ -1057,6 +1319,7 @@ const NewRegistration = ({navigation}) => {
                 value={selectedIDType}
                 onChange={item => {
                     setSelectedIDType(item.value);
+                    setIDType(item.label);
                     if( (item.value)?.length > 0 ) {
                       setInvalidIDType("")
                     }
@@ -1064,51 +1327,43 @@ const NewRegistration = ({navigation}) => {
            />
             <Text style={styles.ErrorMsg}>{invalidInstallType}</Text>
            </View>
-           {renderTextInput(t("ID Number"), "Enter ID Number", IDNumber, setIDNumber, invalidIDNumber, setInvalidIDNumber)}
+           {renderTextInput("ID Number", "Enter ID Number", IDNumber, setIDNumber, invalidIDNumber, setInvalidIDNumber)}
            
 
              <View>
              {imageName && imageName ?
               <View style={styles.NewServiceDocument}> 
                 <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName}</Text> 
-                <TouchableOpacity style={[ styles.Margin_10, {marginLeft: 5} ]} onPress={() => { setImageName('') }}>
+                <TouchableOpacity style={[ styles.Margin_10, {marginLeft: 5} ]} onPress={() => { setImageName(''); setSelectedImage(''); }}>
                     <Close name="closecircle" size={20} color={"black"}/>
                 </TouchableOpacity>
               </View>  
               : <Text style={[styles.ErrorMsg, { marginTop: 20 }]}>{invalidImage}</Text> }
              </View>
            <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption(true) }}>
-              <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload")}</Text>
+              <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload") + " 1"}</Text>
               <Upload name={'upload'} size={25}/>
            </TouchableOpacity> 
-           {isLoading &&
-              < View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
-                <ActivityIndicator size="small" />
-                <Text style={{ marginLeft: 10}} >Processing....</Text>
-              </View>
-            }  
+           {imageName2 && imageName2 ?
+              <View style={styles.NewServiceDocument}> 
+                <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName2}</Text> 
+                <TouchableOpacity style={[ styles.Margin_10, {marginLeft: 5} ]} onPress={() => { setImageName2(''); setSelectedImage2(''); }}>
+                    <Close name="closecircle" size={20} color={"black"}/>
+                </TouchableOpacity>
+              </View>  
+              : null }
+           <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption2(true) }}>
+              <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload" + " 2")}</Text>
+              <Upload name={'upload'} size={25}/>
+           </TouchableOpacity> 
            <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
-            onPress={() => { 
-              Alert.alert(
-                '',
-                t("Confirm that all fields are filled correctly"),
-                [
-                  {
-                    text: 'SUBMIT',
-                    onPress: () => {
-                      if (validateInputs()) { 
-
-                        setLoading(true)
-                       } 
-                        onPressRegistration()
-                    },
-                  },
-                  { text: 'CANCEL', onPress: () => console.log('Alert Closed') },
-                ]
-              );
-             
-           }}>
-              <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("REGISTER")}</Text>
+            onPress={() => {
+              if (validateInputs()) { 
+               setIsPreview(true) 
+              } 
+               
+            }}>
+              <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("PREVIEW")}</Text>
             
            </TouchableOpacity> 
            </View> 
@@ -1156,7 +1411,50 @@ const NewRegistration = ({navigation}) => {
                </View> 
             </View>
           </Modal>  
-          </ScrollView>
+          <Modal
+            transparent={true}
+            visible={isDocumentOption2}
+            onRequestClose={() => {
+              setDocumentOption2(false);
+            }}
+          >
+            <View style={styles.modalMainView}>
+               <View style={styles.modalViewCamera}> 
+                  <Text style={styles.modalHeaderText}>{t("Select photo / pdf file to upload")}</Text>
+                  <TouchableOpacity 
+                    style={styles.registrationCameraBtn}
+                    onPress={() => { 
+                        setDocumentOption2(false)
+                        handleCameraCapture2() 
+                    }}
+                  >
+                    <Camera name={"camera"} size={25} color={"#F29037"}/>
+                    <Text style={[styles.modalText, { marginLeft: 10 }]}>{t("Take Photo")}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.registrationCameraBtn}
+                    onPress={() => { 
+                        setDocumentOption2(false)
+                        handleImagePicker2() 
+                    }}
+                  >
+                    <Gallery name={"photo-library"} size={25} color={"#F29037"}/>
+                    <Text  style={[styles.modalText, { marginLeft: 10 }]}>{t("Take from Gallery")}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.registrationCameraBtn}
+                    onPress={() => { 
+                        setDocumentOption2(false)
+                        handlePDFUpload2() 
+                    }}
+                  >
+                    <FileUpload name={"file-upload"} size={25} color={"#F29037"}/>
+                    <Text  style={[styles.modalText, { marginLeft: 10 }]}>{t("PDF Upload")}</Text>
+                  </TouchableOpacity>
+               </View> 
+            </View>
+          </Modal>  
+          </ScrollView> }
          
         </View>
     );

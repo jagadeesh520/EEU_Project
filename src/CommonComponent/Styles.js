@@ -842,6 +842,18 @@ const Styles = () => {
             paddingLeft: wp(10),
             color: '#666666'
         },
+        countryCodeInput: {
+            width: wp(60),
+            fontSize: wp(14),
+            borderWidth: 1,
+            borderColor: 'lightgray',
+            borderRadius: 5,
+            marginTop: wp(10),
+            paddingLeft: wp(10),
+            color: '#666666',
+            backgroundColor: '#FEFEFE',
+            marginRight: wp(10)
+        },
         LoginSubTxt: {
             fontSize: wp(14),
             color: '#333333',

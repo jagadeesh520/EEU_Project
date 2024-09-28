@@ -106,7 +106,7 @@ const Login = ({ navigation }) => {
             storeData(responseData.Record);
             showToast('success', 'Login successful');
             navigation.navigate('BottomTab');
-
+            
             if (rememberMe) {
               const value = await AsyncStorage.getItem('rememberData');
               const tempRememberMe = value ? JSON.parse(value) : [];
@@ -127,7 +127,7 @@ const Login = ({ navigation }) => {
           }
         })
         .catch((error) => {
-          showToast('error', error);
+          console.log(error, "error")
         });
     }
   };
