@@ -626,12 +626,12 @@ console.log("selectedCsc",selectedCsc)
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ 
                 const MobRegex = text.replace(/[^0-9]/g, '');
-                if (MobRegex.length <= 10) {
+                if (MobRegex.length < 10) {
                   updateState(MobRegex);
                   setErrorMsg('');
                 }
                  // Set error message if the length is not valid
-                if (MobRegex.length < 10 && text.length > 1) {
+                if (MobRegex.length < 9 && text.length > 1) {
                   setErrorMsg('Phone number must be 9 digits.');
                 }  
                 if(text[0] == 0) {
@@ -643,6 +643,7 @@ console.log("selectedCsc",selectedCsc)
             }}
           />
           </View>
+          <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
           </View>:
           <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" ? "" : " *")}</Text>   
@@ -673,33 +674,41 @@ console.log("selectedCsc",selectedCsc)
 
               } else if (name === "Applied load" && text !== "") {
                 const numericValue = parseFloat(text); // Convert text to number for comparison
-                if(selectedPhaseType == "") {
+                // if(selectedPhaseType == "") {
 
-                    setErrorMsg("Please select the phase type");
+                //     setErrorMsg("Please select the phase type");
 
-                 } else if(selectedPhaseType === "1") {
+                //  } else if(selectedPhaseType === "1") {
 
-                    if( numericValue <= 7.5 ) {
-                        console.log("update", numericValue)
-                        updateState(numericValue);
-                        setErrorMsg("")
-                    } else {
-                        setErrorMsg('Please enter a valid Applied load');
-                    }
+                //     if( numericValue <= 7.5 ) {
+                //         console.log("update", numericValue)
+                //         updateState(numericValue);
+                //         setErrorMsg("")
+                //     } else {
+                //         setErrorMsg('Please enter a valid Applied load');
+                //     }
                     
-                 } else if(selectedPhaseType === "2") {
+                //  } else if(selectedPhaseType === "2") {
 
-                  if( numericValue >= 7.5 && numericValue <= 25 ) {
-                      updateState(numericValue);
-                      setErrorMsg("")
-                  } else {
-                      setErrorMsg('Please enter a valid Applied load');
-                  }
+                //   if( numericValue >= 7.5 && numericValue <= 25 ) {
+                //       updateState(numericValue);
+                //       setErrorMsg("")
+                //   } else {
+                //       setErrorMsg('Please enter a valid Applied load');
+                //   }
 
+                // }
+                if(numericValue <= 7.5) {
+                  setSelectedPhaseType("1")
+                  updateState(numericValue);
+                } else if(numericValue > 7.5) {
+                  setSelectedPhaseType("2")
+                  updateState(numericValue);
                 }
-
+               
               } else if( name === "Applied load" && text == "") {
                 setErrorMsg("")
+                setSelectedPhaseType("")
               } else {
                 updateState(text) 
               }
@@ -1333,7 +1342,8 @@ console.log("selectedCsc",selectedCsc)
            />
             <Text style={styles.ErrorMsg}>{invalidCategory}</Text>
            </View>
-           <View style={styles.Margin_10}>
+           {renderTextInput("Applied load", "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
+           <View style={styles.Margin_10} pointerEvents={'none'}>
             <Text style={styles.LoginSubTxt}>{t("Phase type") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
@@ -1343,7 +1353,7 @@ console.log("selectedCsc",selectedCsc)
                 labelField="label"
                 valueField="value"
                 placeholder={t("Select the Phase type")}
-                style={styles.QuesComplaintDropdown}
+                style={[styles.QuesComplaintDropdown, { backgroundColor: '#F4F4F4' }]}
                 renderItem={renderItem}
                 data={phaseTypeOptions}
                 value={selectedPhaseType}
@@ -1425,7 +1435,6 @@ console.log("selectedCsc",selectedCsc)
             )}
            </View>
            </View>: null }
-           {renderTextInput("Applied load", "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
           
           <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t("Install type") + (" *")}</Text>   

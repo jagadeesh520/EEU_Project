@@ -90,6 +90,10 @@ const Login = ({ navigation }) => {
   };
 
   const submitOnClick = async () => {
+    if (!isConnected) {
+      Alert.alert('No Internet', 'You are offline. Please check your connection.');
+      return;
+    } else { 
     if (validateInputs()) {
       fetch(constant.BASE_URL + constant.LOGIN_POST, {
         method: 'POST',
@@ -102,11 +106,16 @@ const Login = ({ navigation }) => {
       })
         .then((response) => response.json())
         .then(async (responseData) => {
+          if (responseData.status >= 500) {
+            console.log('Server is down. Please try again later.');
+          } else {
+            console.log('Failed to log in. Please try again.');
+          }
           if (responseData.Record.Status === 'Valid Login') {
             storeData(responseData.Record);
             showToast('success', 'Login successful');
             navigation.navigate('BottomTab');
-            
+
             if (rememberMe) {
               const value = await AsyncStorage.getItem('rememberData');
               const tempRememberMe = value ? JSON.parse(value) : [];
@@ -128,8 +137,10 @@ const Login = ({ navigation }) => {
         })
         .catch((error) => {
           console.log(error, "error")
+          showToast('error', error);
         });
     }
+   }
   };
 
   const handleRememberMeToggle = async (value) => {
