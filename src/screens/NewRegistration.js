@@ -408,7 +408,7 @@ console.log("selectedCsc",selectedCsc)
       } else {
         setInvalidRegion('');
       }
-      if ( custService == '') {
+      if ( selectedCsc == '') {
         setInvalidCusService(t("Customer service can't be empty"));
         valid = false;
       } else {
@@ -451,12 +451,12 @@ console.log("selectedCsc",selectedCsc)
       } else {
         setInvalidPartnerType('');
       }
-      if (selectedPhaseType === '') {
-        setInvalidPhaseType(t("Phase type can't be empty"));
-        valid = false;
-      } else {
-        setInvalidPhaseType('');
-      }
+      // if (selectedPhaseType === '') {
+      //   setInvalidPhaseType(t("Phase type can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidPhaseType('');
+      // }
       if (selectedIDType === '') {
         setInvalidIDType(t("ID Type can't be empty"));
         valid = false;
@@ -577,10 +577,9 @@ console.log("selectedCsc",selectedCsc)
           let ServiceRequestNumber =   data?.ServiceRequestNumber ? data?.ServiceRequestNumber : "";
           setLoading(false)
           // if(data?.CANumber) {
-          console.log(responseData, "data----->")
             Alert.alert(
               '',
-              t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber) + "  "+ t("BP Number") + String(data.BPNumber),
+              t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber) + "  "+ t("BP Number : ") + String(data.BP),
               [
                 {
                   text: 'COPY CA Number',
@@ -978,7 +977,31 @@ console.log("selectedCsc",selectedCsc)
     console.log(file,"conne type", imageName)  
     const zoneData =[];
     console.log("zoneData",zoneData)
-    console.log(selectedConnectionType,"conne type")  
+    console.log(invalidIDType,
+      invalidIDNumber,
+      invalidFirstName,
+      invalidLastName,
+      invalidTitle,
+      invalidEmail,
+      invalidMobileNo,
+      invalidGender,
+      invalidHouseNumber,
+      invalidLandmark,
+      invalidKebele,
+      invalidZone,
+      invalidRegion,
+      invalidConnectionType,
+      invalidAppliedLoad,
+      invalidInstallType,
+      invalidPhaseType,
+      invalidImage,
+      invalidCusService,
+      invalidCategory,
+      invalidPartnerType,
+      invalidPartnerCategory,
+      invalidOrgName1,
+      invalidOrgName2,
+      invalidOrgName3);  
     return (
         <View style={styles.StartMain}>
            <View style={styles.RegisterMainContainer}>
@@ -1026,7 +1049,7 @@ console.log("selectedCsc",selectedCsc)
                   {renderPreview("Connection end date", connEndDate )} */}
                   {renderPreview("Applied load", appliedLoad )}
                   {renderPreview("Install type", insType )}
-                  {renderPreview("CSC Customer Service", cscService )}
+                  {renderPreview("CSC Customer Service", selectedCsc.label )}
 
                   <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Identity Details") + (" *")}</Text>
 
@@ -1542,6 +1565,8 @@ console.log("selectedCsc",selectedCsc)
            </TouchableOpacity> 
            <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
             onPress={() => {
+              var validate = validateInputs()
+              console.log(validate, "check----->s")
               if (validateInputs()) { 
                setIsPreview(true) 
               } 
