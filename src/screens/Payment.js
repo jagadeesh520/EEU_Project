@@ -121,7 +121,7 @@ const Payment = ({navigation}) => {
               "paymentRequest": {
                   "amount": amount,
                   // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-                  "callbackUrl": "http://197.156.76.70:8080/paymentDataAWAS",
+                  "callbackUrl": "http://172.16.7.251:8080/RESTAdapter/paymentDataAWAS",
                   "externalReference": externalRef,
                   "payerPhone": mobileNo,
                   "reason": externalReference

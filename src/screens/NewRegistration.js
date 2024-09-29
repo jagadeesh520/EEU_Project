@@ -1253,7 +1253,7 @@ console.log("selectedCsc",selectedCsc)
                   setZone(item.value);
                   setSelectedKabele(item.kebele);
                     if((item.value)?.length > 0 ) {
-                      setInvalidRegion("")
+                      setInvalidZone("")
                     }
                 }}               
                />
@@ -1278,14 +1278,14 @@ console.log("selectedCsc",selectedCsc)
                   setKebele(item.value);
                   setSelectedCsc(item.csc)
                     if((item.value)?.length > 0 ) {
-                      setInvalidRegion("")
+                      setInvalidKebele("")
                     }
                 }}               
                />
                <Text style={styles.ErrorMsg}>{invalidGender}</Text>
              </View>
              <View style={styles.Margin_10}>
-               <Text style={styles.LoginSubTxt}>{t("CSC") + (" *")}</Text>   
+               <Text style={styles.LoginSubTxt}>{t("CSC Customer Service") + (" *")}</Text>   
                <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -1293,7 +1293,7 @@ console.log("selectedCsc",selectedCsc)
                 iconStyle={styles.RaiseComplaintDropdownTxt}
                 labelField="label"
                 valueField="value"
-                placeholder={t("Enter CSC")}
+                placeholder={t("Select the CSC Customer Service")}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
                 data={selectedCsc?.length ? selectedCsc : []}
@@ -1302,7 +1302,7 @@ console.log("selectedCsc",selectedCsc)
                   console.log("item",item.kebele)
                   setCsc(item.value);
                     if((item.value)?.length > 0 ) {
-                      setInvalidRegion("")
+                      setInvalidCusService("")
                     }  
                 }}               
                />
@@ -1451,7 +1451,7 @@ console.log("selectedCsc",selectedCsc)
           />
            <Text style={styles.ErrorMsg}>{invalidInstallType}</Text>
           </View>
-           <View style={styles.Margin_10}>
+          {/*  <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("CSC Customer Service") + (" *")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
@@ -1474,7 +1474,7 @@ console.log("selectedCsc",selectedCsc)
                 }}               
            />
             <Text style={styles.ErrorMsg}>{invalidCusService}</Text>
-           </View>
+           </View> */}
            
            <Text style={styles.NewServiceHeader}>{t("Identity Details") + (" *")}</Text>
            
