@@ -98,7 +98,7 @@ const Payment = ({navigation}) => {
       },
       "paymentRequest": {
           "amount": amount,
-          "callbackUrl": "http://197.156.76.70:8080/paymentDataAWAS",
+          "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
           "externalReference": externalRef,
           "payerPhone": mobileNo,
           "reason": externalReference
@@ -121,7 +121,7 @@ const Payment = ({navigation}) => {
               "paymentRequest": {
                   "amount": amount,
                   // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-                  "callbackUrl": "http://172.16.7.251:8080/RESTAdapter/paymentDataAWAS",
+                  "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
                   "externalReference": externalRef,
                   "payerPhone": mobileNo,
                   "reason": externalReference
@@ -134,17 +134,29 @@ const Payment = ({navigation}) => {
         // setIsPaymentResponse(true);
         setIsPayment(false);
         if(isPayment) { 
-         Alert.alert(
-          '',
-          "Return Code: " + responseData.returnCode + " Return Message: " + responseData.returnMessage,
-          [
-            { text: 'OK', onPress: () => {
-              if(responseData.returnMessage === "Validated") {
-                navigation.navigate("BottomTab") 
-              }
-            }},
-          ]
-         );
+        if( responseData.returnCode == 0 ) {
+          Alert.alert(
+            'Payment request successfully Submitted',
+            "Return Code: " + responseData.returnCode + " Return Message: " + responseData.returnMessage,
+            [
+              { text: 'OK', onPress: () => {
+                if(responseData.returnMessage === "Validated") {
+                  navigation.navigate("BottomTab") 
+                }
+              }},
+            ]
+           );
+        } else {
+          Alert.alert(
+            'Payment Request Failed',
+            "Return Code: " + responseData.returnCode + " Return Message: " + responseData.returnMessage,
+            [
+              { text: 'OK', onPress: () => {
+                
+              }},
+            ]
+           );
+        }
        } 
      
       

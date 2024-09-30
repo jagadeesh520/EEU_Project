@@ -199,8 +199,6 @@ const [selectedZone, setSelectedZone] = useState("");
 const [selectedKabele, setSelectedKabele] = useState("");
 const [selectedCsc, setSelectedCsc] = useState("");
 
-console.log("selectedCsc",selectedCsc)
-
     const regionOptions = [
       { label: "Addis Ababa ", value:"01" },
       { label: "Afar", value:"02" },
@@ -439,7 +437,7 @@ console.log("selectedCsc",selectedCsc)
       } else {
         setInvalidInstallType('');
       }
-      if (selectedImage === '') {
+      if (selectedImage === '' && file == null) {
         setInvalidImage(t("ID Softcopy can't be empty"));
         valid = false;
       } else {
@@ -534,6 +532,7 @@ console.log("selectedCsc",selectedCsc)
               "IDSoftCopyUpload": selectedImage,
               "PhaseType": selectedPhaseType
       }
+      console.log(data, "data--->")
       fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -699,9 +698,11 @@ console.log("selectedCsc",selectedCsc)
                 // }
                 if(numericValue <= 7.5) {
                   setSelectedPhaseType("1")
+                  setPhaseType("Single Phase")
                   updateState(numericValue);
                 } else if(numericValue > 7.5) {
                   setSelectedPhaseType("2")
+                  setPhaseType("Three Phase")
                   updateState(numericValue);
                 }
                
@@ -973,35 +974,10 @@ console.log("selectedCsc",selectedCsc)
           <Text style={[styles.LoginSubTxt, {flex: 0.3}]}>{value}</Text>   
         </View>
       )
-    }
-    console.log(file,"conne type", imageName)  
+    } 
+    console.log(selectedPhaseType, "selectedPhaseType")
     const zoneData =[];
-    console.log("zoneData",zoneData)
-    console.log(invalidIDType,
-      invalidIDNumber,
-      invalidFirstName,
-      invalidLastName,
-      invalidTitle,
-      invalidEmail,
-      invalidMobileNo,
-      invalidGender,
-      invalidHouseNumber,
-      invalidLandmark,
-      invalidKebele,
-      invalidZone,
-      invalidRegion,
-      invalidConnectionType,
-      invalidAppliedLoad,
-      invalidInstallType,
-      invalidPhaseType,
-      invalidImage,
-      invalidCusService,
-      invalidCategory,
-      invalidPartnerType,
-      invalidPartnerCategory,
-      invalidOrgName1,
-      invalidOrgName2,
-      invalidOrgName3);  
+
     return (
         <View style={styles.StartMain}>
            <View style={styles.RegisterMainContainer}>
@@ -1040,16 +1016,17 @@ console.log("selectedCsc",selectedCsc)
 
                   {renderPreview("House No", houseNumber)}
                   {renderPreview("Landmark", landmark)}
-                  {renderPreview("Kebele", kebele)}
-                  {renderPreview("Zone", zone)}
                   {renderPreview("Region", reg )}
+                  {renderPreview("Zone", zone)}
+                  {renderPreview("Kebele", kebele)}
+                  {renderPreview("CSC Customer Service", selectedCsc[0]?.label )}
+                  <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Service Connection Details")}</Text>
                   {renderPreview("Prepaid/Postpaid", paidOption )}
                   {renderPreview("Phase type", phaseType )}
-                  {/* {renderPreview("Connection start date", connStartDate )}
-                  {renderPreview("Connection end date", connEndDate )} */}
-                  {renderPreview("Applied load", appliedLoad )}
+                  {renderPreview("Connection type", connType )}
+                  {renderPreview("Connection start date", moment(connStartDate).format('DD-MM-YYYY') )}
+                  {renderPreview("Connection end date", moment(connEndDate).format('DD-MM-YYYY') )}
                   {renderPreview("Install type", insType )}
-                  {renderPreview("CSC Customer Service", selectedCsc.label )}
 
                   <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Identity Details") + (" *")}</Text>
 
@@ -1063,7 +1040,7 @@ console.log("selectedCsc",selectedCsc)
                       source={{ uri: selectedImage }}
                       style={{ width: '100%', height: 100, marginBottom: 20, flex: 0.3 }}
                       resizeMode="cover"
-                    />  : <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName}</Text>   }           
+                    />  : <Text style={[styles.Margin_10, {color: themeObj.imageNameColor, flex: 0.3}] }>{imageName}</Text>   }           
                   </View>
                   <View style = {{ marginTop: 20, width: '80%', display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t("ID Softcopy Upload")+ " 2"}</Text>   
@@ -1073,7 +1050,7 @@ console.log("selectedCsc",selectedCsc)
                       source={{ uri: selectedImage2 }}
                       style={{ width: '100%', height: 100, marginBottom: 20, flex: 0.3 }}
                       resizeMode="cover"
-                    />  : <Text style={[styles.Margin_10, {color: themeObj.imageNameColor}] }>{imageName2}</Text>   }           
+                    />  : <Text style={[styles.Margin_10, {color: themeObj.imageNameColor, flex: 0.3}] }>{imageName2}</Text>   }           
                   </View>
                   <View>
                   <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
@@ -1331,7 +1308,8 @@ console.log("selectedCsc",selectedCsc)
                 data={selectedCsc?.length ? selectedCsc : []}
                 value={csc}
                 onChange={item => {
-                  console.log("item",item.kebele)
+                  console.log(item.value, "item---->")
+                  setCustService(item.label);
                   setCsc(item.value);
                     if((item.value)?.length > 0 ) {
                       setInvalidCusService("")

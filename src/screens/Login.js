@@ -1,6 +1,6 @@
 // Imports
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, StyleSheet, Modal, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, StyleSheet, Modal, FlatList, Alert } from 'react-native';
 import { Button, Menu } from 'react-native-paper';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
@@ -30,7 +30,30 @@ const Login = ({ navigation }) => {
   const [rememberData, setRememberData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
+  const fetchWithTimeout = (url, options, timeout = 5000) => {
+    return Promise.race([
+      fetch(url, options),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Request timeout')), timeout))
+    ]);
+  };
+  const checkInternetConnection = async () => {
+    try {
+      const response = await fetchWithTimeout('https://www.google.com', {
+        method: 'HEAD',
+      }, 5000); // Timeout of 5 seconds
 
+
+      if (response.ok) {
+        console.log(response.ok, "google====>")
+        setIsConnected(true);  // Internet is available
+      } else {
+        setIsConnected(false); // Internet is not available
+      }
+    } catch (error) {
+      setIsConnected(false);   // If fetch fails, no internet
+    }
+  };
   useEffect(() => {
     const fetchRememberData = async () => {
       const value = await AsyncStorage.getItem('rememberData');
@@ -39,6 +62,13 @@ const Login = ({ navigation }) => {
       }
     };
     fetchRememberData();
+    checkInternetConnection(); // Check on component mount
+
+    const interval = setInterval(() => {
+      checkInternetConnection();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const storeData = async (value) => {
@@ -90,10 +120,15 @@ const Login = ({ navigation }) => {
   };
 
   const submitOnClick = async () => {
-    if (!isConnected) {
-      Alert.alert('No Internet', 'You are offline. Please check your connection.');
-      return;
-    } else { 
+    if(!isConnected) {
+      Alert.alert(
+            '',
+            "No internet connection! Please check your connection,",
+            [
+              { text: 'OK', onPress: () =>{} },
+            ]
+      );
+    } else {
     if (validateInputs()) {
       fetch(constant.BASE_URL + constant.LOGIN_POST, {
         method: 'POST',
