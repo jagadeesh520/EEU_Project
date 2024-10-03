@@ -249,6 +249,14 @@
         "Dis/Reconnection": "Dis/Reconnection",
         "Move Out SR": "Move Out SR",
         "Miscellaneous": "Miscellaneous",
-        "GO BACK": "GO BACK"
+        "GO BACK": "GO BACK",
+        "Move Out Service Request": "Move Out Service Request",
+        "Select the Category1": "Select the Category1",
+        "Category2": "Category2",
+        "Select the Category2": "Select the Category2",
+        "Meter Type": "Meter Type",
+        "Select the Meter Type": "Select the Meter Type",
+        "Meter Replacement Req": "Meter Replacement Req",
+        "Select the Meter Replacement Req": "Select the Meter Replacement Req"
     } 
 }

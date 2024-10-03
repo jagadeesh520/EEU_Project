@@ -1141,7 +1141,27 @@ const Styles = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center'
-        }
+        },
+        container: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        noInternetBanner: {
+            position: 'absolute',
+            top: 0,
+            width: '100%',
+            backgroundColor: 'red',
+            padding: 10,
+            zIndex: 1,
+        },
+        noInternetText: {
+            color: 'white',
+            textAlign: 'center',
+        },
+        appText: {
+            fontSize: 18,
+        },
     };
 
     return { theme, styles, changeTheme }

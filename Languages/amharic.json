@@ -249,6 +249,14 @@
         "Dis/Reconnection": "ግንኙነትን አቋርጥ/እንደገና መገናኘት",
         "Move Out SR": "SR ውጣ",
         "Miscellaneous": "የተለያዩ",
-        "GO BACK": "ተመለስ"
+        "GO BACK": "ተመለስ",
+        "Move Out Service Request": "የአገልግሎት ጥያቄን ውጣ",
+        "Select the Category1": "ምድብ 1 ይምረጡ",
+        "Category2": "ምድብ 2",
+        "Select the Category2": "ምድብ 2 ን ይምረጡ",
+        "Meter Type":"ሜትር ዓይነት",
+        "Select the Meter Type": "የሜትሩን አይነት ይምረጡ",
+        "Meter Replacement Req": "ሜትር መተኪያ ጥያቄ",
+        "Select the Meter Replacement Req": "የሜትር መተኪያ ጥያቄን ይምረጡ"
     } 
 }

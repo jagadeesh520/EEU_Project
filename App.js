@@ -148,7 +148,7 @@ const App = () => {
     return (
       <>
         {routeName && <IdleTimer navigation={navigation} routeName={routeName} />}
-        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="DisOrReconnection" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="StartScreen" component={StartScreen} />
           <Stack.Screen name="Dashboard" component={Dashboard} />

@@ -45,7 +45,6 @@ const Login = ({ navigation }) => {
 
 
       if (response.ok) {
-        console.log(response.ok, "google====>")
         setIsConnected(true);  // Internet is available
       } else {
         setIsConnected(false); // Internet is not available
@@ -141,12 +140,12 @@ const Login = ({ navigation }) => {
       })
         .then((response) => response.json())
         .then(async (responseData) => {
-          if (responseData.status >= 500) {
+          if (responseData && responseData?.status >= 500) {
             console.log('Server is down. Please try again later.');
           } else {
             console.log('Failed to log in. Please try again.');
           }
-          if (responseData.Record.Status === 'Valid Login') {
+          if (responseData?.Record?.Status === 'Valid Login') {
             storeData(responseData.Record);
             showToast('success', 'Login successful');
             navigation.navigate('BottomTab');
@@ -172,7 +171,7 @@ const Login = ({ navigation }) => {
         })
         .catch((error) => {
           console.log(error, "error")
-          showToast('error', error);
+          // showToast('error', error);
         });
     }
    }
@@ -303,16 +302,55 @@ const Login = ({ navigation }) => {
           <TouchableOpacity style={styles.RegisterBtn} onPress={submitOnClick}>
             <Text style={styles.RegisterBtnTxt}>{t("LOGIN")}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Margin_20} onPress={() => navigation.navigate('ForgetPassword')}>
+          <TouchableOpacity style={styles.Margin_20} 
+          onPress={() =>{
+            if(!isConnected) {
+              Alert.alert(
+                    '',
+                    "No internet connection! Please check your connection,",
+                    [
+                      { text: 'OK', onPress: () =>{} },
+                    ]
+              );
+            } else {
+             navigation.navigate('ForgetPassword')
+            }
+          }}>
             <Text style={styles.LoginResetTxt}>{t("Forget Password ?")}</Text>
           </TouchableOpacity>
           <View style={styles.Margin_20}>
             <Text style={styles.LoginAccTxt}>{t("Don’t have an account?")}</Text>
           </View>
-          <TouchableOpacity style={styles.LoginCreateBtn} onPress={() => navigation.navigate('Registration')}>
+          <TouchableOpacity style={styles.LoginCreateBtn} 
+          onPress={() =>{ 
+            if(!isConnected) {
+              Alert.alert(
+                    '',
+                    "No internet connection! Please check your connection,",
+                    [
+                      { text: 'OK', onPress: () =>{} },
+                    ]
+              );
+            } else {
+              navigation.navigate('Registration')
+            }  
+          }}>
             <Text style={styles.LoginCreateTxt}>{t("CREATE LOGIN ACCOUNT")}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.LoginCreateBtn} onPress={() => navigation.navigate('NewRegisteration')}>
+          <TouchableOpacity style={styles.LoginCreateBtn} 
+          onPress={() =>{
+            if(!isConnected) {
+              Alert.alert(
+                    '',
+                    "No internet connection! Please check your connection,",
+                    [
+                      { text: 'OK', onPress: () =>{} },
+                    ]
+              );
+            } else {
+              navigation.navigate('NewRegisteration')
+            }  
+          }}>
             <Text style={styles.LoginCreateTxt}>{t("APPLY FOR NEW SERVICE")}</Text>
           </TouchableOpacity>
           <View style={styles.FooterContainer}>

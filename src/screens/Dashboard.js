@@ -52,11 +52,36 @@ const Dashboard = ({ navigation, route }) => {
   const [checked, setChecked] = useState(theme);
   const [paymentHistoryData, setPaymentHistoryData] = useState([]);
   const [billHistoryData, setBillHistoryData] = useState([]);
-  const [ selectedLang, setSelectedLang] = useState('')
+  const [ selectedLang, setSelectedLang] = useState('');
+  const [isConnected, setIsConnected] = useState(true);
+
+  const fetchWithTimeout = (url, options, timeout = 5000) => {
+    return Promise.race([
+      fetch(url, options),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Request timeout')), timeout))
+    ]);
+  };
+  const checkInternetConnection = async () => {
+    try {
+      const response = await fetchWithTimeout('https://www.google.com', {
+        method: 'HEAD',
+      }, 5000); // Timeout of 5 seconds
+
+
+      if (response.ok) {
+        setIsConnected(true);  // Internet is available
+      } else {
+        setIsConnected(false); // Internet is not available
+      }
+    } catch (error) {
+      setIsConnected(false);   // If fetch fails, no internet
+    }
+  };
   useEffect(() => {
     retrieveData();
     const transitionDuration = 4000; // Duration between transitions in milliseconds
     const displayDuration = 1500; // Duration to display each value in milliseconds
+    checkInternetConnection(); // Check on component mount
 
     const transitionInterval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % energySavingTips.length);
@@ -69,14 +94,20 @@ const Dashboard = ({ navigation, route }) => {
       }, displayDuration);
     }, transitionDuration);
 
+    const interval = setInterval(() => {
+      checkInternetConnection();
+    }, 10000);
+
     return () => {
       clearInterval(transitionInterval);
       clearInterval(displayInterval);
+      clearInterval(interval);
     };
     if (theme) {
       setChecked(theme);
     }
 
+   
 
   }, [currentMessageIndex, theme]);
   useFocusEffect(
@@ -188,7 +219,21 @@ const Dashboard = ({ navigation, route }) => {
   const renderQuickLinks = (buttonImage, buttonText, navigationName) => {
     return (
       <View>
-        <TouchableOpacity style={styles.DashboardQuickLinkCon} onPress={() => { navigation.navigate(navigationName) }}>
+        <TouchableOpacity style={styles.DashboardQuickLinkCon}
+          onPress={() =>{
+            if(!isConnected) {
+              Alert.alert(
+                    '',
+                    "No internet connection! Please check your connection,",
+                    [
+                      { text: 'OK', onPress: () =>{} },
+                    ]
+              );
+            } else {
+              navigation.navigate(navigationName)
+            }  
+          }}
+          >
           <Image source={buttonImage} style={styles.DashboardQuickLinkImage} />
           <Text style={styles.DashboardQuickLnkText}>{buttonText}</Text>
         </TouchableOpacity>
@@ -302,7 +347,20 @@ const Dashboard = ({ navigation, route }) => {
               <Text style={styles.DashboardSubHeaderTxt1}>{t("Amount Due") + " : "}</Text>
               <Text style={styles.DashboardUSDTxt}>{"ETB "+ (unpaidDueData?.Invoice_Amount ? unpaidDueData?.Invoice_Amount : 0)}</Text>
             </View>
-            <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillDue") }}>
+            <TouchableOpacity style={styles.DashboardPayBillBtn} 
+            onPress={() =>{
+              if(!isConnected) {
+                Alert.alert(
+                      '',
+                      "No internet connection! Please check your connection,",
+                      [
+                        { text: 'OK', onPress: () =>{} },
+                      ]
+                );
+              } else {
+                navigation.navigate('BillDue')
+              }  
+            }}>
               <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW DETAILS")}</Text>
               <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
             </TouchableOpacity>
@@ -319,7 +377,21 @@ const Dashboard = ({ navigation, route }) => {
                 <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + ( unpaidDemandData.Amount ? unpaidDemandData.Amount : 0 )}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
-              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("Payment") }}>
+              <TouchableOpacity style={styles.DashboardPayBillBtn}
+                onPress={() =>{
+                  if(!isConnected) {
+                    Alert.alert(
+                          '',
+                          "No internet connection! Please check your connection,",
+                          [
+                            { text: 'OK', onPress: () =>{} },
+                          ]
+                    );
+                  } else {
+                    navigation.navigate('Payment')
+                  }  
+                }}
+              >
                 <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW DETAILS")}</Text>
                 <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
               </TouchableOpacity>
@@ -339,7 +411,21 @@ const Dashboard = ({ navigation, route }) => {
                 <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + ( paymentHistoryData ? (paymentHistoryData[0]?.PaymentAmount ? (paymentHistoryData[0]?.PaymentAmount).trim() : 0) : 0 )}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
-              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("PaymentHistory") }}>
+              <TouchableOpacity style={styles.DashboardPayBillBtn}
+                 onPress={() =>{
+                  if(!isConnected) {
+                    Alert.alert(
+                          '',
+                          "No internet connection! Please check your connection,",
+                          [
+                            { text: 'OK', onPress: () =>{} },
+                          ]
+                    );
+                  } else {
+                    navigation.navigate('PaymentHistory')
+                  }  
+                }}
+              >
                 <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW ALL")}</Text>
                 <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
               </TouchableOpacity>
@@ -357,7 +443,21 @@ const Dashboard = ({ navigation, route }) => {
                 <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + billHistoryData ? (billHistoryData[0]?.Amount ? (billHistoryData[0]?.Amount).trim() : 0) : 0}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
-              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillHistory") }}>
+              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillHistory") }}
+                onPress={() =>{
+                  if(!isConnected) {
+                    Alert.alert(
+                          '',
+                          "No internet connection! Please check your connection,",
+                          [
+                            { text: 'OK', onPress: () =>{} },
+                          ]
+                    );
+                  } else {
+                    navigation.navigate('BillHistory')
+                  }  
+                }}
+              >
                 <Text style={styles.DashboardPayBillBtnTxt}>{t("VIEW ALL")}</Text>
                 <Image style={{ tintColor: 'white' }} source={ImagePath.RightArrow} />
               </TouchableOpacity>
