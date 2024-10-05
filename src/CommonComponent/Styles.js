@@ -425,6 +425,20 @@ const Styles = () => {
             alignItems: 'center',
             width: '100%'
         },
+        infoIcon: {
+            marginLeft: wp(280),
+            marginTop: wp(-11)
+          
+        },
+        LandInfo:{
+            display: 'flex'
+            
+        },
+        LandInfoIcon: {
+            marginLeft: wp(280),
+            
+          
+        },
         RegisterMainHeader: {
             color: '#121212',
             fontSize: wp(16),

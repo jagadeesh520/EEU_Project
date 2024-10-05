@@ -257,6 +257,14 @@
         "Meter Type":"ሜትር ዓይነት",
         "Select the Meter Type": "የሜትሩን አይነት ይምረጡ",
         "Meter Replacement Req": "ሜትር መተኪያ ጥያቄ",
-        "Select the Meter Replacement Req": "የሜትር መተኪያ ጥያቄን ይምረጡ"
+        "Select the Meter Replacement Req": "የሜትር መተኪያ ጥያቄን ይምረጡ",
+        "Select “Person“ if you are applying with your own name; if not, Choose “Organization“": "በራስዎ ስም የሚያመለክቱ ከሆነ “ግለሰብ“ የሚለውን ይምረጡ, / በድርጅት ስም የሚያመለክቱ ከሆነ “ድርጅት“ የሚለውን ይምረጡ",
+        "To identify your location, encode a known close-by address" : "ለመለያነት ለቤትዎ/ድርጅትዎ አቅራቢያ የሚሆን ታዋቂ ስፍራ ይፃፉ",
+        "Choose “Regular“ for permanent use,or Temporary for one-time use": "ላልተወሰነ ጊዜ አገልግሎት “ቛሚ“ን ይምረጡ ለተወሰን ጊዜ አገልግሎት “ጊዜያዊ“ ን ይምረጡ",
+        "For Single phase service, Select “Single phase“ For three phase service Select “Three Phase“ ": "ለነጠላ ፌዝ አገልግሎት “ነጠላ ፌዝ“ ን ይምረጡ / ለሦስት ፌዝ አገልግሎት “ሦስት ፌዝ“ ን ይምረጡ",
+        "For Single phase service enter upto 7.5Kw or For three phase service enter the Kw that need to be approved" :"ለነጠላ ፌዝ ተጠቃሚዎች እስክ 7.5 ኪዋ/ ለሦስት ፌዝ ተጠቃሚዎች የሚፈልጉትን ኤሌክትሪክ ሃይል መጠን ይሙሉ",
+        "Choose the service that suit your intended use from the drop-down list" : "ከተዘረዘሩት ምርጫዎች ውስጥ ሊጠቀሙ ያሰቡትን አገልግሎት ይምረጡ",
+        "From ID card/letter that will be uploaded, encode the ID number" : "በሚያያይዙት ሰነድ ላይ ያለውን መለያ ይፃፉ"
+
     } 
 }

@@ -19,12 +19,15 @@ import { useToast } from 'react-native-toast-notifications';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Close from 'react-native-vector-icons/AntDesign';
 import {data} from '../../Languages/data';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 
 const NewRegistration = ({navigation}) => {
     const toast = useToast();
     const { t, i18n } = useTranslation();
     const { styles } = Styles()
+    const [visible, setVisible] = useState(false);
+    const openMenu = () => setVisible(true);
     const [ newPassword, setNewPassword] = useState("")
     const [ answer, setAnswer] = useState("")
     const [ accountNo, setAccountNo ] = useState("")
@@ -607,13 +610,95 @@ const [selectedCsc, setSelectedCsc] = useState("");
         </View>
       );
     };
+
+    const partnerInfoMessage = () => {
+      Alert.alert(
+        '',
+        t("Select “Person“ if you are applying with your own name; if not, Choose “Organization“"),
+        [
+          
+          { text: 'Ok', onPress: () => console.log('OK Pressed') },
+        ]
+      );
+    }
+
+    const LandInfoMessage = () => {
+      Alert.alert(
+        '',
+        t("To identify your location, encode a known close-by address"),
+        [
+          
+          { text: 'Ok', onPress: () => console.log('OK Pressed') },
+        ]
+      );
+    
+    }
+
+    const AppliedLoadInfoMessage = () => {
+      Alert.alert(
+        '',
+        t("For Single phase service enter upto 7.5Kw or For three phase service enter the Kw that need to be approved"),
+        [
+          
+          { text: 'Ok', onPress: () => console.log('OK Pressed') },
+        ]
+      );
+    
+    }
+
+    const IDNumberInfoMessage = () => {
+      Alert.alert(
+        '',
+        t("From ID card/letter that will be uploaded, encode the ID number"),
+        [
+          
+          { text: 'Ok', onPress: () => console.log('OK Pressed') },
+        ]
+      );
+    
+    }
+
+
+    const connectionInfoMessage = () => {
+      Alert.alert(
+        '',
+        t("Choose “Regular“ for permanent use,or Temporary for one-time use"),
+        [
+          
+          { text: 'Ok', onPress: () => console.log('OK Pressed') },
+        ]
+      );
+    }
+
+    const installTypeInfoMessage = () => {
+      Alert.alert(
+        '',
+        t("Choose the service that suit your intended use from the drop-down list"),
+        [
+          
+          { text: 'Ok', onPress: () => console.log('OK Pressed') },
+        ]
+      );
+    }
+
+    const phaseInfoMessage = ()=> {
+      Alert.alert(
+        '',
+        t("For Single phase service, Select “Single phase“ For three phase service Select “Three Phase“"),
+        [
+          
+          { text: 'Ok', onPress: () => console.log('OK Pressed') },
+        ]
+      );
+    }
+
   
     const renderTextInput = (name, placeholder, value, updateState, ErrorMsg, setErrorMsg) => {
         return(
           <View>
            { name === "Mobile No" ? 
           <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t(name) + " *"}</Text>   
+            <Text style={styles.LoginSubTxt}>{t(name) + " *"}</Text>  
            <View style={{ display: 'flex', flexDirection: 'row' }}>
             <TextInput style={styles.countryCodeInput} editable={false} value={countryCode}/> 
             <TextInput
@@ -644,7 +729,10 @@ const [selectedCsc, setSelectedCsc] = useState("");
           <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
           </View>:
           <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" ? "" : " *")}</Text>   
+           <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" ? "" : " *")}</Text> 
+           {(name == "Landmark") && <Icon onPress= {LandInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />}
+           {(name == "Applied load") && <Icon onPress= {AppliedLoadInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />}
+           {(name == "ID Number") && <Icon onPress= {IDNumberInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />}
             <TextInput
             placeholder={t(placeholder)}
             value={value}
@@ -1096,7 +1184,10 @@ const [selectedCsc, setSelectedCsc] = useState("");
            <Text style={styles.StartMainHeader}>{t("New Connection Request")}</Text>
            <Text style={styles.NewServiceHeader}>{t("Personal Details")}</Text>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Partner Category") + (" *")}</Text>   
+            <View>
+            <Text style={styles.LoginSubTxt}>{t("Partner Category") + (" *")}</Text>
+            <Icon onPress= {partnerInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />
+            </View>
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -1345,7 +1436,10 @@ const [selectedCsc, setSelectedCsc] = useState("");
            </View>
            {renderTextInput("Applied load", "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
            <View style={styles.Margin_10} pointerEvents={'none'}>
-            <Text style={styles.LoginSubTxt}>{t("Phase type") + (" *")}</Text>   
+            <View>
+            <Text style={styles.LoginSubTxt}>{t("Phase type") + ("*")}</Text>   
+            <Icon onPress= {phaseInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />
+            </View>
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -1370,7 +1464,10 @@ const [selectedCsc, setSelectedCsc] = useState("");
            </View>
            
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Connection type") + (" *")}</Text>   
+            <View>
+            <Text style={styles.LoginSubTxt}>{t("Connection type") + (" *")}</Text>  
+            <Icon onPress= {connectionInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} /> 
+            </View>
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -1438,7 +1535,10 @@ const [selectedCsc, setSelectedCsc] = useState("");
            </View>: null }
           
           <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Install type") + (" *")}</Text>   
+          <View>
+           <Text style={styles.LoginSubTxt}>{t("Install type") + (" *")}</Text>  
+           <Icon onPress= {installTypeInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />  
+           </View>
            <Dropdown
                placeholderStyle={styles.RaiseComplaintDropdownTxt}
                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
