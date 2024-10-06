@@ -252,8 +252,17 @@ const [selectedCsc, setSelectedCsc] = useState("");
     const [imageName2, setImageName2] = useState(null);
     const [file, setFile] = useState(null);
     const { theme, themeObj } = useThemes();
-    const [ connStartDate, setConnStartDate  ] = useState(new Date());
-    const [ connEndDate, setConnEndDate  ] = useState(new Date());
+    //const [ connStartDate, setConnStartDate  ] = useState(new Date());
+    const startDate = new Date();
+    const endDate = new Date();
+    const numberOfStartDaysToAdd = 25;
+    const numberOfEndDaysToAdd = 26;
+    const startResult = startDate.setDate(startDate.getDate() + numberOfStartDaysToAdd);
+    const endResult = endDate.setDate(endDate.getDate() + numberOfEndDaysToAdd);
+    const [connStartDate, setConnStartDate] = useState(new Date(startResult));
+    const [ connEndDate, setConnEndDate  ] = useState(new Date(endResult));
+    const [showDateStartpickerStartConnection , setShowDateStartpickerStartConnection] = useState(false);
+    const [showDateEndpickerStartConnection, setShowDateEndpickerStartConnection] = useState(false);
     const [ selectedImage, setSelectedImage ] = useState("");
     const [ selectedImage2, setSelectedImage2 ] = useState("");
     const [date, setDate] = useState(new Date());
@@ -1022,18 +1031,24 @@ const [selectedCsc, setSelectedCsc] = useState("");
       }
     }
     const onChangeStartConnection = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
+      const currentDate = selectedDate || connStartDate;
+      console.log("currentDate",currentDate,selectedDate)
+      setShowDateStartpickerStartConnection(false)
       setConnStartDate(currentDate);
-      setShow(false)
+      //setShow(false)
     };
-  
-    const showDatepickerStartConnection = () => {
+  /* 
+    const showDateStartpickerStartConnection = () => {
       setShow(true);
     };
+    const showDateEndpickerStartConnection = () => {
+      setShow(true);
+    }; */
     const onChangeEndConnection = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
+      const currentDate = selectedDate || connEndDate;
+      setShowDateEndpickerStartConnection(false)
       setConnEndDate(currentDate);
-      setShow(false)
+      //setShow(false)
     };
   
     const showDatepickerEndConnection = () => {
@@ -1493,18 +1508,19 @@ const [selectedCsc, setSelectedCsc] = useState("");
            { selectedConnectionType != 'REG' ? 
            <View>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Connection start date")}</Text>   
-            <TouchableOpacity onPress={showDatepickerStartConnection} style={styles.QuesComplaintDropdown}>
+            <Text style={styles.LoginSubTxt}>{t("Connection start datesss")}</Text>   
+            <TouchableOpacity onPress={() => setShowDateStartpickerStartConnection(true)} style={styles.QuesComplaintDropdown}>
                <TextInput
-                 style={{color: '#666666', fontSize: 12}}
-                 value={moment(connStartDate).format('DD-MM-YYYY')}
+                 style={{color: '#666666', fontSize: 12, height:37}}
+                 //value={moment(connStartDate).format('DD-MM-YYYY')}
+                 value={connStartDate.toLocaleDateString()}
                  placeholder={t("Select Date")}
                  editable={false}
               />
              </TouchableOpacity>
-            {show && (
+            {showDateStartpickerStartConnection && (
              <DateTimePicker
-               testID="dateTimePicker"
+               testID="startDatePicker"
                value={connStartDate}
                mode="date"
                display="default"
@@ -1514,17 +1530,18 @@ const [selectedCsc, setSelectedCsc] = useState("");
            </View> 
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Connection end date")}</Text>   
-            <TouchableOpacity onPress={showDatepickerStartConnection} style={styles.QuesComplaintDropdown}>
+            <TouchableOpacity onPress={() => setShowDateEndpickerStartConnection(true)} style={styles.QuesComplaintDropdown}>
                <TextInput
-                 style={{color: '#666666', fontSize: 12}}
-                 value={moment(connEndDate).format('DD-MM-YYYY')}
+                 style={{color: '#666666', fontSize: 12,height:40}}
+                 value={connEndDate.toLocaleDateString()}
+                 //value={moment(connEndDate).format('DD-MM-YYYY')}
                  placeholder={t("Select Date")}
                  editable={false}
               />
              </TouchableOpacity>
-            {show  && selectedConnectionType != "REG"  && (
+            {showDateEndpickerStartConnection  && selectedConnectionType != "REG"  && (
              <DateTimePicker
-               testID="dateTimePicker"
+               testID="endDatePicker"
                value={connEndDate}
                mode="date"
                display="default"
