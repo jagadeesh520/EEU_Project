@@ -264,7 +264,8 @@
         "For Single phase service, Select “Single phase“ For three phase service Select “Three Phase“ ": "ለነጠላ ፌዝ አገልግሎት “ነጠላ ፌዝ“ ን ይምረጡ / ለሦስት ፌዝ አገልግሎት “ሦስት ፌዝ“ ን ይምረጡ",
         "For Single phase service enter upto 7.5Kw or For three phase service enter the Kw that need to be approved" :"ለነጠላ ፌዝ ተጠቃሚዎች እስክ 7.5 ኪዋ/ ለሦስት ፌዝ ተጠቃሚዎች የሚፈልጉትን ኤሌክትሪክ ሃይል መጠን ይሙሉ",
         "Choose the service that suit your intended use from the drop-down list" : "ከተዘረዘሩት ምርጫዎች ውስጥ ሊጠቀሙ ያሰቡትን አገልግሎት ይምረጡ",
-        "From ID card/letter that will be uploaded, encode the ID number" : "በሚያያይዙት ሰነድ ላይ ያለውን መለያ ይፃፉ"
+        "From ID card/letter that will be uploaded, encode the ID number" : "በሚያያይዙት ሰነድ ላይ ያለውን መለያ ይፃፉ",
+        "PREVIEW": "ቅድመ እይታ"
 
     } 
 }

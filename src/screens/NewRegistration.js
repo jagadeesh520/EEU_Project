@@ -1059,7 +1059,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
         <View style = {{ marginTop: 20, width: '80%', display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1 }}>
           <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t(label) + (label === "Middle Name" ? "" : " *")}</Text>   
           <Text style={[styles.LoginSubTxt, {flex: 0.1}]}>{":"}</Text>   
-          <Text style={[styles.LoginSubTxt, {flex: 0.3}]}>{value}</Text>   
+          <Text style={[styles.LoginSubTxt, {flex: 0.3}]}>{(label === "Mobile No" ? "+251 " : "") + value}</Text>   
         </View>
       )
     } 
@@ -1079,7 +1079,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
               <ScrollView style={styles.RegisterSubContainer1}>
                 <View style={styles.RegisterSub}>
                   <Text style={styles.StartMainHeader}>{t("New Connection Request")}</Text>
-                  <Text style={styles.NewServiceHeader}>{"Personal Details"}</Text>
+                  <Text style={styles.NewServiceHeader}>{t("Personal Details")}</Text>
                   {renderPreview("Partner Category", partnerCategory)}
                   {renderPreview("Partner Type", partnerType)}
                   { selectedPartnerCategory === "1" ? (
@@ -1096,7 +1096,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
                     {renderPreview("Organization Name3", orgName3)}
                    </>)}
 
-                  <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{"Contact Details"}</Text>
+                  <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Contact Details")}</Text>
  
                   {renderPreview("Mobile No", mobileNo)}
                   {renderPreview("Email", email)}
@@ -1638,13 +1638,12 @@ const [selectedCsc, setSelectedCsc] = useState("");
               </View>  
               : null }
            <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption2(true) }}>
-              <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload" + " 2")}</Text>
+              <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload") + " 2"}</Text>
               <Upload name={'upload'} size={25}/>
            </TouchableOpacity> 
            <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
             onPress={() => {
               var validate = validateInputs()
-              console.log(validate, "check----->s")
               if (validateInputs()) { 
                setIsPreview(true) 
               } 

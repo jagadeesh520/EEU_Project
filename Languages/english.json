@@ -264,6 +264,7 @@
         "For Single phase service, Select “Single phase“ For three phase service Select “Three Phase“ ": "For Single phase service, Select “Single phase“ For three phase service Select “Three Phase“",
         "For Single phase service enter upto 7.5Kw or For three phase service enter the Kw that need to be approved" :"For Single phase service enter upto 7.5Kw or For three phase service enter the Kw that need to be approved",
         "Choose the service that suit your intended use from the drop-down list" : "Choose the service that suit your intended use from the drop-down list",
-        "From ID card/letter that will be uploaded, encode the ID number" : "From ID card/letter that will be uploaded, encode the ID number"
+        "From ID card/letter that will be uploaded, encode the ID number" : "From ID card/letter that will be uploaded, encode the ID number",
+        "PREVIEW": "PREVIEW"
     } 
 }
