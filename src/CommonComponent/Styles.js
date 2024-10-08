@@ -404,7 +404,7 @@ const Styles = () => {
             alignItems: 'center'
         },
         RegisterMainContainer: {
-            height: '15%',
+            height: '25%',
             backgroundColor: '#E5EEE0',
             display: 'flex',
             alignItems: 'center',

@@ -10,22 +10,24 @@ import { useToast } from 'react-native-toast-notifications';
 const Registration = ({navigation}) => {
     const toast = useToast();
     const { t, i18n } = useTranslation();
-    const {theme, styles, changeTheme} = Styles()
-    const [ newPassword, setNewPassword] = useState("")
-    const [ answer, setAnswer] = useState("")
-    const [ accountNo, setAccountNo ] = useState("")
-    const [ mobileNo, setMobileNo ] = useState("")
-    const [ email, setEmail ] = useState("")
-    const [ password, setPassword ] = useState("")
-    const [ accountStatus, setAccountStatus] = useState("")
+    const {theme, styles, changeTheme} = Styles();
+    const [ newPassword, setNewPassword] = useState("");
+    const [ answer, setAnswer] = useState("");
+    const [ accountNo, setAccountNo ] = useState("");
+    const [ mobileNo, setMobileNo ] = useState("");
+    const [ ErrorMsg, setErrorMsg] = useState("");
+    const [countryCode, setCountryCode] = useState("+251");
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ accountStatus, setAccountStatus] = useState("");
     const [isDisabled, setIsDisabled] = useState(false);
-    const [ showPassword, setShowPassword ] = useState(true)
+    const [ showPassword, setShowPassword ] = useState(true);
     const [ securityQues, setSecurityQues ] = useState([
       { label: "What is your favorite colors",  value:"favorite color" },
       { label: "What is your mother maiden name", value:"mother maiden name"}
-    ])
-    const [ selectedSecutityQues, setSelectedSecurityQues ] = useState("")
-
+    ]);
+    const [ selectedSecutityQues, setSelectedSecurityQues ] = useState("");
+    const [ InvalidEmail, setInvalidEmail ] = useState("");
     const validAccount = () => {
       setIsDisabled(!isDisabled)
       console.log('Yes button clicked')
@@ -93,7 +95,7 @@ const Registration = ({navigation}) => {
         body: JSON.stringify({
           Record: {
             ContractAccount: accountNo,
-            MobileNo: mobileNo,
+            MobileNo: ( countryCode + mobileNo),
             EmailID: email,
             Password: password,
             SecretQuestion: selectedSecutityQues,
@@ -178,18 +180,37 @@ const Registration = ({navigation}) => {
            </TouchableOpacity> 
            <Text style={styles.StartMainHeader}>{t("Account Create")}</Text>
            <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Mobile Number")}</Text>   
-            <TextInput
-            placeholder={t("Enter mobile number")}
-            value={mobileNo}
-            maxLength={10}
-            editable={isDisabled}
-            //editable = {accountStatus == "VALID CA" ? true : false}
-            style={styles.LoginTextInput}
-            placeholderTextColor="#9E9E9E"
-            onChangeText={(text) =>{ setMobileNo(text) }}
-           />
-           </View>
+              <Text style={styles.LoginSubTxt}>{t("Mobile No") + " *"}</Text>  
+              <View style={{ display: 'flex', flexDirection: 'row' }}>
+                <TextInput style={styles.countryCodeInput} editable={false} value={countryCode}/> 
+                <TextInput
+                 editable={isDisabled}
+                 placeholder={t("Enter mobile number")}
+                 value={mobileNo}
+                 maxLength={9}
+                 style={[styles.LoginTextInput, {width: 220}]}
+                 placeholderTextColor="#9E9E9E"
+                 onChangeText={(text) =>{ 
+                 const MobRegex = text.replace(/[^0-9]/g, '');
+                 if (MobRegex.length < 10) {
+                    setMobileNo(MobRegex);
+                    setErrorMsg('');
+                 }
+                 // Set error message if the length is not valid
+                 if (MobRegex.length < 9 && text.length > 1) {
+                   setErrorMsg('Phone number must be 9 digits.');
+                 }  
+                 if(text[0] == 0) {
+                   setErrorMsg('Invalid mobile number');
+                 }
+                 if(text == "" ){
+                    setErrorMsg('');
+                 }
+                 }}
+                />
+                </View>
+                <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
+              </View>
            <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t("Email")}</Text>   
             <TextInput
@@ -199,8 +220,25 @@ const Registration = ({navigation}) => {
            // editable = {accountStatus == "VALID CA" ? true : false}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
-            onChangeText={(text) =>{ setEmail(text) }}
+            onChangeText={(text) =>{ 
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              
+              // Check if the input is empty first
+             
+              // If input is not empty, check for valid email pattern
+              if (!emailRegex.test(text)) {
+                // Invalid email entered, set error message
+                setInvalidEmail('Please enter a valid email address.');
+              } else {
+                setInvalidEmail("");
+              }
+              if(text == "" ){
+                setInvalidEmail('');
+              }
+              setEmail(text) 
+            }}
            />
+              <Text style={styles.ErrorMsg}>{InvalidEmail}</Text>
            </View>
            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
            <View style={styles.Margin_10}>

@@ -26,6 +26,11 @@ const NewRegistration = ({navigation}) => {
     const toast = useToast();
     const { t, i18n } = useTranslation();
     const { styles } = Styles()
+    const languageOption = [
+      { label: "Eng",  value:"Eng" },
+      { label: "አማርኛ", value:"አማርኛ"}
+    ];
+    const [ selectedLang, setSelectedLang] = useState('');
     const [visible, setVisible] = useState(false);
     const openMenu = () => setVisible(true);
     const [ newPassword, setNewPassword] = useState("")
@@ -112,92 +117,6 @@ const NewRegistration = ({navigation}) => {
 
     ]);
 
-    /* const data = [
-      {
-        label: "Afar",
-        value: "01",
-        zone: [
-          {
-            label: "01",
-            value: "01",
-            kebele: [
-              {
-                label: "Semara K/k",
-                value: "01",
-                csc:[
-                  {
-                    label: "FA01",
-                    value: "01"
-                  }
-                ]
-              },
-              {
-                label: "Logiya k/k",
-                value: "02",
-                csc: [
-                  {
-                     label: "FA01",
-                     value: "01"
-                  }
-                ]
-              },
-            ]
-          },
-          {
-            label: "02",
-            value: "02",
-            kebele : [
-              {
-                label: "Abeala Ketema",
-                value: "01",
-                csc: [
-                  {
-                     label: "FA01",
-                     value: "01"
-                  }
-                ]
-              }
-            ]
-
-  
-          }
-        ],
-      }, 
-      {
-        label: "Amhara",
-        value: "02",
-        zone: [
-          {
-            label: "01",
-            value: "01",
-            kebele: [
-              {
-                name: "Semara K/k",
-                csc: "FA01"
-              },
-              {
-                name: "Logiya k/k",
-                csc: "FA08"
-  
-              },
-            ]
-          },
-          {
-            name: "02",
-            kebele : [
-              {
-                name: "Abeala Ketema",
-                csc: "FA16"
-              }
-            ]
-  
-          },
-        ],
-      }
-    ];
- */
-
-    
 const [selectedZone, setSelectedZone] = useState("");
 const [selectedKabele, setSelectedKabele] = useState("");
 const [selectedCsc, setSelectedCsc] = useState("");
@@ -315,7 +234,8 @@ const [selectedCsc, setSelectedCsc] = useState("");
     const [insType, setInsType] = useState("");
     const [selectedImageName, setSelectedImageName] = useState("");
 
-    const [countryCode, setCountryCode] = useState("+251")
+    const [countryCode, setCountryCode] = useState("+251");
+    
     const clearData = () => {
       setTitle('');
       setFirstName('');
@@ -1080,7 +1000,13 @@ const [selectedCsc, setSelectedCsc] = useState("");
     } 
     console.log(selectedPhaseType, "selectedPhaseType")
     const zoneData =[];
-
+    const renderItems = (item) => {
+      return (
+        <View style={styles.RaiseComplaintItem}>
+          <Text style={styles.RaiseComplaintDropdownTxt}>{item.value}</Text>
+        </View>
+      );
+    };
     return (
         <View style={styles.StartMain}>
            <View style={styles.RegisterMainContainer}>
@@ -1089,6 +1015,23 @@ const [selectedCsc, setSelectedCsc] = useState("");
              </TouchableOpacity>
              <Image source={ImagePath.Logo} style={styles.StartLogo} />
              <Text style={styles.RegisterMainHeader}>{t("Ethiopian Electric Utility")}</Text>
+             <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Language")}
+                style={[styles.LanguageDropdown, { marginTop: 20 }]}
+                renderItem={renderItems}
+                data={languageOption}
+                value={selectedLang}
+                onChange={item => {
+                  setSelectedLang(item.value);
+                  i18n.changeLanguage(item.value)
+                }}               
+           />
            </View>
            { isPreview ? 
               <ScrollView style={styles.RegisterSubContainer1}>
@@ -1414,7 +1357,6 @@ const [selectedCsc, setSelectedCsc] = useState("");
                 data={selectedCsc?.length ? selectedCsc : []}
                 value={csc}
                 onChange={item => {
-                  console.log(item.value, "item---->")
                   setCustService(item.label);
                   setCsc(item.value);
                     if((item.value)?.length > 0 ) {

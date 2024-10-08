@@ -32,6 +32,7 @@ const DisOrReconnection = ({navigation}) => {
     const [imageName2, setImageName2] = useState(null);
     const { themes, themeObj } = useThemes();
     const [ selectedImage, setSelectedImage ] = useState("");
+    const [ selectedImage2, setSelectedImage2] = useState("");
     const [ selectedCategory1, setSelectedCategory1] = useState("")
     const [ Category1Option, setCategory1Option] = useState([
         { label: "Disconnection",  value:"Disconnection" },
@@ -97,6 +98,217 @@ const DisOrReconnection = ({navigation}) => {
           </View>
         );
     };
+    const requestPermission = async (permission) => {
+      try {
+        const result = await request(permission);
+        return result === RESULTS.GRANTED;
+      } catch (error) {
+        console.error("Permission request error:", error);
+        return false;
+      }
+    };
+    const checkAndRequestPermissions = async () => {
+      const cameraGranted = await requestPermission(PERMISSIONS.ANDROID.CAMERA);
+      const storageGranted = await requestPermission(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
+  
+      return cameraGranted && storageGranted;
+    };
+    const handleImagePicker = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          // Alert.alert(
+          //   '',
+          //   "The Gallery storage access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{} },
+          //   ]
+          // );
+         } 
+         openGallery()
+      }
+     
+    };
+    openGallery = () => {
+      ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption(false)
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName(imageFileName);
+        setSelectedImage(`data:${image.mime};base64,${image.data}`);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+    const openCamera = () => {
+      ImagePicker.openCamera({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,  
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption(false)
+        setSelectedImage(`data:${image.mime};base64,${image.data}`);
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName(imageFileName);
+       
+      }).catch(error => { 
+        console.log(error);
+      });
+    }
+    const handleCameraCapture = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          console.log("denied")
+          //  Alert.alert(
+          //   '',
+          //   "The Camera access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{}  },
+          //   ]
+          // );
+         } 
+      }
+      openCamera()
+    };
+    const handlePDFUpload = async () => { 
+      try {
+        const res = await DocumentPicker.pick({
+          type: [DocumentPicker.types.pdf],
+        });
+        setFile(res);
+        const selectedFile = res[0];
+        setFile(selectedFile.uri);
+        setImageName(selectedFile.name);
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          console.log('User cancelled the picker');
+        } else {
+          throw err;
+        }
+      }
+    }
+    const handleImagePicker2 = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          // Alert.alert(
+          //   '',
+          //   "The Gallery storage access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{} },
+          //   ]
+          // );
+         } 
+         openGallery2()
+      }
+     
+    };
+    openGallery2 = () => {
+      ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption1(false)
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName2(imageFileName);
+        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+    const openCamera2 = () => {
+      ImagePicker.openCamera({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,  
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption1(false)
+        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName2(imageFileName);
+       
+      }).catch(error => { 
+        console.log(error);
+      });
+    }
+    const handleCameraCapture2 = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          console.log("denied")
+          //  Alert.alert(
+          //   '',
+          //   "The Camera access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{}  },
+          //   ]
+          // );
+         } 
+      }
+      openCamera2()
+    };
+    const handlePDFUpload2 = async () => { 
+      try {
+        const res = await DocumentPicker.pick({
+          type: [DocumentPicker.types.pdf],
+        });
+        setFile2(res);
+        const selectedFile = res[0];
+        setFile2(selectedFile.uri);
+        setImageName2(selectedFile.name);
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          console.log('User cancelled the picker');
+        } else {
+          throw err;
+        }
+      }
+    }
     return (
         
         <ScrollView style={styles.DashBoardMain}>
@@ -136,7 +348,6 @@ const DisOrReconnection = ({navigation}) => {
                 value={selectedCategory1}
                 onChange={item => {
                     setSelectedCategory1(item.value);
-                    console.log(item.value)
                     if(selectedCategory1 == "Disconnection") {
                         setSelectedCategory2("Customer Request Disconnection");
                     } 
@@ -163,7 +374,7 @@ const DisOrReconnection = ({navigation}) => {
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
                 data={Category2Option}
-                value={selectedCategory2}
+                value={(selectedCategory1 == "Disconnection" ? "Customer Request Disconnection" : selectedCategory1 == "Reconnection" ? "Customer Request Reconnection" :  selectedCategory2)}
                 onChange={item => {
                     setSelectedCategory2(item.value);
                     // if( (item.value)?.length > 0 ) {
@@ -310,7 +521,7 @@ const DisOrReconnection = ({navigation}) => {
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
                         setDocumentOption1(false)
-                        handleCameraCapture1() 
+                        handleCameraCapture2() 
                     }}
                   >
                     <Camera name={"camera"} size={25} color={"#F29037"}/>
@@ -320,7 +531,7 @@ const DisOrReconnection = ({navigation}) => {
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
                         setDocumentOption1(false)
-                        handleImagePicker1() 
+                        handleImagePicker2() 
                     }}
                   >
                     <Gallery name={"photo-library"} size={25} color={"#F29037"}/>
@@ -330,7 +541,7 @@ const DisOrReconnection = ({navigation}) => {
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
                         setDocumentOption1(false)
-                        handlePDFUpload1() 
+                        handlePDFUpload2() 
                     }}
                   >
                     <FileUpload name={"file-upload"} size={25} color={"#F29037"}/>

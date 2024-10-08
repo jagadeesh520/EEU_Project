@@ -17,10 +17,11 @@ const Payment = ({navigation}) => {
     const [ isPayment, setIsPayment ] = useState(false);
     const [ isPaymentResponse, setIsPaymentResponse ] = useState(false);
     const [ hashPassword, setHash ] = useState('');
-    const [ mobileNo, setMobileNo ] = useState('');
+    const [ mobileNo, setMobileNo ] = useState(null);
     const [ requestID, setRequestID ] = useState('');
     const [ isSubmit, setSubmit ] = useState(false);
-
+    const [ ErrorMsg, setErrorMsg] = useState("");
+    const [countryCode, setCountryCode] = useState("+251")
     const onBackPress = () => {
         navigation.goBack("BottomTab")
     }
@@ -100,7 +101,7 @@ const Payment = ({navigation}) => {
           "amount": amount,
           "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
           "externalReference": externalRef,
-          "payerPhone": mobileNo,
+          "payerPhone": ("251" + mobileNo),
           "reason": externalReference
       }
     }
@@ -123,7 +124,7 @@ const Payment = ({navigation}) => {
                   // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
                   "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
                   "externalReference": externalRef,
-                  "payerPhone": mobileNo,
+                  "payerPhone": ("251" + mobileNo),
                   "reason": externalReference
               }
         })
@@ -287,17 +288,36 @@ const Payment = ({navigation}) => {
              <View style={styles.modalMainView}>
                 <View style={[styles.unpaidModalView, { flexDirection: 'column' }]}>
                    <Text style={{color: '#666666', fontSize: 20, }}>{t("PAY THROUGH AWASH")}</Text>
-                   <View style={styles.Margin_20}>
-                     <Text style={styles.LoginSubTxt}>{t("Mobile Number")}</Text>  
-                     <TextInput
-                       placeholder={"+251 000000000"}
-                       value={mobileNo}
-                       style={styles.LoginTextInput}
-                       onChangeText={(text) =>{ setMobileNo(text) }}
-                       keyboardType={"phone-pad"}
-                       placeholderTextColor="#9E9E9E"
-                       maxLength={12}
-                     />
+                   <View style={styles.Margin_10}>
+                     <Text style={styles.LoginSubTxt}>{t("Mobile No") + " *"}</Text>  
+                     <View style={{ display: 'flex', flexDirection: 'row' }}>
+                      <TextInput style={styles.countryCodeInput} editable={false} value={countryCode}/> 
+                      <TextInput
+                        placeholder={t("Enter mobile number")}
+                        value={mobileNo}
+                        maxLength={9}
+                        style={[styles.LoginTextInput, {width: 220}]}
+                        placeholderTextColor="#9E9E9E"
+                        onChangeText={(text) =>{ 
+                          const MobRegex = text.replace(/[^0-9]/g, '');
+                          if (MobRegex.length < 10) {
+                            setMobileNo(MobRegex);
+                            setErrorMsg('');
+                          }
+                 // Set error message if the length is not valid
+                          if (MobRegex.length < 9 && text.length > 1) {
+                            setErrorMsg('Phone number must be 9 digits.');
+                          }  
+                          if(text[0] == 0) {
+                            setErrorMsg('Invalid mobile number');
+                          }
+                          if( text == "" ){
+                            setErrorMsg('');
+                           }
+                        }}
+                      />
+                    </View>
+                     <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
                    </View>
                    <View style = {{ display: 'flex', flexDirection: 'row' }}>
                    <TouchableOpacity style={[styles.PaymentBtn, { backgroundColor:'#63AA5A' }]} onPress={() => { setIsPayment(false) }}>

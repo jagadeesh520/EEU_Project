@@ -32,6 +32,7 @@ const LoadChange = ({navigation}) => {
     const [imageName2, setImageName2] = useState(null);
     const { themes, themeObj } = useThemes();
     const [ selectedImage, setSelectedImage ] = useState("");
+    const [ selectedImage2, setSelectedImage2] = useState("");
     const [ selectedCategory1, setSelectedCategory1] = useState("")
     const [ Category1Option, setCategory1Option] = useState([
         { label: "Load enhancement",  value:"Load enhancement" },
@@ -61,7 +62,7 @@ const LoadChange = ({navigation}) => {
     const [ phaseTypeOptions, setPhaseTypeOptions ] = useState([
         { label: "Single Phase",  value:"1" },
         { label: "Three Phase",  value:"2" }
-      ]);
+    ]);
     const [ selectedInstallType, setSelectedInstallType ] = useState('');
     const [ selectedPhaseType, setSelectedPhaseType ] = useState('');
     const [ appliedLoad, setAppliedLoad ] = useState('');
@@ -124,7 +125,6 @@ const LoadChange = ({navigation}) => {
     const renderTextInput = (name, placeholder, value, updateState, ErrorMsg, setErrorMsg) => {
         return(
           <View>
-          
           <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" ? "" : " *")}</Text>   
             <TextInput
@@ -139,11 +139,11 @@ const LoadChange = ({navigation}) => {
                
                 if(numericValue <= 7.5) {
                   setSelectedPhaseType("1")
-                  setPhaseType("Single Phase")
+                  // setPhaseType("Single Phase")
                   updateState(numericValue);
                 } else if(numericValue > 7.5) {
                   setSelectedPhaseType("2")
-                  setPhaseType("Three Phase")
+                  // setPhaseType("Three Phase")
                   updateState(numericValue);
                 }
                
@@ -162,6 +162,217 @@ const LoadChange = ({navigation}) => {
           </View> 
          </View> 
         )
+    }
+    const requestPermission = async (permission) => {
+      try {
+        const result = await request(permission);
+        return result === RESULTS.GRANTED;
+      } catch (error) {
+        console.error("Permission request error:", error);
+        return false;
+      }
+    };
+    const checkAndRequestPermissions = async () => {
+      const cameraGranted = await requestPermission(PERMISSIONS.ANDROID.CAMERA);
+      const storageGranted = await requestPermission(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
+  
+      return cameraGranted && storageGranted;
+    };
+    const handleImagePicker = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          // Alert.alert(
+          //   '',
+          //   "The Gallery storage access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{} },
+          //   ]
+          // );
+         } 
+         openGallery()
+      }
+     
+    };
+    openGallery = () => {
+      ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption(false)
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName(imageFileName);
+        setSelectedImage(`data:${image.mime};base64,${image.data}`);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+    const openCamera = () => {
+      ImagePicker.openCamera({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,  
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption(false)
+        setSelectedImage(`data:${image.mime};base64,${image.data}`);
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName(imageFileName);
+       
+      }).catch(error => { 
+        console.log(error);
+      });
+    }
+    const handleCameraCapture = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          console.log("denied")
+          //  Alert.alert(
+          //   '',
+          //   "The Camera access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{}  },
+          //   ]
+          // );
+         } 
+      }
+      openCamera()
+    };
+    const handlePDFUpload = async () => { 
+      try {
+        const res = await DocumentPicker.pick({
+          type: [DocumentPicker.types.pdf],
+        });
+        setFile(res);
+        const selectedFile = res[0];
+        setFile(selectedFile.uri);
+        setImageName(selectedFile.name);
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          console.log('User cancelled the picker');
+        } else {
+          throw err;
+        }
+      }
+    }
+    const handleImagePicker2 = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          // Alert.alert(
+          //   '',
+          //   "The Gallery storage access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{} },
+          //   ]
+          // );
+         } 
+         openGallery2()
+      }
+     
+    };
+    openGallery2 = () => {
+      ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption1(false)
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName2(imageFileName);
+        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+    const openCamera2 = () => {
+      ImagePicker.openCamera({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,  
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        setHeight(height);
+        setWidth(width);
+        setDocumentOption1(false)
+        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+        setImageName2(imageFileName);
+       
+      }).catch(error => { 
+        console.log(error);
+      });
+    }
+    const handleCameraCapture2 = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          console.log("denied")
+          //  Alert.alert(
+          //   '',
+          //   "The Camera access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{}  },
+          //   ]
+          // );
+         } 
+      }
+      openCamera2()
+    };
+    const handlePDFUpload2 = async () => { 
+      try {
+        const res = await DocumentPicker.pick({
+          type: [DocumentPicker.types.pdf],
+        });
+        setFile2(res);
+        const selectedFile = res[0];
+        setFile2(selectedFile.uri);
+        setImageName2(selectedFile.name);
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          console.log('User cancelled the picker');
+        } else {
+          throw err;
+        }
+      }
     }
     return (
         
@@ -440,8 +651,8 @@ const LoadChange = ({navigation}) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption1(false)
-                        handleCameraCapture1() 
+                        setDocumentOption1(false);
+                        handleCameraCapture2(); 
                     }}
                   >
                     <Camera name={"camera"} size={25} color={"#F29037"}/>
@@ -450,8 +661,8 @@ const LoadChange = ({navigation}) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption1(false)
-                        handleImagePicker1() 
+                        setDocumentOption1(false);
+                        handleImagePicker2();
                     }}
                   >
                     <Gallery name={"photo-library"} size={25} color={"#F29037"}/>
@@ -460,8 +671,8 @@ const LoadChange = ({navigation}) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption1(false)
-                        handlePDFUpload1() 
+                        setDocumentOption1(false);
+                        handlePDFUpload2(); 
                     }}
                   >
                     <FileUpload name={"file-upload"} size={25} color={"#F29037"}/>

@@ -55,7 +55,7 @@ const ServiceShifting = ({ navigation }) => {
     const [imageName2, setImageName2] = useState(null);
     const { themes, themeObj } = useThemes();
     const [ selectedImage, setSelectedImage ] = useState("");
-
+    const [ selectedImage1, setSelectedImage1] = useState("");
     // Run useEffect only once when the component mounts
     useEffect(() => {
         retrieveData();
@@ -247,7 +247,7 @@ const ServiceShifting = ({ navigation }) => {
           console.log('Image captured:', image.data);
           setHeight(height);
           setWidth(width);
-          setDocumentOption(false)
+          setDocumentOption1(false)
           const imagePathParts = image.path.split('/');
           const imageFileName = imagePathParts[imagePathParts.length - 1];
           setImageName2(imageFileName);
@@ -269,8 +269,8 @@ const ServiceShifting = ({ navigation }) => {
           console.log('Image captured:', image.data);
           setHeight(height);
           setWidth(width);
-          setDocumentOption(false)
-          setSelectedImage(image.data)
+          setDocumentOption1(false)
+          setSelectedImage1(image.data)
           const imagePathParts = image.path.split('/');
           const imageFileName = imagePathParts[imagePathParts.length - 1];
           setImageName2(imageFileName);
