@@ -307,6 +307,12 @@
         "Enter the TIN_Number": "TIN_ቁጥሩን አስገባ",
          "Enter the Transfer_CA": "ማስተላለፍ_CA ያስገቡ",
         "Enter the Transfer_Doc_Ref": "የዝውውር_ሰነድ_ማጣቀሻ አስገባ",
-        "Enter the No_of_PF_Device": "የ_PF_መሣሪያ ቁጥር አስገባ"
+        "Enter the No_of_PF_Device": "የ_PF_መሣሪያ ቁጥር አስገባ",
+        "Complaint No": "ቅሬታ ቁጥር",
+        "Complaint Status": "የቅሬታ ሁኔታ",
+        "Complaint Category": "የቅሬታ ምድብ",
+        "Comp. Raised Date": "ኮም. የተነሳበት ቀን",
+        "Comp. Closed Date": "ኮም. የተዘጋ ቀን",
+        "Complanit Resolution": "የቅሬታ ውሳኔ"
     } 
 }

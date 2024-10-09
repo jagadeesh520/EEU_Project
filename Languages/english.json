@@ -307,6 +307,12 @@
         "Enter the TIN_Number": "Enter the TIN_Number",
         "Enter the Transfer_CA": "Enter the Transfer_CA",
         "Enter the Transfer_Doc_Ref": "Enter the Transfer_Doc_Ref",
-        "Enter the No_of_PF_Device": "Enter the No_of_PF_Device"
+        "Enter the No_of_PF_Device": "Enter the No_of_PF_Device",
+        "Complaint No": "Complaint No",
+        "Complaint Status": "Complaint Status",
+        "Complaint Category": "Complaint Category",
+        "Comp. Raised Date": "Comp. Raised Date",
+        "Comp. Closed Date": "Comp. Closed Date",
+        "Complanit Resolution": "Complanit Resolution"
     } 
 }

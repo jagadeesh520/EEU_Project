@@ -183,11 +183,11 @@ const Complaints = ({navigation}) => {
                   </TouchableOpacity>
                    <View style={{ display: 'flex', flexDirection: 'row', flex: 1}}>  
                     <View style={{ display: 'flex', flex: 0.5}}>
-                     <Text style={styles.ComplaintListHeader}>{"Complaint No "}</Text>
+                     <Text style={styles.ComplaintListHeader}>{t("Complaint No") + " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data.ComplaintNumber}</Text>
                     </View>
                     <View style={{ display: 'flex', flex: 0.5}}>
-                     <Text style={styles.ComplaintListHeader}>{"Complaint Status "}</Text>
+                     <Text style={styles.ComplaintListHeader}>{t("Complaint Status") + " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintStatus}</Text>
                     </View>
                    </View>
@@ -195,26 +195,26 @@ const Complaints = ({navigation}) => {
                    <View>
                    <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>  
                    <View style={{ display: 'flex', flex: 0.5, flexWrap: 'wrap'}}>
-                     <Text style={styles.ComplaintListHeader}>{"Complaint Title"}</Text>
+                     <Text style={styles.ComplaintListHeader}>{t("Complaint Title")+ " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintTitle}</Text>
                     </View>
                     <View style={{ display: 'flex', flex: 0.5}}>
-                     <Text style={styles.ComplaintListHeader}>{"Complaint Category "}</Text>
+                     <Text style={styles.ComplaintListHeader}>{t("Complaint Category")+ " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data.ComplaintCategory}</Text>
                     </View>
                    </View>
                    <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>  
                    <View style={{ display: 'flex', flex: 0.5}}>
-                   <Text style={styles.ComplaintListHeader}>{"Comp. Raised Date "}</Text>
+                   <Text style={styles.ComplaintListHeader}>{t("Comp. Raised Date") + " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintRaisedDate}</Text>
                     </View>
                     <View style={{ display: 'flex', flex: 0.5}}>
-                     <Text style={styles.ComplaintListHeader}>{"Comp. Closed Date "}</Text>
+                     <Text style={styles.ComplaintListHeader}>{t("Comp. Closed Date") + " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintCloseDate}</Text>
                     </View>
                    </View>
                    <View style={styles.ComplaintListDesMain}>
-                        <Text style={styles.ComplaintListHeader}>{"Complanit Resolution "}</Text>
+                        <Text style={styles.ComplaintListHeader}>{t("Complanit Resolution") + " "}</Text>
                         <Text style={styles.RaiseComplaintTxt}>{data.ComplaintResolution}</Text>
                     </View>
                     </View>

@@ -480,7 +480,7 @@ const Styles = () => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: wp(20)
+            padding: wp(10)
         },
         CommonHeaderBackBtn: {
             display: 'flex',
