@@ -1176,6 +1176,11 @@ const Styles = () => {
         appText: {
             fontSize: 18,
         },
+        newRegisterHeader: {
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center'
+        }
     };
 
     return { theme, styles, changeTheme }

@@ -5,7 +5,7 @@ import { ImagePath } from './../CommonComponent/ImagePath';
 import { useThemes, darkTheme, lightTheme } from './../CommonComponent/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-import Profile from 'react-native-vector-icons/Ionicons'
+import Profile from 'react-native-vector-icons/Ionicons';
 import TipIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ThemeIcon from 'react-native-vector-icons/Feather';
 import { RadioButton } from 'react-native-paper';
@@ -507,7 +507,7 @@ const Dashboard = ({ navigation, route }) => {
             {renderQuickLinks(ImagePath.Bill_History, t('Bill History'), "BillHistory")}
             {renderQuickLinks(ImagePath.PaymentHistory, t('Payment History'), "PaymentHistory")}
             {renderQuickLinks(ImagePath.Complaints, t('Complaints'), "Complaints")}
-            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Service Request'), "ServiceRequest")}
+            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Service Request'), "ServiceRequestStatus")}
           </View>
         </View>
 

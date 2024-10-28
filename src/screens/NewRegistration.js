@@ -236,6 +236,14 @@ const [selectedCsc, setSelectedCsc] = useState("");
 
     const [countryCode, setCountryCode] = useState("+251");
     
+   const currentDate = new Date();
+
+  // First day of the current year
+   const firstDayOfCurrentYear = connStartDate
+
+  // Date 3 years from now
+  const threeYearsLater = new Date(connStartDate);
+  threeYearsLater.setFullYear(connStartDate.getFullYear() + 3);
     const clearData = () => {
       setTitle('');
       setFirstName('');
@@ -290,7 +298,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
       } else {
         setInvalidTitle('');
       }
-      if ( email== '') {
+      if ( email== '' && selectedPartnerCategory == "2") {
         setInvalidEmail(t("Email can't be empty"));
         valid = false;
       } else {
@@ -464,7 +472,6 @@ const [selectedCsc, setSelectedCsc] = useState("");
               "IDSoftCopyUpload": selectedImage,
               "PhaseType": selectedPhaseType
       }
-      console.log(data, "data--->")
       fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -658,10 +665,10 @@ const [selectedCsc, setSelectedCsc] = useState("");
           <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
           </View>:
           <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" ? "" : " *")}</Text> 
-           {(name == "Landmark") && <Icon onPress= {LandInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />}
-           {(name == "Applied load") && <Icon onPress= {AppliedLoadInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />}
-           {(name == "ID Number") && <Icon onPress= {IDNumberInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />}
+           <Text style={styles.LoginSubTxt}>{t(name) + (name === "Middle Name" || (name === "Email" && selectedPartnerCategory === "1") ? "" : " *")}</Text> 
+           {(name == "Landmark") && <Icon onPress= {LandInfoMessage} style={styles.infoIcon} name="questioncircle" size={15} color={'#666666'} />}
+           {(name == "Applied load") && <Icon onPress= {AppliedLoadInfoMessage} style={styles.infoIcon} name="questioncircle" size={15} color={'#666666'} />}
+           {(name == "ID Number") && <Icon onPress= {IDNumberInfoMessage} style={styles.infoIcon} name="questioncircle" size={15} color={'#666666'} />}
             <TextInput
             placeholder={t(placeholder)}
             value={value}
@@ -992,7 +999,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
     renderPreview = (label, value) => {
       return(
         <View style = {{ marginTop: 20, width: '80%', display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-          <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t(label) + (label === "Middle Name" ? "" : " *")}</Text>   
+          <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t(label) + (label === "Middle Name" || (name === "Email" && selectedPartnerCategory === "1") ? "" : " *")}</Text>   
           <Text style={[styles.LoginSubTxt, {flex: 0.1}]}>{":"}</Text>   
           <Text style={[styles.LoginSubTxt, {flex: 0.3}]}>{(label === "Mobile No" ? "+251 " : "") + value}</Text>   
         </View>
@@ -1142,9 +1149,9 @@ const [selectedCsc, setSelectedCsc] = useState("");
            <Text style={styles.StartMainHeader}>{t("New Connection Request")}</Text>
            <Text style={styles.NewServiceHeader}>{t("Personal Details")}</Text>
            <View style={styles.Margin_10}>
-            <View>
+            <View style={styles.newRegisterHeader}>
             <Text style={styles.LoginSubTxt}>{t("Partner Category") + (" *")}</Text>
-            <Icon onPress= {partnerInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />
+            <Icon onPress= {partnerInfoMessage} style={styles.infoIcon} name="questioncircle" size={15} color={'#666666'} />
             </View>
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
@@ -1393,9 +1400,9 @@ const [selectedCsc, setSelectedCsc] = useState("");
            </View>
            {renderTextInput("Applied load", "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
            <View style={styles.Margin_10} pointerEvents={'none'}>
-            <View>
+            <View style={styles.newRegisterHeader}>
             <Text style={styles.LoginSubTxt}>{t("Phase type") + ("*")}</Text>   
-            <Icon onPress= {phaseInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />
+            <Icon onPress= {phaseInfoMessage} style={styles.infoIcon} name="questioncircle" size={15} color={'#666666'} />
             </View>
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
@@ -1421,9 +1428,9 @@ const [selectedCsc, setSelectedCsc] = useState("");
            </View>
            
            <View style={styles.Margin_10}>
-            <View>
+            <View style={styles.newRegisterHeader}>
             <Text style={styles.LoginSubTxt}>{t("Connection type") + (" *")}</Text>  
-            <Icon onPress= {connectionInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} /> 
+            <Icon onPress= {connectionInfoMessage} style={styles.infoIcon} name="questioncircle" size={15} color={'#666666'} /> 
             </View>
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
@@ -1450,7 +1457,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
            { selectedConnectionType != 'REG' ? 
            <View>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Connection start datesss")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("Connection start date")}</Text>   
             <TouchableOpacity onPress={() => setShowDateStartpickerStartConnection(true)} style={styles.QuesComplaintDropdown}>
                <TextInput
                  style={{color: '#666666', fontSize: 12, height:37}}
@@ -1487,6 +1494,8 @@ const [selectedCsc, setSelectedCsc] = useState("");
                value={connEndDate}
                mode="date"
                display="default"
+               minimumDate={firstDayOfCurrentYear}  // Minimum date is the first day of the current year
+               maximumDate={threeYearsLater} // Maximum date is 3 years from now
                onChange={onChangeEndConnection}
              />
             )}
@@ -1494,9 +1503,9 @@ const [selectedCsc, setSelectedCsc] = useState("");
            </View>: null }
           
           <View style={styles.Margin_10}>
-          <View>
+          <View style={styles.newRegisterHeader}>
            <Text style={styles.LoginSubTxt}>{t("Install type") + (" *")}</Text>  
-           <Icon onPress= {installTypeInfoMessage} style={styles.infoIcon} name="exclamationcircle" size={10} color={'#666666'} />  
+           <Icon onPress= {installTypeInfoMessage} style={styles.infoIcon} name="questioncircle" size={15} color={'#666666'} />  
            </View>
            <Dropdown
                placeholderStyle={styles.RaiseComplaintDropdownTxt}

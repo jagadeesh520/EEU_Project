@@ -88,8 +88,8 @@ const Payment = ({navigation}) => {
 
       await AsyncStorage.setItem('payment_attempt_num', num_of_attempt_convertion.toString());
       
-      let externalRef = externalReference + "_" + num_of_attempt_convertion.toString();
-      
+    let externalRef =  asyncData.CA_No + "_" + externalReference + "_" + num_of_attempt_convertion.toString();
+      console.log(externalRef, "externalRef---->");
       var data = {
         "authorization": {
           "merchantCode": "220261",
@@ -175,6 +175,7 @@ const Payment = ({navigation}) => {
      
     }
     }
+    console.log(asyncData, "asyncData---->")
     return (
         <View>
             <CommonHeader title={t("Unpaid Demand Note")} onBackPress ={onBackPress} navigation={navigation}/>

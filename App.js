@@ -26,7 +26,7 @@ import DisOrReconnection from './src/screens/DisOrReconnection';
 import MoveOutServiceRequest from './src/screens/MoveOutServiceRequest';
 import Miscellaneous from './src/screens/Miscellaneous';
 import FindCSC from './src/screens/FindCSC';
-
+import ServiceRequestStatus from './src/screens/ServiceRequestStatus';
 import Location from 'react-native-vector-icons/FontAwesome5';
 
 import CommonComponent from './src/CommonComponent/CommonComponent';
@@ -176,6 +176,7 @@ const App = () => {
           <Stack.Screen name="DisOrReconnection" component={DisOrReconnection} />
           <Stack.Screen name="MoveOutServiceRequest" component={MoveOutServiceRequest} />
           <Stack.Screen name="Miscellaneous" component={Miscellaneous} />
+          <Stack.Screen name="ServiceRequestStatus" component={ServiceRequestStatus} />
         </Stack.Navigator>
       </>
     );
