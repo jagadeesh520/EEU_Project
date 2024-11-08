@@ -433,11 +433,11 @@ const BillHistory = ({navigation}) => {
                 /> 
               : <Text style={styles.NotFound}>{t('Data does not exists')}</Text> } 
             </View> 
-            <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <TouchableOpacity onPress = {() => { createPDF() }} style={{ backgroundColor: 'orange', padding: 10, borderRadius: 3 }}>
                  <Text>{"Create PDF"}</Text>
             </TouchableOpacity>
-            </View> 
+            </View>  */}
         </ScrollView>
     );
 };

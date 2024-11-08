@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Alert, ScrollView, Modal, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
@@ -120,7 +120,7 @@ const NewRegistration = ({navigation}) => {
 const [selectedZone, setSelectedZone] = useState("");
 const [selectedKabele, setSelectedKabele] = useState("");
 const [selectedCsc, setSelectedCsc] = useState("");
-
+const [selectedSubcity, setSelectedSubcity] = useState("");
     const regionOptions = [
       { label: "Addis Ababa ", value:"01" },
       { label: "Afar", value:"02" },
@@ -161,6 +161,8 @@ const [selectedCsc, setSelectedCsc] = useState("");
     const [region, setRegion] = useState("");
     const [csc, setCsc] = useState("");
     const [custService, setCustService] = useState("");
+    const [subcity, setSubcity] = useState("");
+
     const [mobileNo, setMobileNo] = useState("");
     const [isDocumentOption, setDocumentOption] = useState(false);
     const [isDocumentOption2, setDocumentOption2] = useState(false);
@@ -192,9 +194,10 @@ const [selectedCsc, setSelectedCsc] = useState("");
     const [orgName2, setOrgName2] = useState("");
     const [orgName3, setOrgName3] = useState("");
 
+    const[invalidSubcity, setInvalidSubcity] = useState("");
     const [IDNumber, setIDNumber] = useState("");
-    const [invalidIDType, setInvalidIDType] = useState("")
-    const [invalidIDNumber, setInvalidIDNumber] = useState("")
+    const [invalidIDType, setInvalidIDType] = useState("");
+    const [invalidIDNumber, setInvalidIDNumber] = useState("");
     const [invalidFirstName, setInvalidFirstName] = useState("");
     const [invalidLastName, setInvalidLastName] = useState("");
     const [invalidTitle, setInvalidTitle] = useState("");
@@ -233,9 +236,13 @@ const [selectedCsc, setSelectedCsc] = useState("");
     const [connType, setConnType]= useState("");  
     const [insType, setInsType] = useState("");
     const [selectedImageName, setSelectedImageName] = useState("");
+    const [zoneList, setZoneList] = useState([]);
+    const [subcityList, setSubCityList] = useState([]);
+    const [kebeleList, setKebeleList] = useState([]);
+    const [cscList, setCSCList] = useState([]);
 
     const [countryCode, setCountryCode] = useState("+251");
-    
+    const[regionList, setRegionList] = useState([]);
    const currentDate = new Date();
 
   // First day of the current year
@@ -243,7 +250,200 @@ const [selectedCsc, setSelectedCsc] = useState("");
 
   // Date 3 years from now
   const threeYearsLater = new Date(connStartDate);
+  const regionData = {
+    "Record": [
+      {
+        "Region": "SIDAMA",
+        "zone": "HAWASSA"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "DEBUBAWI  SIDAMA \/ALETAWONDO"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "DAYE"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "CENTRAL SIDAMA\/YIRGALEM"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "CENTRAL SIDAMA \/YIRGALEM"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "SEMEN SIDAMA"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "CENTRAL SIDAMA"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "DEBUBAWI  SIDAMA"
+      },
+      {
+        "Region": "SIDAMA",
+        "zone": "MISRAK SIDAMA"
+      }
+    ]
+  }
   threeYearsLater.setFullYear(connStartDate.getFullYear() + 3);
+  useEffect(() => { 
+     getRegion();
+  }, [])
+  const getRegion = () => {
+    var url = constant.BASE_URL + constant.REGION
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          Region: "",
+          Zone: "",
+          SubCity: "",
+          Kebele: ""
+        }
+      }),
+    })
+      .then((response) =>
+        response.json())
+      .then(responseData => {
+        const regionsArray = responseData?.Record
+        const sortedRegion = regionsArray && regionsArray.length > 0 && regionsArray.sort((a, b) => a.Region.localeCompare(b.Region));
+        const regionList = sortedRegion && sortedRegion.length > 0 && sortedRegion.map(item => ({
+          label: item.Region,
+          value: item.Region.toString()
+        }));
+        setRegionList(regionList);
+      })
+  }
+  const getZone = (selectedRegion) => {
+    var url = constant.BASE_URL + constant.ZONE
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          Region: selectedRegion.label,
+          Zone: zone,
+          SubCity: subcity,
+          Kebele: kebele
+        }
+      }),
+    })
+      .then((response) =>
+        response.json())
+      .then(responseData => {
+        console.log(responseData, "Zone")
+        const zoneArray = responseData?.Record;
+        const sortedZone = zoneArray && zoneArray.length > 0 && zoneArray.sort((a, b) => a.localeCompare(b));
+        const zoneFilter = sortedZone && sortedZone.length > 0 && sortedZone.map(item => item.zone);
+        let zoneData = zoneFilter && zoneFilter.map(zone => ({
+            value: zone,
+            label: zone.toString()
+        }));
+        setZoneList(zoneData);
+      })
+  }
+  const getSubCity = (selectedZone) => {
+    var url = constant.BASE_URL + constant.SUBCITY;
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          Region: region,
+          Zone: selectedZone,
+          SubCity: subcity,
+          Kebele: kebele
+        }
+      }),
+    })
+      .then((response) =>
+        response.json())
+      .then(responseData => {
+        const subcityArray = responseData.Record;
+        const subcityFilter = subcityArray && subcityArray.length > 0 && subcityArray.map(item => item.SubCity);
+        const sortedSubcity = subcityFilter && subcityFilter.length > 0 && subcityFilter.sort((a, b) => a.localeCompare(b));
+
+        let subCityData = sortedSubcity && sortedSubcity.map(SubCity => ({
+            value: SubCity,
+            label: SubCity.toString()
+        }));
+        setSubCityList(subCityData);
+      }) .catch((error) => {
+        console.log('error---->new service', error);
+      });
+  }
+  const getKebele = (selectedSubcity) => {
+    var url = constant.BASE_URL + constant.KEBELE;
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          Region: region,
+          Zone: zone,
+          SubCity: selectedSubcity,
+          Kebele: kebele
+        }
+      }),
+    })
+      .then((response) =>
+        response.json())
+      .then(responseData => {
+        console.log(responseData, "kebele")
+        const kebeleData = responseData.Record;
+        const kebeleFilter = kebeleData && kebeleData.map(item => item.Kebele);
+        if(typeof(kebeleFilter[0]) == "number") {
+          var sortedKebele = kebeleFilter && kebeleFilter.length > 0 && kebeleFilter.sort((a, b) => a - b);
+        } else  {
+          var sortedKebele = kebeleFilter && kebeleFilter.length > 0 && kebeleFilter.sort((a, b) => a.localeCompare(b));
+        }
+       let kebeleArray = sortedKebele && sortedKebele.map(kebele => ({
+            value: kebele,
+            label: kebele.toString()
+        }));
+        setKebeleList(kebeleArray);
+      }) .catch((error) => {
+        console.log('error---->new service', error);
+        if(error) {
+          showToast('error', error);
+        }
+      });
+  }
+  const getCSC = (selectedKebele) => {
+    var url = constant.BASE_URL + constant.CSC;
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        Record: {
+          Region: region,
+          Zone: zone,
+          SubCity: subcity,
+          Kebele: selectedKebele
+        }
+      }),
+    })
+      .then((response) =>
+        response.json())
+      .then(responseData => {
+        console.log(responseData, "csc")
+        const cscData = responseData?.Record;
+        const sortedCSC = cscData && cscData.length > 0 && cscData.sort((a, b) => a.CSCName.localeCompare(b.CSCName));
+        const CSCArray = sortedCSC && sortedCSC.length > 0 && sortedCSC.map(item => ({
+          label: item.CSCName,
+          value: item.CSC
+        }));
+        
+        setCSCList(CSCArray);
+
+      }) .catch((error) => {
+        console.log('error---->new service', error);
+        if(error) {
+          showToast('error', error);
+        }
+      });
+  }
     const clearData = () => {
       setTitle('');
       setFirstName('');
@@ -340,13 +540,19 @@ const [selectedCsc, setSelectedCsc] = useState("");
       } else {
         setInvalidZone('');
       }
+      if ( subcity == '') {
+        setInvalidSubcity(t("Subcity can't be empty"));
+        valid = false;
+      } else {
+        setInvalidSubcity('');
+      }
       if ( region == '') {
         setInvalidRegion(t("Region can't be empty"));
         valid = false;
       } else {
         setInvalidRegion('');
       }
-      if ( selectedCsc == '') {
+      if ( csc == '') {
         setInvalidCusService(t("Customer service can't be empty"));
         valid = false;
       } else {
@@ -462,7 +668,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
               "IDNumber": IDNumber,
               "Region": region,
               "District": "",
-              "CustomerServiceCentre": custService,
+              "CustomerServiceCentre": csc,
               "Category": selectedCategory,
               "ConnectionType": selectedConnectionType,
               "ConnectionStartDate": connStartDate,
@@ -472,6 +678,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
               "IDSoftCopyUpload": selectedImage,
               "PhaseType": selectedPhaseType
       }
+      console.log(data, "post data")
       fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -496,7 +703,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
               "IDNumber": IDNumber,
               "Region": region,
               "District": "",
-              "CustomerServiceCentre": custService,
+              "CustomerServiceCentre": csc,
               "Category": selectedCategory,
               "ConnectionType": selectedConnectionType,
               "ConnectionStartDate": connStartDate,
@@ -999,7 +1206,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
     renderPreview = (label, value) => {
       return(
         <View style = {{ marginTop: 20, width: '80%', display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-          <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t(label) + (label === "Middle Name" || (name === "Email" && selectedPartnerCategory === "1") ? "" : " *")}</Text>   
+          <Text style={[styles.LoginSubTxt, {flex: 0.6}]}>{t(label) + (label === "Middle Name" || (label === "Email" && selectedPartnerCategory === "1") ? "" : " *")}</Text>   
           <Text style={[styles.LoginSubTxt, {flex: 0.1}]}>{":"}</Text>   
           <Text style={[styles.LoginSubTxt, {flex: 0.3}]}>{(label === "Mobile No" ? "+251 " : "") + value}</Text>   
         </View>
@@ -1069,10 +1276,11 @@ const [selectedCsc, setSelectedCsc] = useState("");
 
                   {renderPreview("House No", houseNumber)}
                   {renderPreview("Landmark", landmark)}
-                  {renderPreview("Region", reg )}
+                  {renderPreview("Region", region )}
                   {renderPreview("Zone", zone)}
                   {renderPreview("Kebele", kebele)}
-                  {renderPreview("CSC Customer Service", selectedCsc[0]?.label )}
+                  {renderPreview("Subcity", subcity)}
+                  {renderPreview("CSC Customer Service", custService )}
                   <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Service Connection Details")}</Text>
                   {renderPreview("Prepaid/Postpaid", paidOption )}
                   {renderPreview("Phase type", phaseType )}
@@ -1286,19 +1494,20 @@ const [selectedCsc, setSelectedCsc] = useState("");
                 placeholder={t("Enter Region")}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
-                data={data}
+                data={regionList}
                 value={region}
                 onChange={item => {
                    setRegion(item.value);
-                   setReg(item.label);
-                   zoneData.push(item.zone)
-                   setSelectedZone(...zoneData)
+                   setReg(item);
+                   getZone(item)
+                  //  zoneData.push(item.zone)
+                  //  setSelectedZone(...zoneData)
                     if((item.value)?.length > 0 ) {
                       setInvalidRegion("")
                     }
                 }}        
                />
-               <Text style={styles.ErrorMsg}>{invalidGender}</Text>
+               <Text style={styles.ErrorMsg}>{invalidRegion}</Text>
              </View>
              <View style={styles.Margin_10}>
                <Text style={styles.LoginSubTxt}>{t("Zone") + (" *")}</Text>   
@@ -1312,19 +1521,43 @@ const [selectedCsc, setSelectedCsc] = useState("");
                 placeholder={t("Enter Zone")}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
-                data={selectedZone?.length ? selectedZone : []}
+                data={zoneList}
                 value={zone}
                 onChange={item => {
                   setZone(item.value);
-                  setSelectedKabele(item.kebele);
+                  getSubCity(item.value);
+                  // setSelectedKabele(item.kebele);
                     if((item.value)?.length > 0 ) {
                       setInvalidZone("")
                     }
                 }}               
                />
-               <Text style={styles.ErrorMsg}>{invalidGender}</Text>
+               <Text style={styles.ErrorMsg}>{invalidZone}</Text>
              </View>
-             
+             <View style={styles.Margin_10}>
+               <Text style={styles.LoginSubTxt}>{t("Subcity") + (" *")}</Text>   
+               <Dropdown
+                placeholderStyle={styles.RaiseComplaintDropdownTxt}
+                selectedTextStyle={styles.RaiseComplaintDropdownTxt}
+                inputSearchStyle={styles.RaiseComplaintDropdownTxt}
+                iconStyle={styles.RaiseComplaintDropdownTxt}
+                labelField="label"
+                valueField="value"
+                placeholder={t("Enter Subcity")}
+                style={styles.QuesComplaintDropdown}
+                renderItem={renderItem}
+                data={subcityList}
+                value={subcity}
+                onChange={item => {
+                  setSubcity(item.value);
+                  getKebele(item.value);
+                    if((item.value)?.length > 0 ) {
+                      setInvalidSubcity("")
+                    }
+                }}               
+               />
+               <Text style={styles.ErrorMsg}>{invalidSubcity}</Text>
+             </View>
              <View style={styles.Margin_10}>
                <Text style={styles.LoginSubTxt}>{t("Kebele") + (" *")}</Text>   
                <Dropdown
@@ -1337,17 +1570,17 @@ const [selectedCsc, setSelectedCsc] = useState("");
                 placeholder={t("Enter Kebele")}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
-                data={selectedKabele?.length ? selectedKabele : []}
+                data={kebeleList}
                 value={kebele}
                 onChange={item => {
                   setKebele(item.value);
-                  setSelectedCsc(item.csc)
+                  getCSC(item.value)
                     if((item.value)?.length > 0 ) {
                       setInvalidKebele("")
                     }
                 }}               
                />
-               <Text style={styles.ErrorMsg}>{invalidGender}</Text>
+               <Text style={styles.ErrorMsg}>{invalidKebele}</Text>
              </View>
              <View style={styles.Margin_10}>
                <Text style={styles.LoginSubTxt}>{t("CSC Customer Service") + (" *")}</Text>   
@@ -1361,7 +1594,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
                 placeholder={t("Select the CSC Customer Service")}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
-                data={selectedCsc?.length ? selectedCsc : []}
+                data={cscList}
                 value={csc}
                 onChange={item => {
                   setCustService(item.label);
@@ -1371,7 +1604,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
                     }  
                 }}               
                />
-               <Text style={styles.ErrorMsg}>{invalidGender}</Text>
+               <Text style={styles.ErrorMsg}>{invalidCusService}</Text>
              </View>
            <Text style={styles.NewServiceHeader}>{t("Service Connection Details")}</Text>
            <View style={styles.Margin_10}>
@@ -1613,6 +1846,7 @@ const [selectedCsc, setSelectedCsc] = useState("");
             onPress={() => {
               var validate = validateInputs()
               if (validateInputs()) { 
+                console.log("preview true")
                setIsPreview(true) 
               } 
                

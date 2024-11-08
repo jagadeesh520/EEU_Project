@@ -313,6 +313,8 @@
         "Complaint Category": "Complaint Category",
         "Comp. Raised Date": "Comp. Raised Date",
         "Comp. Closed Date": "Comp. Closed Date",
-        "Complanit Resolution": "Complanit Resolution"
+        "Complanit Resolution": "Complanit Resolution",
+        "Subcity": "Subcity"
+
     } 
 }

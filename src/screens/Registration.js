@@ -27,7 +27,12 @@ const Registration = ({navigation}) => {
       { label: "What is your mother maiden name", value:"mother maiden name"}
     ]);
     const [ selectedSecutityQues, setSelectedSecurityQues ] = useState("");
-    const [ InvalidEmail, setInvalidEmail ] = useState("");
+    const [ invalidEmail, setInvalidEmail ] = useState("");
+    const [invalidMobileNum, setInvalidMobileNum] = useState("")
+    const [invalidPassword, setInvalidPassword] = useState("")
+    const [invalidSecurity, setInvalidSecurity] = useState("")
+    const [invalidAnswer, setInvalidAnswer] = useState("")
+
     const validAccount = () => {
       setIsDisabled(!isDisabled)
       console.log('Yes button clicked')
@@ -89,7 +94,45 @@ const Registration = ({navigation}) => {
           }
         })    
     };
+    const validateInputs = () => {
+      let valid = true;
+  
+      if (mobileNo == '') {
+        setInvalidMobileNum(t("Mobile number can't be empty"));
+        valid = false;
+      } else {
+        setInvalidMobileNum('');
+      }
+      if (email == '') {
+        setInvalidEmail(t("Email can't be empty"));
+        valid = false;
+      } else {
+        setInvalidEmail('');
+      }
+      if (password == '') {
+        setInvalidPassword(t("Password can't be empty"));
+        valid = false;
+      } else {
+        setInvalidPassword('');
+      }
+      if (selectedSecutityQues == '') {
+        setInvalidSecurity(t("Security question can't be empty"));
+        valid = false;
+      } else {
+        setInvalidSecurity('');
+      }
+      if (answer == '') {
+          setInvalidAnswer(t("Answer can't be empty"));
+        valid = false;
+      } else {
+        setInvalidAnswer('');
+      }
+      return valid;
+      
+    } 
     const onSignUpPressed = () => {
+      if (validateInputs()) { 
+
      return fetch('http://197.156.76.70:8080/NewRegistrationPost', {
         method: 'POST',
         body: JSON.stringify({
@@ -142,6 +185,7 @@ const Registration = ({navigation}) => {
         }).catch((error) => {
           console.error("having an error", error)
         })
+      }
     }
     const renderItem = (item) => {
       return (
@@ -168,7 +212,7 @@ const Registration = ({navigation}) => {
                 placeholder={t("Enter Account No")}
                 value={accountNo}
                 style={styles.LoginTextInput}
-                editable={!isDisabled}
+                // editable={!isDisabled}
                 onChangeText={(text) =>{ setAccountNo(text) }}
                 keyboardType={"phone-pad"}
                 placeholderTextColor="#9E9E9E"
@@ -184,7 +228,7 @@ const Registration = ({navigation}) => {
               <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <TextInput style={styles.countryCodeInput} editable={false} value={countryCode}/> 
                 <TextInput
-                 editable={isDisabled}
+                //  editable={isDisabled}
                  placeholder={t("Enter mobile number")}
                  value={mobileNo}
                  maxLength={9}
@@ -194,29 +238,29 @@ const Registration = ({navigation}) => {
                  const MobRegex = text.replace(/[^0-9]/g, '');
                  if (MobRegex.length < 10) {
                     setMobileNo(MobRegex);
-                    setErrorMsg('');
+                    setInvalidMobileNum('');
                  }
                  // Set error message if the length is not valid
                  if (MobRegex.length < 9 && text.length > 1) {
-                   setErrorMsg('Phone number must be 9 digits.');
+                  setInvalidMobileNum('Phone number must be 9 digits.');
                  }  
                  if(text[0] == 0) {
-                   setErrorMsg('Invalid mobile number');
+                  setInvalidMobileNum('Invalid mobile number');
                  }
                  if(text == "" ){
-                    setErrorMsg('');
+                  setInvalidMobileNum('');
                  }
                  }}
                 />
                 </View>
-                <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
+                <Text style={styles.ErrorMsg}>{invalidMobileNum}</Text>
               </View>
            <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Email")}</Text>   
+           <Text style={styles.LoginSubTxt}>{t("Email*")}</Text>   
             <TextInput
             placeholder={t("Enter email ID")}
             value={email}
-            editable={isDisabled}
+            // editable={isDisabled}
            // editable = {accountStatus == "VALID CA" ? true : false}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
@@ -238,7 +282,7 @@ const Registration = ({navigation}) => {
               setEmail(text) 
             }}
            />
-              <Text style={styles.ErrorMsg}>{InvalidEmail}</Text>
+              <Text style={styles.ErrorMsg}>{invalidEmail}</Text>
            </View>
            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
            <View style={styles.Margin_10}>
@@ -247,12 +291,16 @@ const Registration = ({navigation}) => {
             placeholder={t("Enter password")}
             value={password}
             maxLength={15}
-            editable={isDisabled}
+            // editable={isDisabled}
             secureTextEntry={showPassword}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
-            onChangeText={(text) =>{ setPassword(text) }}
+            onChangeText={(text) =>{ 
+              setPassword(text);
+              setInvalidPassword('');
+             }}
            />
+            <Text style={styles.ErrorMsg}>{invalidPassword}</Text>
            </View>
             <TouchableOpacity 
                   style = {styles.RegisterLockButton} 
@@ -267,9 +315,10 @@ const Registration = ({navigation}) => {
                >
                   <View style={styles.Margin_40}><Icon name={ showPassword ? "eye-slash" : "eye" } size={20}></Icon></View>
                </TouchableOpacity>
+
            </View>
            <View style={styles.Margin_10}>
-            <Text style={styles.LoginSubTxt}>{t("Security Questions")}</Text>   
+            <Text style={styles.LoginSubTxt}>{t("Security Questions*")}</Text>   
             <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
@@ -278,19 +327,21 @@ const Registration = ({navigation}) => {
                 labelField="label"
                 valueField="value"
                 placeholder={t("Select Secret Question")}
-                editable={isDisabled}
+                // editable={isDisabled}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
                 data={securityQues}
                 value={selectedSecutityQues}
                 onChange={item => {
                   setSelectedSecurityQues(item.value);
+                  setInvalidSecurity('');
                 }}               
            />
+              <Text style={styles.ErrorMsg}>{invalidSecurity}</Text>
            </View>
           
            <View style={styles.Margin_10}>
-           <Text style={styles.LoginSubTxt}>{t("Answer")}</Text>   
+           <Text style={styles.LoginSubTxt}>{t("Answer*")}</Text>   
             <TextInput
             placeholder={t("Enter answer")}
             value={answer}
@@ -298,8 +349,12 @@ const Registration = ({navigation}) => {
             //editable = {accountStatus == "VALID CA" ? true : false}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
-            onChangeText={(text) =>{ setAnswer(text) }}
+            onChangeText={(text) =>{ 
+              setAnswer(text);
+              setInvalidAnswer('');
+             }}
            />
+              <Text style={styles.ErrorMsg}>{invalidAnswer}</Text>
            </View>
            <TouchableOpacity disabled = { isDisabled ? false : true } style={[styles.RegisterBtn, { backgroundColor: isDisabled ? '#63AA5A' : '#DCDCDC' }]} onPress={() => {onSignUpPressed()}}>
               <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("REGISTER")}</Text>

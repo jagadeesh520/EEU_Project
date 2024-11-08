@@ -15,5 +15,11 @@ import React from 'react'
     NEW_ACCOUNT_REGISTERATION: '/NewRegistrationPost',
     NEW_SERVICE_CREATION: '/NewServiceCreation',
     UNPAID_DEMAND_NOTE: '/UnpaidDemandNote',
-    UNPAID_DEMAND_NOTE_PAYMENT: '/MerchantRS/DebitRequest'
+    UNPAID_DEMAND_NOTE_PAYMENT: '/MerchantRS/DebitRequest',
+    REGION: '/region',
+    ZONE: '/zone',
+    SUBCITY: '/subCity',
+    KEBELE: '/kebele',
+    CSC: '/csc'
+
  }

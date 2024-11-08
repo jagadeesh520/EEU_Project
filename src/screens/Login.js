@@ -42,8 +42,6 @@ const Login = ({ navigation }) => {
       const response = await fetchWithTimeout('https://www.google.com', {
         method: 'HEAD',
       }, 5000); // Timeout of 5 seconds
-
-
       if (response.ok) {
         setIsConnected(true);  // Internet is available
       } else {
@@ -140,6 +138,7 @@ const Login = ({ navigation }) => {
       })
         .then((response) => response.json())
         .then(async (responseData) => {
+          console.log(responseData, "responseData")
           if (responseData && responseData?.status >= 500) {
             console.log('Server is down. Please try again later.');
           } else {
