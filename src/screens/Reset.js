@@ -138,7 +138,6 @@ const Reset = ({navigation}) => {
                 setNewPwdError("")
               }
             }}
-            keyboardType={"phone-pad"}
             placeholderTextColor="#9E9E9E"
             maxLength={12}
            />
