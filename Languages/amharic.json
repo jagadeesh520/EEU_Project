@@ -314,6 +314,9 @@
         "Comp. Raised Date": "ኮም. የተነሳበት ቀን",
         "Comp. Closed Date": "ኮም. የተዘጋ ቀን",
         "Complanit Resolution": "የቅሬታ ውሳኔ",
-        "Subcity": "ክፍለ ከተማ"
+        "Subcity": "ክፍለ ከተማ",
+        "Mobile number can't be empty": "የሞባይል ቁጥር ባዶ ሊሆን አይችልም።",
+        "Email can't be empty": "ኢሜል ባዶ ሊሆን አይችልም።",
+        "Security question can't be empty": "የደህንነት ጥያቄ ባዶ ሊሆን አይችልም።"
     } 
 }

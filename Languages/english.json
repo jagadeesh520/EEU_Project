@@ -314,7 +314,9 @@
         "Comp. Raised Date": "Comp. Raised Date",
         "Comp. Closed Date": "Comp. Closed Date",
         "Complanit Resolution": "Complanit Resolution",
-        "Subcity": "Subcity"
-
+        "Subcity": "Subcity",
+        "Mobile number can't be empty": "Mobile number can't be empty",
+        "Email can't be empty": "Email can't be empty",
+        "Security question can't be empty": "Security question can't be empty"
     } 
 }
