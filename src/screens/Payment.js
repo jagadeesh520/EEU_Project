@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, TextInput, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, TextInput, Alert,ScrollView } from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import {ImagePath} from '../CommonComponent/ImagePath';
@@ -25,6 +25,8 @@ const Payment = ({navigation}) => {
     const onBackPress = () => {
         navigation.goBack("BottomTab")
     }
+
+    //console.log("unpaidDueData",unpaidDueData);
     useEffect (()=> {
       retrieveData()
     }, [requestID])  
@@ -40,9 +42,9 @@ const Payment = ({navigation}) => {
         console.error('Error generating hash:', error);
       }
     };
-    const getCurrentBill = (value)=>{
+    const getCurrentBill = async (value)=>{
       var url = constant.BASE_URL + constant.UNPAID_DEMAND_NOTE
-      fetch(url, {
+      await fetch(url, {
         method: 'POST',
           body: JSON.stringify({
             Record: {
@@ -51,10 +53,10 @@ const Payment = ({navigation}) => {
           }),
         })
       .then((response) =>
-          response.json())
+         response.json())
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res
-        console.log(responseData, "responseData------>")
+        //console.log("responseData welcome",responseData, )
         setUnpaidDueData(data.Record)
         handleHash(data.Record)
       })
@@ -180,45 +182,80 @@ const Payment = ({navigation}) => {
     }
     console.log(asyncData, "asyncData---->")
     return (
-        <View>
-            <CommonHeader title={t("Unpaid Demand Note")} onBackPress ={onBackPress} navigation={navigation}/>
-            { unpaidDueData && Object.keys(unpaidDueData).length > 0 ?
+      <ScrollView style={styles.DashBoardMain}>
+      <View>
+        <CommonHeader
+          title={t('Unpaid Demand Note')}
+          onBackPress={onBackPress}
+          navigation={navigation}
+        />
+        {unpaidDueData.length && unpaidDueData.map((paidData, index) => {
+          return (
             <View>
-            <View style={styles.BillDueMain}> 
-             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-               <View>
-                  <Text style={styles.BillDueTitle}>{t("Account No")}</Text>
-                  <Text style={styles.BillDueTxt}>{unpaidDueData.CA}</Text>
-               </View>
-               <View>
-                  <Text style={styles.BillDueTitle}>{t("BP")}</Text>
-                  <Text style={styles.BillDueTxt}>{unpaidDueData.BP}</Text>
-               </View>
-             </View>  
-             <View style={{ marginVertical: 20 }}><Image source={ImagePath.DotLines}/></View>
- 
-             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-               <View style={styles.BillDueSubCon}> 
-                  <Text style={styles.BillDueTitle}>{t("Post Date")}</Text>
-                  <Text style={styles.BillDueTxt}>{ moment(unpaidDueData.PostDate, "YYYY/MM/DD").format("DD-MM-YYYY")}</Text>
-               </View>
-               <View style={styles.BillDueSubCon}>
-                  <Text style={styles.BillDueTitle}>{t("Document Type")}</Text>
-                  <Text style={styles.BillDueTxt}>{unpaidDueData.Doc_Type}</Text>
-               </View>
-             </View> 
-             <View style={{ marginVertical: 20 }}><Image source={ImagePath.DotLines}/></View>
-             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-              
-              <View style={styles.BillDueSubCon}>
-                  <Text style={styles.BillDueTitle}>{t("Reference number")}</Text>
-                  <Text style={styles.BillDueTxt}>{unpaidDueData?.Ref_No ? unpaidDueData?.Ref_No : ""}</Text>
-               </View>
-               <View style={styles.BillDueSubCon}>
-                  <Text style={styles.BillDueTitle}>{t("Amount")}</Text>
-                  <Text style={styles.BillDueTxt}>{unpaidDueData.Amount}</Text>
-              </View>
-               {/* 
+              <View style={styles.BillDueMain}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View>
+                    <Text style={styles.BillDueTitle}>{t('Account No')}</Text>
+                    <Text style={styles.BillDueTxt}>{paidData.CA}</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.BillDueTitle}>{t('BP')}</Text>
+                    <Text style={styles.BillDueTxt}>{paidData.BP}</Text>
+                  </View>
+                </View>
+                <View style={{marginVertical: 20}}>
+                  <Image source={ImagePath.DotLines} />
+                </View>
+
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 10,
+                  }}>
+                  <View style={styles.BillDueSubCon}>
+                    <Text style={styles.BillDueTitle}>{t('Post Date')}</Text>
+                    <Text style={styles.BillDueTxt}>
+                      {moment(paidData.PostDate, 'YYYY/MM/DD').format(
+                        'DD-MM-YYYY',
+                      )}
+                    </Text>
+                  </View>
+                  <View style={styles.BillDueSubCon}>
+                    <Text style={styles.BillDueTitle}>
+                      {t('Document Type')}
+                    </Text>
+                    <Text style={styles.BillDueTxt}>{paidData.Doc_Type}</Text>
+                  </View>
+                </View>
+                <View style={{marginVertical: 20}}>
+                  <Image source={ImagePath.DotLines} />
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={styles.BillDueSubCon}>
+                    <Text style={styles.BillDueTitle}>
+                      {t('Reference number')}
+                    </Text>
+                    <Text style={styles.BillDueTxt}>
+                      {paidData?.Ref_No ? paidData?.Ref_No : ''}
+                    </Text>
+                  </View>
+                  <View style={styles.BillDueSubCon}>
+                    <Text style={styles.BillDueTitle}>{t('Amount')}</Text>
+                    <Text style={styles.BillDueTxt}>{paidData.Amount}</Text>
+                  </View>
+                  {/* 
              </View>   
              <View style={{ marginVertical: 20 }}><Image source={ImagePath.DotLines}/></View>
              <View style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between' }}>
@@ -226,116 +263,170 @@ const Payment = ({navigation}) => {
                   <Text style={styles.BillDueTitle}>{t("Invoice Amount")}</Text>
                   <Text style={styles.BillDueTxt}>{unpaidDueData.Invoice_Amount ? ((unpaidDueData.Invoice_Amount).trim()).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }</Text>
                </View> */}
-             </View> 
-             <View style={styles.BillDuePayBillMain}> 
-               <TouchableOpacity style={styles.BillDuePayBillBtn} 
-                onPress={() =>{ 
-                  setIsPayment(true)
-                }}
-               >
-                  <Text style={styles.BillDuePayBillBtnTxt}>{t("PAY VIA AWASH")}</Text>
-               </TouchableOpacity>
-               <Text style={styles.BillDuePayBillBtnTxt1}>{t("(Only for AWASH BANK a/c holders)")}</Text>
-
-             </View>    
+                </View>
+                <View style={styles.BillDuePayBillMain}>
+                  <TouchableOpacity
+                    style={styles.BillDuePayBillBtn}
+                    onPress={() => {
+                      setIsPayment(true);
+                    }}>
+                    <Text style={styles.BillDuePayBillBtnTxt}>
+                      {t('PAY VIA AWASH')}
+                    </Text>
+                  </TouchableOpacity>
+                  <Text style={styles.BillDuePayBillBtnTxt1}>
+                    {t('(Only for AWASH BANK a/c holders)')}
+                  </Text>
+                </View>
+              </View>
             </View>
-            </View>: null }
-            <Modal
-              // animationType="slide"
-              transparent={true}
-              visible={isPaymentResponse}
-              onRequestClose={() => {
-                setIsPaymentResponse(!isPaymentResponse);
-              }}
-            >
-            <TouchableWithoutFeedback onPress={() => setIsPaymentResponse(false)}>  
-             <View style={styles.modalMainView}>
-                <View style={styles.unpaidModalView}>
-                   <Text style={{color: '#666666', fontSize: 20, }}>{"PAYMENT DETAILS"}</Text>
-                   <View style={styles.unpaidModalContainer}>
-                       <Text style={styles.UnpaidModalTitle}>{t("Date Approved")}</Text>
-                       <Text style={styles.UnpaidModalText}>{" : " +"Testdfdfdf"}</Text>
-                    </View>  
-                    <View style={styles.unpaidModalContainer}> 
-                       <Text style={styles.UnpaidModalTitle}>{t("Date Requested")}</Text>
-                       <Text style={styles.UnpaidModalText}>{ " : " + "Testdfdfdf"}</Text>
-                    </View> 
-                    <View style={styles.unpaidModalContainer}> 
-                       <Text style={styles.UnpaidModalTitle}>{t("External Request")}</Text>
-                       <Text style={styles.UnpaidModalText}>{" : " + "Testdfdfdf"}</Text>
-                     </View>
-                     <View style={styles.unpaidModalContainer}>  
-                       <Text style={styles.UnpaidModalTitle}>{t("Payer Phone")}</Text>
-                       <Text style={styles.UnpaidModalText}>{ " : " + "Testdfdfdf"}</Text>
-                     </View>
-                     <View style={styles.unpaidModalContainer}> 
-                       <Text style={styles.UnpaidModalTitle}>{t("Return Code")}</Text>
-                       <Text style={styles.UnpaidModalText}>{" : " +"Testdfdfdf"}</Text>
-                     </View>
-                     <View style={styles.unpaidModalContainer}> 
-                       <Text style={styles.UnpaidModalTitle}>{t("Return Message")}</Text>
-                       <Text style={styles.UnpaidModalText}>{" : " +"Testdfdfdf"}</Text>
-                     </View>
+          );
+        })}
+        <Modal
+          // animationType="slide"
+          transparent={true}
+          visible={isPaymentResponse}
+          onRequestClose={() => {
+            setIsPaymentResponse(!isPaymentResponse);
+          }}>
+          <TouchableWithoutFeedback onPress={() => setIsPaymentResponse(false)}>
+            <View style={styles.modalMainView}>
+              <View style={styles.unpaidModalView}>
+                <Text style={{color: '#666666', fontSize: 20}}>
+                  {'PAYMENT DETAILS'}
+                </Text>
+                <View style={styles.unpaidModalContainer}>
+                  <Text style={styles.UnpaidModalTitle}>
+                    {t('Date Approved')}
+                  </Text>
+                  <Text style={styles.UnpaidModalText}>
+                    {' : ' + 'Testdfdfdf'}
+                  </Text>
                 </View>
-             </View>
-            </TouchableWithoutFeedback> 
-            </Modal>  
-            <Modal
-              // animationType="slide"
-              transparent={true}
-              visible={isPayment}
-              onRequestClose={() => {
-                setIsPayment(!isPayment);
-              }}
-            >
-            <TouchableWithoutFeedback onPress={() => setIsPayment(!isPayment)}>  
-             <View style={styles.modalMainView}>
-                <View style={[styles.unpaidModalView, { flexDirection: 'column' }]}>
-                   <Text style={{color: '#666666', fontSize: 20, }}>{t("PAY THROUGH AWASH")}</Text>
-                   <View style={styles.Margin_10}>
-                     <Text style={styles.LoginSubTxt}>{t("Mobile No") + " *"}</Text>  
-                     <View style={{ display: 'flex', flexDirection: 'row' }}>
-                      <TextInput style={styles.countryCodeInput} editable={false} value={countryCode}/> 
-                      <TextInput
-                        placeholder={t("Enter mobile number")}
-                        value={mobileNo}
-                        maxLength={9}
-                        style={[styles.LoginTextInput, {width: 220}]}
-                        placeholderTextColor="#9E9E9E"
-                        onChangeText={(text) =>{ 
-                          const MobRegex = text.replace(/[^0-9]/g, '');
-                          if (MobRegex.length < 10) {
-                            setMobileNo(MobRegex);
-                            setErrorMsg('');
-                          }
-                 // Set error message if the length is not valid
-                          if (MobRegex.length < 9 && text.length > 1) {
-                            setErrorMsg('Phone number must be 9 digits.');
-                          }  
-                          if(text[0] == 0) {
-                            setErrorMsg('Invalid mobile number');
-                          }
-                          if( text == "" ){
-                            setErrorMsg('');
-                           }
-                        }}
-                      />
-                    </View>
-                     <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
-                   </View>
-                   <View style = {{ display: 'flex', flexDirection: 'row' }}>
-                   <TouchableOpacity style={[styles.PaymentBtn, { backgroundColor:'#63AA5A' }]} onPress={() => { setIsPayment(false) }}>
-                       <Text style={[styles.RegisterBtnTxt, { color: '#FFF' }]}>{t("CANCEL")}</Text>
-                   </TouchableOpacity> 
-                   <TouchableOpacity style={[styles.PaymentBtn, { backgroundColor:'#63AA5A', marginLeft: 10 }]} onPress={() => { setSubmit(true); onPressPaymentProceed() }}>
-                       <Text style={[styles.RegisterBtnTxt, { color: '#FFF' }]}>{t("SUBMIT")}</Text>
-                   </TouchableOpacity> 
-                   </View>
+                <View style={styles.unpaidModalContainer}>
+                  <Text style={styles.UnpaidModalTitle}>
+                    {t('Date Requested')}
+                  </Text>
+                  <Text style={styles.UnpaidModalText}>
+                    {' : ' + 'Testdfdfdf'}
+                  </Text>
                 </View>
-             </View>
-            </TouchableWithoutFeedback> 
-            </Modal>     
-        </View>
+                <View style={styles.unpaidModalContainer}>
+                  <Text style={styles.UnpaidModalTitle}>
+                    {t('External Request')}
+                  </Text>
+                  <Text style={styles.UnpaidModalText}>
+                    {' : ' + 'Testdfdfdf'}
+                  </Text>
+                </View>
+                <View style={styles.unpaidModalContainer}>
+                  <Text style={styles.UnpaidModalTitle}>
+                    {t('Payer Phone')}
+                  </Text>
+                  <Text style={styles.UnpaidModalText}>
+                    {' : ' + 'Testdfdfdf'}
+                  </Text>
+                </View>
+                <View style={styles.unpaidModalContainer}>
+                  <Text style={styles.UnpaidModalTitle}>
+                    {t('Return Code')}
+                  </Text>
+                  <Text style={styles.UnpaidModalText}>
+                    {' : ' + 'Testdfdfdf'}
+                  </Text>
+                </View>
+                <View style={styles.unpaidModalContainer}>
+                  <Text style={styles.UnpaidModalTitle}>
+                    {t('Return Message')}
+                  </Text>
+                  <Text style={styles.UnpaidModalText}>
+                    {' : ' + 'Testdfdfdf'}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+        <Modal
+          // animationType="slide"
+          transparent={true}
+          visible={isPayment}
+          onRequestClose={() => {
+            setIsPayment(!isPayment);
+          }}>
+          <TouchableWithoutFeedback onPress={() => setIsPayment(!isPayment)}>
+            <View style={styles.modalMainView}>
+              <View style={[styles.unpaidModalView, {flexDirection: 'column'}]}>
+                <Text style={{color: '#666666', fontSize: 20}}>
+                  {t('PAY THROUGH AWASH')}
+                </Text>
+                <View style={styles.Margin_10}>
+                  <Text style={styles.LoginSubTxt}>
+                    {t('Mobile No') + ' *'}
+                  </Text>
+                  <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <TextInput
+                      style={styles.countryCodeInput}
+                      editable={false}
+                      value={countryCode}
+                    />
+                    <TextInput
+                      placeholder={t('Enter mobile number')}
+                      value={mobileNo}
+                      maxLength={9}
+                      style={[styles.LoginTextInput, {width: 220}]}
+                      placeholderTextColor="#9E9E9E"
+                      onChangeText={text => {
+                        const MobRegex = text.replace(/[^0-9]/g, '');
+                        if (MobRegex.length < 10) {
+                          setMobileNo(MobRegex);
+                          setErrorMsg('');
+                        }
+                        // Set error message if the length is not valid
+                        if (MobRegex.length < 9 && text.length > 1) {
+                          setErrorMsg('Phone number must be 9 digits.');
+                        }
+                        if (text[0] == 0) {
+                          setErrorMsg('Invalid mobile number');
+                        }
+                        if (text == '') {
+                          setErrorMsg('');
+                        }
+                      }}
+                    />
+                  </View>
+                  <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <TouchableOpacity
+                    style={[styles.PaymentBtn, {backgroundColor: '#63AA5A'}]}
+                    onPress={() => {
+                      setIsPayment(false);
+                    }}>
+                    <Text style={[styles.RegisterBtnTxt, {color: '#FFF'}]}>
+                      {t('CANCEL')}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.PaymentBtn,
+                      {backgroundColor: '#63AA5A', marginLeft: 10},
+                    ]}
+                    onPress={() => {
+                      setSubmit(true);
+                      onPressPaymentProceed();
+                    }}>
+                    <Text style={[styles.RegisterBtnTxt, {color: '#FFF'}]}>
+                      {t('SUBMIT')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+      </ScrollView>
     );
 };
 
