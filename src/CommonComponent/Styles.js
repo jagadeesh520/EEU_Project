@@ -794,7 +794,10 @@ const Styles = () => {
             fontSize: wp(16),
             fontWeight: '400',
             color: '#666666',
-            flexWrap: 'wrap'
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            width: '100%'
         },
         ComplaintListDesMain: {
             display: 'flex',

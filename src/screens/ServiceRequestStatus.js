@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, ActivityIndicator, ScrollView, StyleSheet} from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
@@ -9,6 +9,8 @@ import { constant } from '../CommonComponent/Constant';
 import { useTranslation } from 'react-i18next';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 // create a component
 const ServiceRequestStatus = ({navigation}) => {
@@ -40,15 +42,20 @@ const ServiceRequestStatus = ({navigation}) => {
         navigation.goBack("BottomTab")
     }
     useEffect (()=> {
-      retrieveData()
+      retrieveData();
+      getComplaintHistory();
     }, []);
-  
+    useFocusEffect(
+      useCallback(() => {
+        retrieveData();
+      }, [])
+    );
     const getComplaintHistory = (value)=>{
       fetch(constant.BASE_URL + constant.COMPLAINT_LIST, {
         method: 'POST',
         body: JSON.stringify({
           Record: {
-            ContractAccount: value.CA_No,
+            ContractAccount: value?.CA_No,
           }
         }),
       })
@@ -193,7 +200,7 @@ const ServiceRequestStatus = ({navigation}) => {
                    </View>
                    {data.isExpand && (
                    <View>
-                   <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>  
+                   <View style={{ display: 'flex', flexDirection: 'row', flex: 1, flexWrap: 'wrap' }}>  
                    <View style={{ display: 'flex', flex: 0.5, flexWrap: 'wrap'}}>
                      <Text style={styles.ComplaintListHeader}>{t("Complaint Title")+ " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintTitle}</Text>

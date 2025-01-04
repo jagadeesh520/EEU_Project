@@ -17,7 +17,8 @@ import DocumentPicker from 'react-native-document-picker';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
-
+import RNFS from 'react-native-fs';  // Import RNFS
+import { constant } from '../CommonComponent/Constant';
 // create a component
 const Miscellaneous = ({navigation}) => {
     const { t, i18n } = useTranslation();
@@ -42,16 +43,13 @@ const Miscellaneous = ({navigation}) => {
     const [ install_Doc_Reference, setInstall_Doc_Reference ] = useState("");
     const [show, setShow] = useState(false);
     const [defferal_Doc_Reference, setDefferal_Doc_Reference] = useState("");
-    const [invalidDefferal_Doc_Reference, setInvalidDefferal_Doc_Reference] = useState("");
     const [collective_Bill_AC, setCollective_Bill_AC] = useState("");
-    const [invalidCollective_Bill_AC, setInvalidCollective_Bill_AC] = useState("");
     const [transfer_CA, setTransfer_CA] = useState("");
-    const [invalidTransfer_CA, setInvalidTransfer_CA] = useState("");
     const [transfer_Doc_Ref, setTransfer_Doc_Ref] = useState("");
-    const [invalidTransfer_Doc_Ref, setInvalidTransfer_Doc_Ref] = useState("");
     const [no_of_PF_Device, setNo_of_PF_Device] = useState("");
-    const [invalidNo_of_PF_Device, setInvalidNo_of_PF_Device] = useState(null);
 
+    const [ invalidIDType, setInvalidIDType] = useState("");
+    const [ invalidIDProof, setInvalidIDProof] = useState("");
     const [ invalidFirstName, setInvalidFirstName ] = useState("");
     const [ invalidLastName, setInvalidLastName ] = useState("");
     const [ invalidFloor, setInvalidFloor ] = useState("");
@@ -67,7 +65,22 @@ const Miscellaneous = ({navigation}) => {
     const [ invalidLandmark, setInvalidLandmark ] = useState("");
     const [ invalidStreet, setInvalidStreet ] = useState("");
     const [ invalidNo_of_Installment, setInvalidNo_of_Installment ] = useState("");
+    const [invalidTemp_Conn_Ext_Date, setInvalidTemp_Conn_Ext_Date] = useState("");
+    const [invalidTemp_Conn_Type, setInvalidTemp_Conn_Type] = useState("");
+    const [invalidDefferal_Date , setInvalidDefferal_Date ] = useState("");
+    const [invalidDefferal_Doc_Reference, setInvalidDefferal_Doc_Reference] = useState("");
+    const [ invalidCollectiveBilling, setInvalidCollectiveBilling ] = useState("");
+    const [ invalidCollective_Bill_AC, setInvalidCollective_Bill_AC ] = useState("");
+    const [ invalidBB_No_of_Months, setInvalidBB_No_of_Months ] = useState("");
+    const [ invalidTransfer_CA, setInvalidTransfer_CA ] = useState("");
+    const [ invalidTransfer_Doc_Ref, setInvalidTransfer_Doc_Ref ] = useState("");
+    const [ invalidNo_of_PF_Device, setInvalidNo_of_PF_Device ] = useState("");
+    const [ invalidPF_Corrector, setInvalidPF_Corrector ] = useState("");
+    const [ invalidCategory1, setInvalidCategory1 ] = useState("");
+    const [ invalidPartnerType, setInvalidPartnerType] = useState("");
+    const [ invalidRequestDes, setInvalidRequestDes ] = useState("");
 
+    const [ requestDes, setRequestDes ] = useState("");
     const [ temp_Conn_Ext_Date, setTemp_Conn_Ext_Date ] = useState(new Date());
     const [ defferal_Date, setDefferal_Date] = useState(new Date());
     const [ selectedCategory1, setSelectedCategory1] = useState("");
@@ -102,7 +115,7 @@ const Miscellaneous = ({navigation}) => {
         { label: "Failure of online payments",  value:"Failure of online payments" },
         { label: "Power factor device purchase",  value:"Power factor device purchase" },
         { label: "Others",  value:"Others" },
-        { label: "Update BP Type",  value:" Update BP Type" },
+        { label: "Update BP Type",  value:"Update BP Type" },
         { label: "Tin number updating",  value:"Tin number updating" },
     ]);
     const [ Temp_Conn_Type_Option, setTemp_Conn_Type_Option ] = useState([
@@ -148,7 +161,9 @@ const Miscellaneous = ({navigation}) => {
     const [imageName2, setImageName2] = useState(null);
     const { themes, themeObj } = useThemes();
     const [ selectedImage, setSelectedImage ] = useState("");
-    
+    const [file, setFile] = useState(null);
+    const [file2, setFile2] = useState(null);
+
     const [ IDTypeOptions, setIDTypeOptions ] = useState([
         { label: "Passport",  value:"Passport" },
         { label: "Residential ID",  value:"Residential ID" },
@@ -210,7 +225,6 @@ const Miscellaneous = ({navigation}) => {
             <TextInput
             placeholder={t(placeholder)}
             value={value}
-            keyboardType={"phone-pad"}
             style={styles.LoginTextInput}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ 
@@ -270,11 +284,10 @@ const Miscellaneous = ({navigation}) => {
             //   ]
             // );
            } 
-           openGallery()
         }
-       
+        openGallery()
       };
-      openGallery = () => {
+      const openGallery = () => {
         ImagePicker.openPicker({
           width: 400,
           height: 400,
@@ -283,14 +296,28 @@ const Miscellaneous = ({navigation}) => {
           includeBase64: true,
           mediaType: 'photo',
         }).then(async image => {
-          console.log('Image captured:', image.data);
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption(false)
+          // setHeight(height);
+          // setWidth(width);
+          // setDocumentOption(false)
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
+          // setImageName(imageFileName);
+  
+          // setSelectedImage(`data:${image.mime};base64,${image.data}`);
+  
+  
+          // Ensure Base64 is sanitized
+          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+    
+          // Handle other properties
           const imagePathParts = image.path.split('/');
           const imageFileName = imagePathParts[imagePathParts.length - 1];
+    
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption(false);
           setImageName(imageFileName);
-          setSelectedImage(`data:${image.mime};base64,${image.data}`);
+          setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
         }).catch(error => {
           console.log(error);
         });
@@ -304,47 +331,58 @@ const Miscellaneous = ({navigation}) => {
           includeBase64: true,  
           mediaType: 'photo',
         }).then(async image => {
-          console.log('Image captured:', image.data);
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption(false)
-          setSelectedImage(`data:${image.mime};base64,${image.data}`);
+          // setHeight(height);
+          // setWidth(width);
+          // setDocumentOption(false)
+          // setSelectedImage(`data:${image.mime};base64,${image.data}`)
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
+          // setImageName(imageFileName);
+  
+  
+          // Ensure Base64 is sanitized
+          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+    
+          // Handle other properties
           const imagePathParts = image.path.split('/');
           const imageFileName = imagePathParts[imagePathParts.length - 1];
+    
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption(false);
           setImageName(imageFileName);
+          setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
          
         }).catch(error => { 
           console.log(error);
         });
       }
-      const handleCameraCapture = async () => {
-        const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
-        console.log(isPermitted);
-        if (isPermitted !== RESULTS.GRANTED) {
-           const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
-           console.log(isGranted);
-           if(isGranted !== RESULTS.GRANTED) {
-            console.log("denied")
-            //  Alert.alert(
-            //   '',
-            //   "The Camera access is denied",
-            //   [
-            //     { text: 'OK', onPress: () =>{}  },
-            //   ]
-            // );
-           } 
-        }
-        openCamera()
-      };
       const handlePDFUpload = async () => { 
         try {
           const res = await DocumentPicker.pick({
             type: [DocumentPicker.types.pdf],
           });
-          setFile(res);
+          // setFile(res);
+          // const selectedFile = res[0];
+          // setFile(selectedFile);
+          // setSelectedImage(null);
+          // console.log(selectedFile, selectedFile.name)
+          // setImageName(selectedFile.name);
           const selectedFile = res[0];
-          setFile(selectedFile.uri);
-          setImageName(selectedFile.name);
+          // setFile(selectedFile);
+          setSelectedImage(null);
+      
+      
+          // Read the file as Base64
+          const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
+      
+          // Ensure no wrapping
+          const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
+      
+          // Set the sanitized Base64
+          setImageName(selectedFile.name); // Set file name
+          setFile(sanitizedBase64);
+  
         } catch (err) {
           if (DocumentPicker.isCancel(err)) {
             console.log('User cancelled the picker');
@@ -352,70 +390,6 @@ const Miscellaneous = ({navigation}) => {
             throw err;
           }
         }
-      }
-      const handleImagePicker2 = async () => {
-        const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-        console.log(isPermitted);
-        if (isPermitted !== RESULTS.GRANTED) {
-           const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-           console.log(isGranted);
-           if(isGranted !== RESULTS.GRANTED) {
-            // Alert.alert(
-            //   '',
-            //   "The Gallery storage access is denied",
-            //   [
-            //     { text: 'OK', onPress: () =>{} },
-            //   ]
-            // );
-           } 
-           openGallery2()
-        }
-       
-      };
-      openGallery2 = () => {
-        ImagePicker.openPicker({
-          width: 400,
-          height: 400,
-          cropping: true,
-          useFrontCamera: false,
-          includeBase64: true,
-          mediaType: 'photo',
-        }).then(async image => {
-          console.log('Image captured:', image.data);
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption1(false)
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
-          console.log(imageFileName, "imageFileName")
-          setImageName2(imageFileName);
-          setSelectedImage2(`data:${image.mime};base64,${image.data}`);
-        }).catch(error => {
-          console.log(error);
-        });
-      }
-      const openCamera2 = () => {
-        ImagePicker.openCamera({
-          width: 400,
-          height: 400,
-          cropping: true,
-          useFrontCamera: false,
-          includeBase64: true,  
-          mediaType: 'photo',
-        }).then(async image => {
-          console.log('Image captured:', image.data);
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption(false)
-          setSelectedImage2(`data:${image.mime};base64,${image.data}`);
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
-          console.log(imageFileName, "imageFileName")
-          setImageName2(imageFileName);
-         
-        }).catch(error => { 
-          console.log(error);
-        });
       }
       const handleCameraCapture2 = async () => {
         const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
@@ -436,17 +410,142 @@ const Miscellaneous = ({navigation}) => {
         }
         openCamera2()
       };
+      
+      const handleCameraCapture = async () => {
+        const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+        console.log(isPermitted);
+        if (isPermitted !== RESULTS.GRANTED) {
+           const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+           console.log(isGranted);
+           if(isGranted !== RESULTS.GRANTED) {
+            console.log("denied")
+            //  Alert.alert(
+            //   '',
+            //   "The Camera access is denied",
+            //   [
+            //     { text: 'OK', onPress: () =>{}  },
+            //   ]
+            // );
+           } 
+        }
+        openCamera()
+      };
+      const handleImagePicker2 = async () => {
+        const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+        console.log(isPermitted);
+        if (isPermitted !== RESULTS.GRANTED) {
+           const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+           console.log(isGranted);
+           if(isGranted !== RESULTS.GRANTED) {
+            // Alert.alert(
+            //   '',
+            //   "The Gallery storage access is denied",
+            //   [
+            //     { text: 'OK', onPress: () =>{} },
+            //   ]
+            // );
+           } 
+        }
+        openGallery2()
+       
+      };
+      openGallery2 = () => {
+        ImagePicker.openPicker({
+          width: 400,
+          height: 400,
+          cropping: true,
+          useFrontCamera: false,
+          includeBase64: true,
+          mediaType: 'photo',
+        }).then(async image => {
+          console.log('Image captured:', image.data);
+          // setHeight(height);
+          // setWidth(width);
+          // setDocumentOption1(false)
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
+          // setImageName2(imageFileName);
+          // setSelectedImage1(`data:${image.mime};base64,${image.data}`);
+          // console.log('Image captured:', image.data);
+  
+          // Ensure Base64 is sanitized
+          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+    
+          // Handle other properties
+          const imagePathParts = image.path.split('/');
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+    
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption1(false);
+          setImageName2(imageFileName);
+          setSelectedImage2(`data:${image.mime};base64,${sanitizedBase64}`);
+        }).catch(error => {
+          console.log(error);
+        });
+      }
+     
+      const openCamera2 = () => {
+        ImagePicker.openCamera({
+          width: 400,
+          height: 400,
+          cropping: true,
+          useFrontCamera: false,
+          includeBase64: true,  
+          mediaType: 'photo',
+        }).then(async image => {
+          // setHeight(height);
+          // setWidth(width);
+          // setDocumentOption1(false)
+          // setSelectedImage2(`data:${image.mime};base64,${image.data}`)
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
+          // setImageName2(imageFileName);
+  
+  
+          // Ensure Base64 is sanitized
+          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+    
+          // Handle other properties
+          const imagePathParts = image.path.split('/');
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+    
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption1(false);
+          setImageName2(imageFileName);
+          setSelectedImage2(`data:${image.mime};base64,${sanitizedBase64}`);
+         
+        }).catch(error => { 
+          console.log(error);
+        });
+      }
+      
       const handlePDFUpload2 = async () => { 
         try {
           const res = await DocumentPicker.pick({
             type: [DocumentPicker.types.pdf],
           });
-          setFile2(res);
+          // setFile2(res);
+          // const selectedFile = res[0];
+          // setFile2(selectedFile);
+          // setImageName2(selectedFile.name);
+          // setSelectedImage1(null);
+  
           const selectedFile = res[0];
-          setFile2(selectedFile.uri);
-          setImageName2(selectedFile.name);
-          console.log(selectedFile.name, "imageFileName")
-
+          // setFile(selectedFile);
+          setSelectedImage(null);
+      
+      
+          // Read the file as Base64
+          const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
+      
+          // Ensure no wrapping
+          const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
+      
+          // Set the sanitized Base64
+          setImageName2(selectedFile.name); // Set file name
+          setFile2(sanitizedBase64); // Store Base64 data
         } catch (err) {
           if (DocumentPicker.isCancel(err)) {
             console.log('User cancelled the picker');
@@ -455,7 +554,334 @@ const Miscellaneous = ({navigation}) => {
           }
         }
       }
-      console.log(imageName2, "imageName2=----->", imageName)
+      const validateInputs = () => {
+        let valid = true;
+        if (selectedCategory1 === '') {
+          setInvalidCategory1(t("Category1 can't be empty"));
+          valid = false;
+        } else {
+          setInvalidCategory1('');
+        }
+        if (requestDes === '') {
+          setInvalidRequestDes(t("Request Description can't be empty"));
+          valid = false;
+        } else {
+          setInvalidRequestDes('');
+        }
+        if (selectedCategory1 === 'Name correction' && firstName === '' ) {
+          setInvalidFirstName(t("First Name can't be empty"));
+          valid = false;
+        } else {
+          setInvalidFirstName('');
+        }
+        if (selectedCategory1 === 'Name correction' && lastName === '' ) {
+          setInvalidLastName(t("Last Name can't be empty"));
+          valid = false;
+        } else {
+          setInvalidLastName('');
+        }
+        if (selectedCategory1 === 'Address correction' && floor === '' ) {
+          setInvalidFloor(t("Floor can't be empty"));
+          valid = false;
+        } else {
+          setInvalidFloor('');
+        }
+        if (selectedCategory1 === 'Address correction' && woreda === '' ) {
+          setInvalidWoreda(t("Woreda can't be empty"));
+          valid = false;
+        } else {
+          setInvalidWoreda('');
+        }
+        if (selectedCategory1 === 'Address correction' && kebele === '' ) {
+          setInvalidKebele(t("Kebele can't be empty"));
+          valid = false;
+        } else {
+          setInvalidKebele('');
+        }
+        if (selectedCategory1 === 'Address correction' && room === '' ) {
+          setInvalidRoom(t("Room can't be empty"));
+          valid = false;
+        } else {
+          setInvalidRoom('');
+        }
+        if (selectedCategory1 === 'Address correction' && gote_Ketena === '' ) {
+          setInvalidGote_Ketena(t("Gote_Ketena can't be empty"));
+          valid = false;
+        } else {
+          setInvalidGote_Ketena('');
+        }
+        if (selectedCategory1 === 'Address correction' && apartment_Name === '' ) {
+          setInvalidApartment_Name(t("Apportment name can't be empty"));
+          valid = false;
+        } else {
+          setInvalidApartment_Name('');
+        }
+        if (selectedCategory1 === 'Address correction' && city === '' ) {
+          setInvalidCity(t("City can't be empty"));
+          valid = false;
+        } else {
+          setInvalidCity('');
+        }
+        if (selectedCategory1 === 'Address correction' && district === '' ) {
+          setInvalidDistrict(t("District can't be empty"));
+          valid = false;
+        } else {
+          setInvalidDistrict('');
+        }
+        if (selectedCategory1 === 'Address correction' && house_Number === '' ) {
+          setInvalidHouse_Number(t("House number can't be empty"));
+          valid = false;
+        } else {
+          setInvalidHouse_Number('');
+        }
+        if (selectedCategory1 === 'Address correction' && landmark === '' ) {
+          setInvalidLandmark(t("Landmark can't be empty"));
+          valid = false;
+        } else {
+          setInvalidLandmark('');
+        }
+        if (selectedCategory1 === 'Address correction' && street === '' ) {
+          setInvalidStreet(t("Street can't be empty"));
+          valid = false;
+        } else {
+          setInvalidStreet('');
+        }
+        if (selectedCategory1 === 'Request for instalment plan' && no_of_Installment === '' ) {
+          setInvalidNo_of_Installment(t("No of installment can't be empty"));
+          valid = false;
+        } else {
+          setInvalidNo_of_Installment('');
+        }
+        if (selectedCategory1 === 'Request for instalment plan' && install_Doc_Reference === '' ) {
+          setInvalidInstall_Doc_Reference(t("Install doc reference can't be empty"));
+          valid = false;
+        } else {
+          setInvalidInstall_Doc_Reference('');
+        }
+        if (selectedCategory1 === 'Temporary connection extension' && selected_Temp_Conn_Type === '' ) {
+          setInvalidTemp_Conn_Type(t("Temporary Connection extension can't be empty"));
+          valid = false;
+        } else {
+          setInvalidTemp_Conn_Type('');
+        }
+        if (selectedCategory1 === 'Temporary connection extension' && temp_Conn_Ext_Date === '' ) {
+          setInvalidTemp_Conn_Ext_Date(t("Temporary Connection extension Date can't be empty"));
+          valid = false;
+        } else {
+          setInvalidTemp_Conn_Ext_Date('');
+        }
+        if (selectedCategory1 === 'Request for due date deferral' && defferal_Date === '' ) {
+          setInvalidDefferal_Date(t("Defferal Date can't be empty"));
+          valid = false;
+        } else {
+          setInvalidDefferal_Date('');
+        }
+        if (selectedCategory1 === 'Request for due date deferral' && defferal_Doc_Reference === '' ) {
+          setInvalidDefferal_Doc_Reference(t("Defferal Doc Reference can't be empty"));
+          valid = false;
+        } else {
+          setInvalidDefferal_Doc_Reference('');
+        }
+
+        if (selectedCategory1 === 'Group billing' && selectedCollectiveBilling === '' ) {
+          setInvalidCollectiveBilling(t("Collective Billing Doc Reference can't be empty"));
+          valid = false;
+        } else {
+          setInvalidCollectiveBilling('');
+        }
+
+        if (selectedCategory1 === 'Group billing' && collective_Bill_AC === '' ) {
+          setInvalidCollective_Bill_AC(t("Collective Bill AC can't be empty"));
+          valid = false;
+        } else {
+          setInvalidCollective_Bill_AC('');
+
+        }
+        if (selectedCategory1 === 'Budget billing' && selectedBB_No_of_Months === '' ) {
+          setInvalidBB_No_of_Months(t("BB No of Months can't be empty"));
+          valid = false;
+        } else {
+          setInvalidBB_No_of_Months('');
+        }
+        if (selectedCategory1 === 'Transfer of open items' && transfer_CA === '' ) {
+          setInvalidTransfer_CA(t("Transfer CA can't be empty"));
+          valid = false;
+        } else {
+          setInvalidTransfer_CA('');
+
+        }
+        if (selectedCategory1 === 'Transfer of open items' && transfer_Doc_Ref === '' ) {
+          setInvalidTransfer_Doc_Ref(t("Transfer Doc Ref can't be empty"));
+          valid = false;
+        } else {
+          setInvalidTransfer_Doc_Ref('');
+        }
+        if (selectedCategory1 === 'Power factor device purchase' && no_of_PF_Device=== '' ) {
+          setInvalidNo_of_PF_Device(t("No of PF device can't be empty"));
+          valid = false;
+        } else {
+          setInvalidNo_of_PF_Device('');
+        }
+        if (selectedCategory1 === 'Power factor device purchase' && selectedPF_Corrector === '' ) {
+          setInvalidPF_Corrector(t("PF corrector can't be empty"));
+          valid = false;
+        } else {
+          setInvalidPF_Corrector('');
+
+        }
+
+        if (selectedCategory1 === 'Update BP Type' && selectPartnerType === '' ) {
+          setInvalidPartnerType(t("Partner Type can't be empty"));
+          valid = false;
+        } else {
+          setInvalidPartnerType('');
+        }
+
+        if (selectedCategory1 === 'Tin number updating' && TIN_Number === '' ) {
+          setInvalidTIN_Number(t("Tin number can't be empty"));
+          valid = false;
+        } else {
+          setInvalidTIN_Number('');
+        }
+        if (selectedIDType === '') {
+          setInvalidIDType(t("ID Type can't be empty"));
+          valid = false;
+        } else {
+          setInvalidIDType('');
+        }
+      
+        if ( imageName == null && file == null) {
+          setInvalidIDProof(t("ID proof can't be empty"));
+          valid = false;
+        } else {
+          setInvalidIDProof('');
+        }
+       
+        return valid;
+      }
+      const clearData = () => {
+        setSelectedIDType("");
+        setSelectedOwnerShipType("");
+        setImageName(null);
+        setImageName2(null);
+        setFile(null);
+        setFile2(null);
+        setSelectedImage(null);
+        setSelectedImage2(null);
+        setSelectedCategory1("");
+  
+      } 
+      const onPressSubmitBtn = () => {
+        var validate = validateInputs()
+        if (validateInputs()) { 
+        var url = constant.BASE_URL + constant.MISCELLANEOUS;
+        var idProof = selectedImage ? selectedImage : file ? file : null;
+        var ownerShipProof = selectedImage2 ? selectedImage2 : file2 ? file2 : null;
+        var data = {
+          "BP": (accountData.BP_No).toString(),
+          "CA": (accountData.CA_No).toString(),
+          "Description": requestDes,
+          "Category1": selectedCategory1,
+          "First_Name": firstName,
+          "Middle_Name": middleName,
+           "Last_Name": lastName,
+          "Floor": floor,
+          "Woreda": woreda,
+          "Kebele": kebele,
+          "Room": room,
+          "Gote_Ketena": gote_Ketena,
+          "Apartment_Name": apartment_Name,
+          "City": city,
+          "District": district,
+          "House_Number": house_Number,
+          "Landmark": landmark,
+          "Street": street,
+          "No_of_Installment": no_of_Installment,
+          "Install_Doc_Reference": install_Doc_Reference,
+          "Temp_Conn_Type": selected_Temp_Conn_Type,
+          "Temp_Conn_Ext_Date": temp_Conn_Ext_Date,
+          "Defferal_Date": defferal_Date,
+          "Defferal_Doc_Reference": defferal_Doc_Reference,
+          "Collective_Billing": selectedCollectiveBilling,
+          "Collective_Bill_AC": collective_Bill_AC,
+          "BB_No_of_Months": selectedBB_No_of_Months,
+          "Transfer_CA": transfer_CA,
+          "Transfer_Doc_Ref": transfer_Doc_Ref,
+          "No_of_PF_Device": no_of_PF_Device,
+          "PF_Corrector": selectedPF_Corrector,
+          "Partner_Type": selectPartnerType,
+          "TIN_Number": TIN_Number,
+          "IDType": selectedIDType,
+          "IDProof": idProof,
+          "OwnershipProofType": selectedOwnerShipType,
+          "OwnershipProofUpload": ownerShipProof
+        }
+        console.log(data, "missss");
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({
+            Record: {
+              "BP": (accountData.BP_No).toString(),
+              "CA": (accountData.CA_No).toString(),
+              "Description": requestDes,
+              "Category1": selectedCategory1,
+              "First_Name": firstName,
+		          "Middle_Name": middleName,
+	           	"Last_Name": lastName,
+		          "Floor": floor,
+		          "Woreda": woreda,
+		          "Kebele": kebele,
+		          "Room": room,
+		          "Gote_Ketena": gote_Ketena,
+		          "Apartment_Name": apartment_Name,
+	            "City": city,
+		          "District": district,
+		          "House_Number": house_Number,
+		          "Landmark": landmark,
+		          "Street": street,
+		          "No_of_Installment": no_of_Installment,
+		          "Install_Doc_Reference": install_Doc_Reference,
+              "Temp_Conn_Type": selected_Temp_Conn_Type,
+	          	"Temp_Conn_Ext_Date": temp_Conn_Ext_Date,
+		          "Defferal_Date": defferal_Date,
+		          "Defferal_Doc_Reference": defferal_Doc_Reference,
+		          "Collective_Billing": selectedCollectiveBilling,
+		          "Collective_Bill_AC": collective_Bill_AC,
+	            "BB_No_of_Months": selectedBB_No_of_Months,
+		          "Transfer_CA": transfer_CA,
+		          "Transfer_Doc_Ref": transfer_Doc_Ref,
+		          "No_of_PF_Device": no_of_PF_Device,
+		          "PF_Corrector": selectedPF_Corrector,
+	            "Partner_Type": selectPartnerType,
+		          "TIN_Number": TIN_Number,
+              "IDType": selectedIDType,
+              "IDProof": idProof,
+              "OwnershipProofType": selectedOwnerShipType,
+              "OwnershipProofUpload": ownerShipProof
+            }
+          }),
+        })
+          .then((response) =>
+            response.json())
+          .then(responseData => {
+            var data = responseData.Record
+            console.log(responseData, "response")
+            // Alert.alert(
+            //   '',
+            //   t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data.SR_Number),
+            //   [
+            //     {
+            //       text: 'Ok',
+            //       onPress: () => {
+            //         navigation.navigate("ServiceRequest");
+            //       },
+            //     },
+            //   ]
+            // );
+            clearData()
+          })
+        }
+      }
     return (
         <ScrollView style={styles.DashBoardMain}>
          <CommonHeader title={t("Miscellaneous")} onBackPress ={onBackPress} navigation={navigation}/>
@@ -472,12 +898,7 @@ const Miscellaneous = ({navigation}) => {
               <Text style={styles.DashBoradProfilAccText}>{accountData.CA_No}</Text>
             </View>
           </View> 
-          <View style={[styles.Margin_10, { width: '72%'}]}>
-            <Text style={styles.LoginSubTxt}>{t("Request Description") + " *"}</Text>     
-            <View style={{ padding: 10, borderWidth: 0.5, borderRadius: 2, borderColor: 'grey', marginTop: 10, backgroundColor: '#EEEEEE'  }}>
-              <Text style={styles.DashBoradProfilAccText}>{"Move Out Request from Mobile App"}</Text>
-            </View>
-          </View>  
+          {renderTextInput("Request Description", "Enter the reuest description", requestDes, setRequestDes, invalidRequestDes, setInvalidRequestDes)} 
           <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Category1")  + (" *")}</Text>   
             <Dropdown
@@ -495,12 +916,12 @@ const Miscellaneous = ({navigation}) => {
                 onChange={item => {
                     setSelectedCategory1(item.value);
                    
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidCategory1("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidCategory1}</Text>
            </View>
            { selectedCategory1 && selectedCategory1 == "Name correction" ? 
            <View>
@@ -546,12 +967,12 @@ const Miscellaneous = ({navigation}) => {
                 onChange={item => {
                     setSelected_Temp_Conn_Type(item.value);
                    
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidTemp_Conn_Type("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidTemp_Conn_Type}</Text>
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Temp_Conn_Ext_Date")}</Text>   
@@ -609,7 +1030,7 @@ const Miscellaneous = ({navigation}) => {
                 iconStyle={styles.RaiseComplaintDropdownTxt}
                 labelField="label"
                 valueField="value"
-                placeholder={t("Select the Temp_Conn_Type")}
+                placeholder={t("Select the Collective Billing")}
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
                 data={Collective_Billing_Option }
@@ -617,12 +1038,12 @@ const Miscellaneous = ({navigation}) => {
                 onChange={item => {
                     setselectedCollectiveBilling(item.value);
                    
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidCollectiveBilling("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidCollectiveBilling}</Text>
            </View>
            {renderTextInput("Collective_Bill_AC", "Enter the Collective_Bill_AC", collective_Bill_AC, setCollective_Bill_AC, invalidCollective_Bill_AC, setInvalidCollective_Bill_AC)}
            </View> : null }
@@ -644,12 +1065,12 @@ const Miscellaneous = ({navigation}) => {
                 onChange={item => {
                     setSelectedBB_No_of_Months(item.value);
                    
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidBB_No_of_Months("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidBB_No_of_Months}</Text>
            </View> : null }
            { selectedCategory1 && selectedCategory1 == "Transfer of open items" ? 
            <View>
@@ -677,12 +1098,12 @@ const Miscellaneous = ({navigation}) => {
                 onChange={item => {
                     setSelectedPF_Corrector(item.value);
                    
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidPF_Corrector("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidPF_Corrector}</Text>
            </View>
            </View> : null }
            { selectedCategory1 == "Update BP Type" ? 
@@ -703,13 +1124,13 @@ const Miscellaneous = ({navigation}) => {
                 onChange={item => {
                     setSelectPartnerType(item.value);
                     // setPartnerType(item.label);
-                    // if((item.value)?.length > 0 ) {
-                    //   setInvalidPartnerType('');
-                    // }
+                    if((item.value)?.length > 0 ) {
+                      setInvalidPartnerType('');
+                    }
                     
                 }}               
            />
-           {/* <Text style={styles.ErrorMsg}>{invalidPartnerType}</Text> */}
+           <Text style={styles.ErrorMsg}>{invalidPartnerType}</Text>
            </View> : null }
            { selectedCategory1 == "Tin number updating" ? 
            <View>
@@ -732,12 +1153,12 @@ const Miscellaneous = ({navigation}) => {
                 value={selectedIDType}
                 onChange={item => {
                     setSelectedIDType(item.value);
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidIDType("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidIDType}</Text>
            </View>
            <View>
            {imageName && imageName ?
@@ -791,7 +1212,7 @@ const Miscellaneous = ({navigation}) => {
                 <Upload name={'upload'} size={25}/>
               </TouchableOpacity> 
               <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor: '#63AA5A', display:'flex', flexDirection: 'row' }]}
-                onPress={() => { }}
+                onPress={() => { onPressSubmitBtn() }}
               >
                 <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>
               </TouchableOpacity> 

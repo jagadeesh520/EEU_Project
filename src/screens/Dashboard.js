@@ -86,7 +86,7 @@ const Dashboard = ({ navigation, route }) => {
     const transitionInterval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % energySavingTips.length);
     }, transitionDuration);
-
+  
     const displayInterval = setInterval(() => {
       setDisplayText(true);
       setTimeout(() => {
@@ -112,6 +112,7 @@ const Dashboard = ({ navigation, route }) => {
   }, [currentMessageIndex, theme]);
   useFocusEffect(
     React.useCallback(() => {
+      retrieveData();
       const backAction = () => {
         Alert.alert('Hold on!', 'Are you sure you want to logout?', [
           {
@@ -126,7 +127,6 @@ const Dashboard = ({ navigation, route }) => {
         ]);
         return true;
       };
-
       BackHandler.addEventListener('hardwareBackPress', backAction);
 
       return () => {
@@ -165,6 +165,7 @@ const Dashboard = ({ navigation, route }) => {
       .then((response) =>
         response.json())
       .then(responseData => {
+        console.log(responseData, "responseData----->")
         setUnpaidDemandData(responseData.MT_UnpaidDemandNote_Res.Record)
       })
   }

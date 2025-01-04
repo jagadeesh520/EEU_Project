@@ -317,6 +317,11 @@
         "Subcity": "ክፍለ ከተማ",
         "Mobile number can't be empty": "የሞባይል ቁጥር ባዶ ሊሆን አይችልም።",
         "Email can't be empty": "ኢሜል ባዶ ሊሆን አይችልም።",
-        "Security question can't be empty": "የደህንነት ጥያቄ ባዶ ሊሆን አይችልም።"
+        "Security question can't be empty": "የደህንነት ጥያቄ ባዶ ሊሆን አይችልም።",
+        "ID Type can't be empty": "የመታወቂያ አይነት ባዶ ሊሆን አይችልም።",
+        "Ownership proof type can't be empty": "የባለቤትነት ማረጋገጫ አይነት ባዶ ሊሆን አይችልም።",
+        "ID proof can't be empty": "የመታወቂያ ማረጋገጫ ባዶ ሊሆን አይችልም።",
+        "Ownership proof can't be empty": "የባለቤትነት ማረጋገጫ ባዶ ሊሆን አይችልም።",
+        "Category1 can't be empty": "ምድብ 1 ባዶ ሊሆን አይችልም።"
     } 
 }

@@ -15,6 +15,10 @@ import Close from 'react-native-vector-icons/AntDesign';
 import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
+import RNFS from 'react-native-fs';  // Import RNFS
+import { constant } from '../CommonComponent/Constant';
+
+
 // create a component
 const LoadChange = ({navigation}) => {
     const { t, i18n } = useTranslation();
@@ -33,6 +37,8 @@ const LoadChange = ({navigation}) => {
     const { themes, themeObj } = useThemes();
     const [ selectedImage, setSelectedImage ] = useState("");
     const [ selectedImage2, setSelectedImage2] = useState("");
+    const [file, setFile] = useState(null);
+    const [file2, setFile2] = useState(null);
     const [ selectedCategory1, setSelectedCategory1] = useState("")
     const [ Category1Option, setCategory1Option] = useState([
         { label: "Load enhancement",  value:"Load enhancement" },
@@ -91,9 +97,15 @@ const LoadChange = ({navigation}) => {
         { label: "Government Allotment Letter",  value:"Government Allotment Letter" },
         { label: "Order Copy of Court in case of Litigation",  value:"Order Copy of Court in case of Litigation" },
       ]);
+      const [ invalidCategory1, setInvalidCategory1] = useState("");
+      const [ invalidIDType, setInvalidIDType] = useState("");
+      const [ invalidIDProof, setInvalidIDProof] = useState("");
       const [invalidAppliedLoad, setInvalidAppliedLoad] = useState("");
       const [invalidInstallType, setInvalidInstallType] = useState("");
       const [invalidPhaseType, setInvalidPhaseType] = useState("");
+      const [invalidMeterType, setInvalidMeterType] = useState("");
+      const [invalidMeterReqType, setInvalidMeterReqType] = useState("");
+
     useEffect(() => {
         retrieveData();
     }, []); // Empty array ensures this runs only once
@@ -140,9 +152,11 @@ const LoadChange = ({navigation}) => {
                 if(numericValue <= 7.5) {
                   setSelectedPhaseType("1")
                   // setPhaseType("Single Phase")
+                  setInvalidPhaseType("");
                   updateState(numericValue);
                 } else if(numericValue > 7.5) {
                   setSelectedPhaseType("2")
+                  setInvalidPhaseType("");
                   // setPhaseType("Three Phase")
                   updateState(numericValue);
                 }
@@ -193,11 +207,10 @@ const LoadChange = ({navigation}) => {
           //   ]
           // );
          } 
-         openGallery()
       }
-     
+      openGallery()
     };
-    openGallery = () => {
+    const openGallery = () => {
       ImagePicker.openPicker({
         width: 400,
         height: 400,
@@ -206,14 +219,30 @@ const LoadChange = ({navigation}) => {
         includeBase64: true,
         mediaType: 'photo',
       }).then(async image => {
+        // setHeight(height);
+        // setWidth(width);
+        // setDocumentOption(false)
+        // const imagePathParts = image.path.split('/');
+        // const imageFileName = imagePathParts[imagePathParts.length - 1];
+        // setImageName(imageFileName);
+
+        // setSelectedImage(`data:${image.mime};base64,${image.data}`);
+
         console.log('Image captured:', image.data);
-        setHeight(height);
-        setWidth(width);
-        setDocumentOption(false)
+
+        // Ensure Base64 is sanitized
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+        console.log('Sanitized Base64:', sanitizedBase64);
+  
+        // Handle other properties
         const imagePathParts = image.path.split('/');
         const imageFileName = imagePathParts[imagePathParts.length - 1];
+  
+        setHeight(image.height);
+        setWidth(image.width);
+        setDocumentOption(false);
         setImageName(imageFileName);
-        setSelectedImage(`data:${image.mime};base64,${image.data}`);
+        setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
       }).catch(error => {
         console.log(error);
       });
@@ -227,47 +256,61 @@ const LoadChange = ({navigation}) => {
         includeBase64: true,  
         mediaType: 'photo',
       }).then(async image => {
+        // setHeight(height);
+        // setWidth(width);
+        // setDocumentOption(false)
+        // setSelectedImage(`data:${image.mime};base64,${image.data}`)
+        // const imagePathParts = image.path.split('/');
+        // const imageFileName = imagePathParts[imagePathParts.length - 1];
+        // setImageName(imageFileName);
+
         console.log('Image captured:', image.data);
-        setHeight(height);
-        setWidth(width);
-        setDocumentOption(false)
-        setSelectedImage(`data:${image.mime};base64,${image.data}`);
+
+        // Ensure Base64 is sanitized
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+        console.log('Sanitized Base64:', sanitizedBase64);
+  
+        // Handle other properties
         const imagePathParts = image.path.split('/');
         const imageFileName = imagePathParts[imagePathParts.length - 1];
+  
+        setHeight(image.height);
+        setWidth(image.width);
+        setDocumentOption(false);
         setImageName(imageFileName);
+        setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
        
       }).catch(error => { 
         console.log(error);
       });
     }
-    const handleCameraCapture = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
-         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-          console.log("denied")
-          //  Alert.alert(
-          //   '',
-          //   "The Camera access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{}  },
-          //   ]
-          // );
-         } 
-      }
-      openCamera()
-    };
     const handlePDFUpload = async () => { 
       try {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
-        setFile(res);
+        // setFile(res);
+        // const selectedFile = res[0];
+        // setFile(selectedFile);
+        // setSelectedImage(null);
+        // console.log(selectedFile, selectedFile.name)
+        // setImageName(selectedFile.name);
         const selectedFile = res[0];
-        setFile(selectedFile.uri);
-        setImageName(selectedFile.name);
+        // setFile(selectedFile);
+        setSelectedImage(null);
+    
+        console.log('Selected File:', selectedFile);
+    
+        // Read the file as Base64
+        const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
+    
+        // Ensure no wrapping
+        const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
+    
+        // Set the sanitized Base64
+        setImageName(selectedFile.name); // Set file name
+        setFile(sanitizedBase64);
+
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
           console.log('User cancelled the picker');
@@ -275,68 +318,6 @@ const LoadChange = ({navigation}) => {
           throw err;
         }
       }
-    }
-    const handleImagePicker2 = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
-         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-          // Alert.alert(
-          //   '',
-          //   "The Gallery storage access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{} },
-          //   ]
-          // );
-         } 
-         openGallery2()
-      }
-     
-    };
-    openGallery2 = () => {
-      ImagePicker.openPicker({
-        width: 400,
-        height: 400,
-        cropping: true,
-        useFrontCamera: false,
-        includeBase64: true,
-        mediaType: 'photo',
-      }).then(async image => {
-        console.log('Image captured:', image.data);
-        setHeight(height);
-        setWidth(width);
-        setDocumentOption1(false)
-        const imagePathParts = image.path.split('/');
-        const imageFileName = imagePathParts[imagePathParts.length - 1];
-        setImageName2(imageFileName);
-        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
-      }).catch(error => {
-        console.log(error);
-      });
-    }
-    const openCamera2 = () => {
-      ImagePicker.openCamera({
-        width: 400,
-        height: 400,
-        cropping: true,
-        useFrontCamera: false,
-        includeBase64: true,  
-        mediaType: 'photo',
-      }).then(async image => {
-        console.log('Image captured:', image.data);
-        setHeight(height);
-        setWidth(width);
-        setDocumentOption1(false)
-        setSelectedImage2(`data:${image.mime};base64,${image.data}`);
-        const imagePathParts = image.path.split('/');
-        const imageFileName = imagePathParts[imagePathParts.length - 1];
-        setImageName2(imageFileName);
-       
-      }).catch(error => { 
-        console.log(error);
-      });
     }
     const handleCameraCapture2 = async () => {
       const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
@@ -357,21 +338,291 @@ const LoadChange = ({navigation}) => {
       }
       openCamera2()
     };
+    
+    const handleCameraCapture = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          console.log("denied")
+          //  Alert.alert(
+          //   '',
+          //   "The Camera access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{}  },
+          //   ]
+          // );
+         } 
+      }
+      openCamera()
+    };
+    const handleImagePicker2 = async () => {
+      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      console.log(isPermitted);
+      if (isPermitted !== RESULTS.GRANTED) {
+         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+         console.log(isGranted);
+         if(isGranted !== RESULTS.GRANTED) {
+          // Alert.alert(
+          //   '',
+          //   "The Gallery storage access is denied",
+          //   [
+          //     { text: 'OK', onPress: () =>{} },
+          //   ]
+          // );
+         } 
+      }
+      openGallery2()
+     
+    };
+    openGallery2 = () => {
+      ImagePicker.openPicker({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        // setHeight(height);
+        // setWidth(width);
+        // setDocumentOption1(false)
+        // const imagePathParts = image.path.split('/');
+        // const imageFileName = imagePathParts[imagePathParts.length - 1];
+        // setImageName2(imageFileName);
+        // setSelectedImage1(`data:${image.mime};base64,${image.data}`);
+        // console.log('Image captured:', image.data);
+
+        // Ensure Base64 is sanitized
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+        console.log('Sanitized Base64:', sanitizedBase64);
+  
+        // Handle other properties
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+  
+        setHeight(image.height);
+        setWidth(image.width);
+        setDocumentOption1(false);
+        setImageName2(imageFileName);
+        setSelectedImage2(`data:${image.mime};base64,${sanitizedBase64}`);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+   
+    const openCamera2 = () => {
+      ImagePicker.openCamera({
+        width: 400,
+        height: 400,
+        cropping: true,
+        useFrontCamera: false,
+        includeBase64: true,  
+        mediaType: 'photo',
+      }).then(async image => {
+        console.log('Image captured:', image.data);
+        // setHeight(height);
+        // setWidth(width);
+        // setDocumentOption1(false)
+        // setSelectedImage2(`data:${image.mime};base64,${image.data}`)
+        // const imagePathParts = image.path.split('/');
+        // const imageFileName = imagePathParts[imagePathParts.length - 1];
+        // setImageName2(imageFileName);
+
+        console.log('Image captured:', image.data);
+
+        // Ensure Base64 is sanitized
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+        console.log('Sanitized Base64:', sanitizedBase64);
+  
+        // Handle other properties
+        const imagePathParts = image.path.split('/');
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
+  
+        setHeight(image.height);
+        setWidth(image.width);
+        setDocumentOption1(false);
+        setImageName2(imageFileName);
+        setSelectedImage2(`data:${image.mime};base64,${sanitizedBase64}`);
+       
+      }).catch(error => { 
+        console.log(error);
+      });
+    }
+    
     const handlePDFUpload2 = async () => { 
       try {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
-        setFile2(res);
+        // setFile2(res);
+        // const selectedFile = res[0];
+        // setFile2(selectedFile);
+        // setImageName2(selectedFile.name);
+        // setSelectedImage1(null);
+
         const selectedFile = res[0];
-        setFile2(selectedFile.uri);
-        setImageName2(selectedFile.name);
+        // setFile(selectedFile);
+        setSelectedImage(null);
+    
+        console.log('Selected File:', selectedFile);
+    
+        // Read the file as Base64
+        const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
+    
+        // Ensure no wrapping
+        const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
+    
+        // Set the sanitized Base64
+        setImageName2(selectedFile.name); // Set file name
+        setFile2(sanitizedBase64); // Store Base64 data
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
           console.log('User cancelled the picker');
         } else {
           throw err;
         }
+      }
+    }
+    const validateInputs = () => {
+      let valid = true;
+      if (selectedCategory1 === '') {
+        setInvalidCategory1(t("Category1 can't be empty"));
+        valid = false;
+      } else {
+        setInvalidCategory1('');
+      }
+      if (selectedIDType === '') {
+        setInvalidIDType(t("ID Type can't be empty"));
+        valid = false;
+      } else {
+        setInvalidIDType('');
+      }
+      // if (selectedOwnerShipType === '') {
+      //   setInvalidOwnerShip(t("Ownership proof type can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidOwnerShip('');
+      // }
+      if ( imageName == null && file == null) {
+        setInvalidIDProof(t("ID proof can't be empty"));
+        valid = false;
+      } else {
+        setInvalidIDProof('');
+      }
+      if (appliedLoad === '') {
+        setInvalidAppliedLoad(t("Applied Load can't be empty"));
+        valid = false;
+      } else {
+        setInvalidAppliedLoad('');
+      }
+      if (selectedInstallType === '') {
+        setInvalidInstallType(t("Install Type can't be empty"));
+        valid = false;
+      } else {
+        setInvalidInstallType('');
+      }
+      if (selectedPhaseType === '') {
+        setInvalidPhaseType(t("Phase Type can't be empty"));
+        valid = false;
+      } else {
+        setInvalidPhaseType('');
+      }
+      if (selectedMeterType === '') {
+        setInvalidMeterType(t("Meter Type can't be empty"));
+        valid = false;
+      } else {
+        setInvalidMeterType('');
+      }
+      if (selectedReplacementReq === '') {
+        setInvalidMeterReqType(t("Meter Replacement Req can't be empty"));
+        valid = false;
+      } else {
+        setInvalidMeterReqType('');
+      }
+      return valid;
+    }
+    const clearData = () => {
+      setSelectedIDType("");
+      setSelectedOwnerShipType("");
+      setImageName(null);
+      setImageName2(null);
+      setFile(null);
+      setFile2(null);
+      setSelectedImage(null);
+      setSelectedImage2(null);
+      setSelectedMeterType("");
+      setSelectedInstallType("");
+      setSelectedPhaseType("");
+      setSelectedReplacementReq("");
+      setAppliedLoad("");
+
+    } 
+    const onPressSubmitBtn = () => {
+      var validate = validateInputs()
+      if (validateInputs()) { 
+      var url = constant.BASE_URL + constant.LOAD_CHANGE
+      var idProof = selectedImage ? selectedImage : file ? file : ""
+      var ownerShipProof = selectedImage2 ? selectedImage2 : file2 ? file2 : ""
+      console.log(url, "url")
+      var data = {
+        "BP": (accountData.BP_No).toString(),
+        "CA": (accountData.CA_No).toString(),
+        "Description": "Load Change Request from Mobile App",
+        "Category1": selectedCategory1,
+        "AppliedLoad": appliedLoad,
+        "InstallType": selectedInstallType,
+        "Phase": selectedPhaseType,
+        "MeterType": selectedMeterType,
+        "MeterReplacementReq": selectedReplacementReq,
+        "IDType": selectedIDType,
+        "IDProof": idProof,
+        "OwnershipProofType": selectedOwnerShipType,
+        "OwnershipProofUpload": ownerShipProof
+      }
+      console.log(data, "data----->")
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          Record: {
+            "BP": (accountData.BP_No).toString(),
+            "CA": (accountData.CA_No).toString(),
+            "Description": "Load Change Request from Mobile App",
+            "Category1": selectedCategory1,
+            "AppliedLoad": appliedLoad,
+            "InstallType": selectedInstallType,
+	        	"Phase": selectedPhaseType,
+	        	"MeterType": selectedMeterType,
+	        	"MeterReplacementReq": selectedReplacementReq,
+            "IDType": selectedIDType,
+            "IDProof": idProof,
+            "OwnershipProofType": selectedOwnerShipType,
+            "OwnershipProofUpload": ownerShipProof
+          }
+        }),
+      })
+        .then((response) =>
+          response.json())
+        .then(responseData => {
+          var data = responseData.Record
+          console.log(responseData, "response")
+          // Alert.alert(
+          //   '',
+          //   t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data.SR_Number),
+          //   [
+          //     {
+          //       text: 'Ok',
+          //       onPress: () => {
+          //         navigation.navigate("ServiceRequest");
+          //       },
+          //     },
+          //   ]
+          // );
+          clearData()
+        })
       }
     }
     return (
@@ -413,12 +664,12 @@ const LoadChange = ({navigation}) => {
                 value={selectedCategory1}
                 onChange={item => {
                     setSelectedCategory1(item.value);
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidCategory1("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidCategory1}</Text>
            </View>
            {renderTextInput("Applied load", "Enter Applied load", appliedLoad, setAppliedLoad, invalidAppliedLoad, setInvalidAppliedLoad)}
            <View style={styles.Margin_10} pointerEvents={'none'}>
@@ -443,7 +694,7 @@ const LoadChange = ({navigation}) => {
                     }
                 }}               
            />
-            <Text style={styles.ErrorMsg}>{invalidInstallType}</Text>
+            <Text style={styles.ErrorMsg}>{invalidPhaseType}</Text>
            </View>
            <View style={styles.Margin_10}>
            <Text style={styles.LoginSubTxt}>{t("Install type") + (" *")}</Text>   
@@ -485,12 +736,12 @@ const LoadChange = ({navigation}) => {
                 value={selectedMeterType}
                 onChange={item => {
                     setSelectedMeterType(item.value);
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidMeterType("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidMeterType}</Text>
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Meter Replacement Req")  + (" *")}</Text>   
@@ -508,12 +759,12 @@ const LoadChange = ({navigation}) => {
                 value={selectedReplacementReq}
                 onChange={item => {
                     setSelectedReplacementReq(item.value);
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidMeterReqType("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidMeterReqType}</Text>
            </View>
          <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("ID type")  + (" *")}</Text>   
@@ -531,12 +782,12 @@ const LoadChange = ({navigation}) => {
                 value={selectedIDType}
                 onChange={item => {
                     setSelectedIDType(item.value);
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidIDType("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidIDType}</Text>
            </View>
            <View>
            {imageName && imageName ?
@@ -545,7 +796,7 @@ const LoadChange = ({navigation}) => {
                 <TouchableOpacity style={[ styles.Margin_10, {marginLeft: 5} ]} onPress={() => { setImageName('') }}>
                     <Close name="closecircle" size={20} color={"black"}/>
                 </TouchableOpacity>
-              </View> : null 
+              </View> : <Text style={[styles.ErrorMsg, { marginTop: 20 }]}>{invalidIDProof}</Text>  
              }
               </View>
               <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption(true); }}>
@@ -568,12 +819,12 @@ const LoadChange = ({navigation}) => {
                 value={selectedOwnerShipType}
                 onChange={item => {
                     setSelectedOwnerShipType(item.value);
-                    // if( (item.value)?.length > 0 ) {
-                    //   setInvalidIDType("")
-                    // }
+                    if( (item.value)?.length > 0 ) {
+                      setInvalidIDType("")
+                    }
                 }}               
            />
-            {/* <Text style={styles.ErrorMsg}>{invalidInstallType}</Text> */}
+            <Text style={styles.ErrorMsg}>{invalidIDType}</Text>
            </View>
            <View>
            {imageName2 && imageName2 ?
@@ -590,7 +841,7 @@ const LoadChange = ({navigation}) => {
                 <Upload name={'upload'} size={25}/>
               </TouchableOpacity> 
               <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor: '#63AA5A', display:'flex', flexDirection: 'row' }]}
-                onPress={() => { }}
+                onPress={() => { onPressSubmitBtn() }}
               >
                 <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>
               </TouchableOpacity> 

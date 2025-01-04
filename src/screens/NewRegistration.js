@@ -337,17 +337,26 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       .then(responseData => {
         console.log(responseData, "Zone")
         const zoneArray = responseData?.Record;
-        const sortedZone = zoneArray && zoneArray.length > 0 && zoneArray.sort((a, b) => a.localeCompare(b));
+        console.log(zoneArray, "zoneArray")
+        const sortedZone = zoneArray && zoneArray.length > 0 && zoneArray.sort((a, b) => a.zone.localeCompare(b.zone));        
         const zoneFilter = sortedZone && sortedZone.length > 0 && sortedZone.map(item => item.zone);
         let zoneData = zoneFilter && zoneFilter.map(zone => ({
             value: zone,
             label: zone.toString()
         }));
+        console.log(zoneData, "ZoneData----->", zoneArray)
         setZoneList(zoneData);
       })
   }
   const getSubCity = (selectedZone) => {
     var url = constant.BASE_URL + constant.SUBCITY;
+    var data = {
+      Region: region,
+      Zone: selectedZone,
+      SubCity: subcity,
+      Kebele: kebele
+    }
+    console.log(data, kebele)
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -391,7 +400,6 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       .then((response) =>
         response.json())
       .then(responseData => {
-        console.log(responseData, "kebele")
         const kebeleData = responseData.Record;
         const kebeleFilter = kebeleData && kebeleData.map(item => item.Kebele);
         if(typeof(kebeleFilter[0]) == "number") {
@@ -983,9 +991,8 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
           //   ]
           // );
          } 
-         openGallery()
       }
-     
+      openGallery()
     };
     openGallery = () => {
       ImagePicker.openPicker({
@@ -1081,9 +1088,8 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
           //   ]
           // );
          } 
-         openGallery2()
       }
-     
+      openGallery2()
     };
     openGallery2 = () => {
       ImagePicker.openPicker({
@@ -1549,6 +1555,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
                 data={subcityList}
                 value={subcity}
                 onChange={item => {
+                  console.log(item, "subcity on click")
                   setSubcity(item.value);
                   getKebele(item.value);
                     if((item.value)?.length > 0 ) {

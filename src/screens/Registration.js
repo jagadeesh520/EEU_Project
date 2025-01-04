@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useToast } from 'react-native-toast-notifications';
-
+import { constant } from '../CommonComponent/Constant';
 const Registration = ({navigation}) => {
     const toast = useToast();
     const { t, i18n } = useTranslation();
@@ -58,8 +58,8 @@ const Registration = ({navigation}) => {
       });
     }; 
     const onVerifyAccountId = () => {
-
-      fetch('http://197.156.76.70:8080/CAValidationPost', {
+      var url = constant.BASE_URL + constant.VALIDATION
+      fetch(url, {
         method: 'POST',
         body: JSON.stringify({
           Record: {
@@ -70,6 +70,7 @@ const Registration = ({navigation}) => {
         .then((response) =>
           response.json())
         .then(responseData => {
+          console.log(responseData, "responseData")
           setAccountStatus(responseData.Record ? responseData.Record.Status : '')
           if (responseData.Record && responseData.Record.Status == "VALID CA") {
             Alert.alert(
@@ -132,8 +133,8 @@ const Registration = ({navigation}) => {
     } 
     const onSignUpPressed = () => {
       if (validateInputs()) { 
-
-     return fetch('http://197.156.76.70:8080/NewRegistrationPost', {
+        var url = constant.BASE_URL + constant.NEW_REGISTRATION_POST
+     return fetch(url, {
         method: 'POST',
         body: JSON.stringify({
           Record: {

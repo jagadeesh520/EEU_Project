@@ -54,6 +54,7 @@ const Payment = ({navigation}) => {
           response.json())
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res
+        console.log(responseData, "responseData------>")
         setUnpaidDueData(data.Record)
         handleHash(data.Record)
       })
@@ -99,7 +100,7 @@ const Payment = ({navigation}) => {
       },
       "paymentRequest": {
           "amount": amount,
-          "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
+          "callbackUrl": "http://10.10.88.144/RESTAdapter/paymentDataAWAS",
           "externalReference": externalRef,
           "payerPhone": ("251" + mobileNo),
           "reason": externalReference
@@ -122,7 +123,8 @@ const Payment = ({navigation}) => {
               "paymentRequest": {
                   "amount": amount,
                   // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-                  "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
+                  // "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
+                  "callbackUrl": "http://10.10.88.144/RESTAdapter/paymentDataAWAS",
                   "externalReference": externalRef,
                   "payerPhone": ("251" + mobileNo),
                   "reason": externalReference
@@ -134,6 +136,7 @@ const Payment = ({navigation}) => {
       .then(responseData => {
         // setIsPaymentResponse(true);
         setIsPayment(false);
+        console.log(responseData, "responseData")
         if(isPayment) { 
         if( responseData.returnCode == 0 ) {
           Alert.alert(
