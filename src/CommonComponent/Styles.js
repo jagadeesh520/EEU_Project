@@ -529,13 +529,26 @@ const Styles = () => {
             alignItems: 'center',
             marginTop: wp(20)
         },
+        BillHistorySub3: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: wp(20)
+        },
         BillHistorySubCon: {
             display: 'flex',
             flex: 0.5
         },
         BillHistorySub2Title: {
             fontSize: wp(12),
-            color: '#666666'
+            color: '#666666',
+            marginTop: wp(10)
+        },
+        BillHistorySubAmount: {
+            fontSize: wp(12),
+            color: '#666666',
+            marginRight: wp(20)
         },
         BillHistorySub2Txt: {
             fontSize: wp(12),
@@ -1183,7 +1196,18 @@ const Styles = () => {
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center'
-        }
+        },
+        details: {
+            display: 'flex',
+            padding: 16,
+            // width:350,
+          },
+          headerText: { color: '#fff' },
+          item: {
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 8
+          },
     };
 
     return { theme, styles, changeTheme }
