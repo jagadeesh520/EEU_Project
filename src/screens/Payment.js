@@ -218,13 +218,13 @@ const Payment = ({navigation}) => {
   };
 
   const getPaginatedData = () => {
-    const startIndex = currentPage * 10;
-    const endIndex = startIndex + 10;
+    const startIndex = currentPage * 1;
+    const endIndex = startIndex + 1;
     return unpaidDueData.slice(startIndex, endIndex);
   };
 
   const nextPage = () => {
-    if (currentPage < Math.ceil(unpaidDueData.length / 10) - 1 && unpaidDueData.length > 0 ) {
+    if (currentPage < Math.ceil(unpaidDueData.length / 1) - 1 && unpaidDueData.length > 0 ) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -236,7 +236,7 @@ const Payment = ({navigation}) => {
     }
   };
 
-  console.log(asyncData, 'asyncData---->');
+  console.log(unpaidDueData, 'asyncData---->');
   return (
     <View>
       <CommonHeader
@@ -378,7 +378,7 @@ const Payment = ({navigation}) => {
               </View>
             );
           }}
-          keyExtractor={list => list?.item?.DocumentNo.toString()}
+          keyExtractor={list => list?.item?.Ref_No.toString()}
         />
       ) : null}
       <Modal
@@ -505,7 +505,7 @@ const Payment = ({navigation}) => {
                     styles.PaymentBtn,
                     {backgroundColor: '#63AA5A', marginLeft: 10},
                   ]}
-                  onPress={() => {
+                  onPress={() => { 
                     setSubmit(true);
                     onPressPaymentProceed();
                   }}>
