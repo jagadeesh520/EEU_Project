@@ -51,7 +51,7 @@ const Payment = ({navigation}) => {
     var requestId = data.CA_No + '_' + currentDateTime;
     setRequestID(requestId);
     try {
-      const datas = 'a4504fb1-428f-4365-8e01-947013be9f36' + requestId;
+      const datas = '7fa6a887-99b4-4fa4-b68d-b4226845274d' + requestId;
       const sha256Hash = await sha256(datas);
       setHash(sha256Hash);
     } catch (error) {
@@ -98,6 +98,7 @@ const Payment = ({navigation}) => {
       tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Amount).trim()
         : 0;
+      console.log("amountttttttttttttttttttttt",amount);
     let externalReference =
     tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Ref_No).toString()
@@ -124,7 +125,7 @@ const Payment = ({navigation}) => {
       externalReference +
       '_' +
       num_of_attempt_convertion.toString();
-    console.log(externalRef, 'externalRef---->');
+    //console.log(externalRef, 'externalRef---->');
     var data = {
       authorization: {
         merchantCode: '220261',
@@ -140,7 +141,7 @@ const Payment = ({navigation}) => {
         reason: externalReference,
       },
     };
-    console.log(data, 'data');
+   // console.log(data, 'data');
     if (num_of_attempt <= 100) {
       fetch(url, {
         method: 'POST',
