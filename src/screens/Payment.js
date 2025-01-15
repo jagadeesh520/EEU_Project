@@ -49,7 +49,7 @@ const Payment = ({navigation}) => {
     var requestId = data.CA + '_' + currentDateTime;
     setRequestID(requestId);
     try {
-      const datas = 'a4504fb1-428f-4365-8e01-947013be9f36' + requestId;
+      const datas = '7fa6a887-99b4-4fa4-b68d-b4226845274d' + requestId;
       const sha256Hash = await sha256(datas);
       setHash(sha256Hash);
     } catch (error) {
@@ -69,7 +69,7 @@ const Payment = ({navigation}) => {
       .then(response => response.json())
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res;
-        console.log(responseData, 'responseData------>');
+       // console.log(responseData, 'responseData------>');
         setLoading(false)
         setUnpaidDueData(data.Record);
         handleHash(data.Record);
@@ -96,6 +96,7 @@ const Payment = ({navigation}) => {
       unpaidDueData && Object.keys(unpaidDueData).length > 0
         ? (unpaidDueData?.Amount).trim()
         : 0;
+      console.log("amountttttttttttttttttttttt",amount);
     let externalReference =
       unpaidDueData && Object.keys(unpaidDueData).length > 0
         ? (unpaidDueData?.Ref_No).toString()
@@ -122,7 +123,7 @@ const Payment = ({navigation}) => {
       externalReference +
       '_' +
       num_of_attempt_convertion.toString();
-    console.log(externalRef, 'externalRef---->');
+    //console.log(externalRef, 'externalRef---->');
     var data = {
       authorization: {
         merchantCode: '220261',
@@ -138,7 +139,7 @@ const Payment = ({navigation}) => {
         reason: externalReference,
       },
     };
-    console.log(data, 'data');
+   // console.log(data, 'data');
     if (num_of_attempt <= 100) {
       fetch(url, {
         method: 'POST',
@@ -167,7 +168,7 @@ const Payment = ({navigation}) => {
         .then(responseData => {
           // setIsPaymentResponse(true);
           setIsPayment(false);
-          console.log(responseData, 'responseData');
+          //console.log(responseData, 'responseData');
           if (isPayment) {
             if (responseData.returnCode == 0) {
               Alert.alert(
@@ -236,7 +237,7 @@ const Payment = ({navigation}) => {
     }
   };
 
-  console.log(unpaidDueData, 'asyncData---->');
+
   return (
     <View>
       <CommonHeader
