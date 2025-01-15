@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity }  from 'react-native';
+import React, { useState, useEffect, useMemo } from 'react';
+import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity, Alert, ActivityIndicator }  from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -39,64 +39,88 @@ const LoadChange = ({navigation}) => {
     const [ selectedImage2, setSelectedImage2] = useState("");
     const [file, setFile] = useState(null);
     const [file2, setFile2] = useState(null);
-    const [ selectedCategory1, setSelectedCategory1] = useState("")
-    const [ Category1Option, setCategory1Option] = useState([
-        { label: "Load enhancement",  value:"Load enhancement" },
-        { label: "Load reduction",  value:"Load reduction" },
-        { label: "Load enhancement with Tariff change",  value:"Load enhancement with Tariff change" },
-        { label: "Load reduction with Tariff change",  value:"Load reduction with Tariff change" }
-    ]);
-    const [ MeterReplacementReqOption, setMeterReplacementReqOption ] = useState([
-        { label: "Yes",  value:"Yes" },
-        { label: "No",  value:"No" }
-    ]);
+    const [ selectedCategory1, setSelectedCategory1] = useState("");
+    const Category1Option = useMemo(
+      () => [
+        { label: "Load enhancement", value: "ZL01" },
+        { label: "Load reduction", value: "ZL02" },
+        { label: "Load enhancement with Tariff change", value: "ZL03" },
+        { label: "Load reduction with Tariff change", value: "ZL04" },
+      ],
+      []
+    );
+  
+    const MeterReplacementReqOption = useMemo(
+      () => [
+        { label: "Yes", value: "Yes" },
+        { label: "No", value: "No" },
+      ],
+      []
+    );
     const [ selectedReplacementReq, setSelectedReplacementReq] = useState("");
     const [ selectedMeterType, setSelectedMeterType] = useState("");
-    const [ MeterTypeOption, setMeterTypeOption] = useState([
-        { label: "Single Phase",  value:"Single Phase" },
-        { label: "Three Phase",  value:"Three Phase" },
-        { label: "Active Reactive",  value:"Active Reactive" }
-    ]);
-    const [ installTypeOptions, setInstallTypeOptions ] = useState([
-        { label: "Active Staff Consumption",  value:"001" },
-        { label: "Domestic",  value:"023" },
-        { label: "Food Process",  value:"029" },
-        { label: "Mix building",  value:"082" },
-        { label: "Street light",  value:"086" },
-        { label: "Bottled water factory",  value:"089" }
-      ]);
-    const [ phaseTypeOptions, setPhaseTypeOptions ] = useState([
-        { label: "Single Phase",  value:"1" },
-        { label: "Three Phase",  value:"2" }
-    ]);
+    const MeterTypeOption = useMemo(
+      () => [
+        { label: "Single Phase", value: "Single Phase" },
+        { label: "Three Phase", value: "Three Phase" },
+        { label: "Active Reactive", value: "Active Reactive" },
+      ],
+      []
+    );
+  
+    const installTypeOptions = useMemo(
+      () => [
+        { label: "Active Staff Consumption", value: "001" },
+        { label: "Domestic", value: "023" },
+        { label: "Food Process", value: "029" },
+        { label: "Mix building", value: "082" },
+        { label: "Street light", value: "086" },
+        { label: "Bottled water factory", value: "089" },
+      ],
+      []
+    );
+  
+      const phaseTypeOptions = useMemo(
+        () => [
+          { label: "Single Phase", value: "1" },
+          { label: "Three Phase", value: "2" },
+        ],
+        []
+      );
     const [ selectedInstallType, setSelectedInstallType ] = useState('');
     const [ selectedPhaseType, setSelectedPhaseType ] = useState('');
     const [ appliedLoad, setAppliedLoad ] = useState('');
-    const [ IDTypeOptions, setIDTypeOptions ] = useState([
-        { label: "Passport",  value:"Passport" },
-        { label: "Residential ID",  value:"Residential ID" },
-        { label: "Active / Retried Staff ID",  value:"Active / Retried Staff ID" },
-        { label: "Tax Payer ID",  value:"Tax Payer ID" },
-        { label: "Investment License ID",  value:"Investment License ID" },
-        { label: "Govt. Official Letter",  value:"Govt. Official Letter" },
-        { label: "Driving License ID",  value:"Driving License ID" },
-        { label: "Trade License ID",  value:"Trade License ID" },
-        { label: "Citizenship ID",  value:"Citizenship ID" },
-        { label: "Non EEU Employee ID",  value:"Non EEU Employee ID" },
-        { label: "Active / Retired Staff ID",  value:"Active / Retired Staff ID" },
-      ]);
-    const [ OwnershipTypeOptions, setOwnershipTypeOptions ] = useState([
-        { label: "Sale Deed",  value:"Sale Deed" },
-        { label: "Heir Ship Certificate",  value:"Heir Ship Certificate" },
-        { label: "Valid Power of Attorney",  value:"Valid Power of Attorney" },
-        { label: "NOC - Local Authority",  value:"NOC - Local Authority" },
-        { label: "Succession",  value:"Succession" },
-        { label: "Deed of Last Will",  value:"Deed of Last Will" },
-        { label: "Partnership Deed",  value:"Partnership Deed" },
-        { label: "List of Directors in case of Limited Company",  value:"List of Directors in case of Limited Company" },
-        { label: "Government Allotment Letter",  value:"Government Allotment Letter" },
-        { label: "Order Copy of Court in case of Litigation",  value:"Order Copy of Court in case of Litigation" },
-      ]);
+    const IDTypeOptions = useMemo(
+      () => [
+        { label: "Passport", value: "Passport" },
+        { label: "Residential ID", value: "Residential ID" },
+        { label: "Active / Retired Staff ID", value: "Active / Retired Staff ID" },
+        { label: "Tax Payer ID", value: "Tax Payer ID" },
+        { label: "Investment License ID", value: "Investment License ID" },
+        { label: "Govt. Official Letter", value: "Govt. Official Letter" },
+        { label: "Driving License ID", value: "Driving License ID" },
+        { label: "Trade License ID", value: "Trade License ID" },
+        { label: "Citizenship ID", value: "Citizenship ID" },
+        { label: "Non EEU Employee ID", value: "Non EEU Employee ID" },
+      ],
+      []
+    );
+  
+    const OwnershipTypeOptions = useMemo(
+      () => [
+        { label: "Sale Deed", value: "Sale Deed" },
+        { label: "Heir Ship Certificate", value: "Heir Ship Certificate" },
+        { label: "Valid Power of Attorney", value: "Valid Power of Attorney" },
+        { label: "NOC - Local Authority", value: "NOC - Local Authority" },
+        { label: "Succession", value: "Succession" },
+        { label: "Deed of Last Will", value: "Deed of Last Will" },
+        { label: "Partnership Deed", value: "Partnership Deed" },
+        { label: "List of Directors in case of Limited Company", value: "List of Directors in case of Limited Company" },
+        { label: "Government Allotment Letter", value: "Government Allotment Letter" },
+        { label: "Order Copy of Court in case of Litigation", value: "Order Copy of Court in case of Litigation" },
+      ],
+      []
+    );
       const [ invalidCategory1, setInvalidCategory1] = useState("");
       const [ invalidIDType, setInvalidIDType] = useState("");
       const [ invalidIDProof, setInvalidIDProof] = useState("");
@@ -105,6 +129,7 @@ const LoadChange = ({navigation}) => {
       const [invalidPhaseType, setInvalidPhaseType] = useState("");
       const [invalidMeterType, setInvalidMeterType] = useState("");
       const [invalidMeterReqType, setInvalidMeterReqType] = useState("");
+      const [isLoading, setLoading]= useState(false);
 
     useEffect(() => {
         retrieveData();
@@ -143,7 +168,7 @@ const LoadChange = ({navigation}) => {
             placeholder={t(placeholder)}
             value={value}
             keyboardType={"phone-pad"}
-            style={styles.LoginTextInput}
+            style={[styles.LoginTextInput, {backgroundColor: '#FFFFFF'}]}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ 
                if (name === "Applied load" && text !== "") {
@@ -219,17 +244,7 @@ const LoadChange = ({navigation}) => {
         includeBase64: true,
         mediaType: 'photo',
       }).then(async image => {
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption(false)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName(imageFileName);
-
-        // setSelectedImage(`data:${image.mime};base64,${image.data}`);
-
-        console.log('Image captured:', image.data);
-
+       
         // Ensure Base64 is sanitized
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
         console.log('Sanitized Base64:', sanitizedBase64);
@@ -256,16 +271,7 @@ const LoadChange = ({navigation}) => {
         includeBase64: true,  
         mediaType: 'photo',
       }).then(async image => {
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption(false)
-        // setSelectedImage(`data:${image.mime};base64,${image.data}`)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName(imageFileName);
-
-        console.log('Image captured:', image.data);
-
+       
         // Ensure Base64 is sanitized
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
         console.log('Sanitized Base64:', sanitizedBase64);
@@ -289,14 +295,8 @@ const LoadChange = ({navigation}) => {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
-        // setFile(res);
-        // const selectedFile = res[0];
-        // setFile(selectedFile);
-        // setSelectedImage(null);
-        // console.log(selectedFile, selectedFile.name)
-        // setImageName(selectedFile.name);
+       
         const selectedFile = res[0];
-        // setFile(selectedFile);
         setSelectedImage(null);
     
         console.log('Selected File:', selectedFile);
@@ -326,14 +326,7 @@ const LoadChange = ({navigation}) => {
          const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
-          console.log("denied")
-          //  Alert.alert(
-          //   '',
-          //   "The Camera access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{}  },
-          //   ]
-          // );
+          console.log("denied");
          } 
       }
       openCamera2()
@@ -347,13 +340,7 @@ const LoadChange = ({navigation}) => {
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
           console.log("denied")
-          //  Alert.alert(
-          //   '',
-          //   "The Camera access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{}  },
-          //   ]
-          // );
+         
          } 
       }
       openCamera()
@@ -365,13 +352,7 @@ const LoadChange = ({navigation}) => {
          const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
-          // Alert.alert(
-          //   '',
-          //   "The Gallery storage access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{} },
-          //   ]
-          // );
+         
          } 
       }
       openGallery2()
@@ -386,15 +367,6 @@ const LoadChange = ({navigation}) => {
         includeBase64: true,
         mediaType: 'photo',
       }).then(async image => {
-        console.log('Image captured:', image.data);
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption1(false)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName2(imageFileName);
-        // setSelectedImage1(`data:${image.mime};base64,${image.data}`);
-        // console.log('Image captured:', image.data);
 
         // Ensure Base64 is sanitized
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
@@ -423,17 +395,6 @@ const LoadChange = ({navigation}) => {
         includeBase64: true,  
         mediaType: 'photo',
       }).then(async image => {
-        console.log('Image captured:', image.data);
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption1(false)
-        // setSelectedImage2(`data:${image.mime};base64,${image.data}`)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName2(imageFileName);
-
-        console.log('Image captured:', image.data);
-
         // Ensure Base64 is sanitized
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
         console.log('Sanitized Base64:', sanitizedBase64);
@@ -458,12 +419,6 @@ const LoadChange = ({navigation}) => {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
-        // setFile2(res);
-        // const selectedFile = res[0];
-        // setFile2(selectedFile);
-        // setImageName2(selectedFile.name);
-        // setSelectedImage1(null);
-
         const selectedFile = res[0];
         // setFile(selectedFile);
         setSelectedImage(null);
@@ -501,12 +456,6 @@ const LoadChange = ({navigation}) => {
       } else {
         setInvalidIDType('');
       }
-      // if (selectedOwnerShipType === '') {
-      //   setInvalidOwnerShip(t("Ownership proof type can't be empty"));
-      //   valid = false;
-      // } else {
-      //   setInvalidOwnerShip('');
-      // }
       if ( imageName == null && file == null) {
         setInvalidIDProof(t("ID proof can't be empty"));
         valid = false;
@@ -559,11 +508,13 @@ const LoadChange = ({navigation}) => {
       setSelectedPhaseType("");
       setSelectedReplacementReq("");
       setAppliedLoad("");
+      setSelectedCategory1("");
 
     } 
     const onPressSubmitBtn = () => {
       var validate = validateInputs()
-      if (validateInputs()) { 
+      if (validate) { 
+      setLoading(true);
       var url = constant.BASE_URL + constant.LOAD_CHANGE
       var idProof = selectedImage ? selectedImage : file ? file : ""
       var ownerShipProof = selectedImage2 ? selectedImage2 : file2 ? file2 : ""
@@ -608,19 +559,20 @@ const LoadChange = ({navigation}) => {
           response.json())
         .then(responseData => {
           var data = responseData.Record
-          console.log(responseData, "response")
-          // Alert.alert(
-          //   '',
-          //   t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data.SR_Number),
-          //   [
-          //     {
-          //       text: 'Ok',
-          //       onPress: () => {
-          //         navigation.navigate("ServiceRequest");
-          //       },
-          //     },
-          //   ]
-          // );
+          setLoading(false);
+          console.log(responseData, "responseData--->")
+          Alert.alert(
+            '',
+            t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data[0].SR_Number),
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  navigation.navigate("ServiceRequest");
+                },
+              },
+            ]
+          );
           clearData()
         })
       }
@@ -682,7 +634,7 @@ const LoadChange = ({navigation}) => {
                 labelField="label"
                 valueField="value"
                 placeholder={t("Select the Phase type")}
-                style={[styles.QuesComplaintDropdown, { backgroundColor: '#F4F4F4' }]}
+                style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
                 data={phaseTypeOptions}
                 value={selectedPhaseType}
@@ -840,7 +792,13 @@ const LoadChange = ({navigation}) => {
                 <Text style={styles.RegisterBtnTxt}>{t("Ownership Proof Upload")}</Text>
                 <Upload name={'upload'} size={25}/>
               </TouchableOpacity> 
-              <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor: '#63AA5A', display:'flex', flexDirection: 'row' }]}
+              {isLoading &&
+                   < View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                     <ActivityIndicator size="small" />
+                     <Text style={{ marginLeft: 10, marginBottom: 10}} >Processing....</Text>
+                    </View>
+              } 
+              <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
                 onPress={() => { onPressSubmitBtn() }}
               >
                 <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>

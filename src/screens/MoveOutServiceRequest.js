@@ -417,24 +417,24 @@ const MoveOutServiceRequest = ({navigation}) => {
       } else {
         setInvalidIDType('');
       }
-      if (selectedOwnerShipType === '') {
-        setInvalidOwnerShip(t("Ownership proof type can't be empty"));
-        valid = false;
-      } else {
-        setInvalidOwnerShip('');
-      }
-      if ( imageName == null && file == null) {
-        setInvalidIDProof(t("ID proof can't be empty"));
-        valid = false;
-      } else {
-        setInvalidIDProof('');
-      }
-      if (imageName2 == null && file2 == null) {
-        setInvalidOwnerShipProof(t("Ownership proof can't be empty"));
-        valid = false;
-      } else {
-        setInvalidOwnerShipProof('');
-      }
+      // if (selectedOwnerShipType === '') {
+      //   setInvalidOwnerShip(t("Ownership proof type can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidOwnerShip('');
+      // }
+      // if ( imageName == null && file == null) {
+      //   setInvalidIDProof(t("ID proof can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidIDProof('');
+      // }
+      // if (imageName2 == null && file2 == null) {
+      //   setInvalidOwnerShipProof(t("Ownership proof can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidOwnerShipProof('');
+      // }
       return valid;
     }
     const clearData = () => {
@@ -448,62 +448,147 @@ const MoveOutServiceRequest = ({navigation}) => {
       setSelectedImage2(null);
 
     } 
-    const onPressSubmitBtn = () => {
-      var validate = validateInputs()
-      if (validateInputs()) { 
-      var url = constant.BASE_URL + constant.MOVE_OUT
-      console.log(url, "url")
-      setLoading(true);
-      var idProof = selectedImage ? selectedImage : file ? file : null
-      var ownerShipProof = selectedImage2 ? selectedImage2 : file2 ? file2 : null
-      var data = {
-            "BP": (accountData.BP_No).toString(),
-            "CA": (accountData.CA_No).toString(),
-            "Description": "Move Out Request from Mobile App",
-            "Category1": "Surrender of Supply",
-            "IDType": selectedIDType,
-            "IDProof": idProof,
-            "OwnershipProofType": selectedOwnerShipType,
-            "OwnershipProofUpload": ownerShipProof
-      }
-      console.log(data, "data----->")
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({
+    // const onPressSubmitBtn = async () => {
+    //   var validate = validateInputs()
+    //   if (validateInputs()) { 
+    //   var url = constant.BASE_URL + constant.MOVE_OUT
+    //   console.log(url, "url")
+    //   setLoading(true);
+    //   var idProof = selectedImage ? selectedImage : file ? file : null;
+    //   var ownerShipProof = selectedImage2 ? selectedImage2 : file2 ? file2 : null;
+    //   var data = {
+    //         "BP": (accountData.BP_No).toString(),
+    //         "CA": (accountData.CA_No).toString(),
+    //         "Description": "Move Out Request from Mobile App",
+    //         "Category1": "Surrender of Supply",
+    //         "IDType": selectedIDType,
+    //         "IDProof": idProof,
+    //         "OwnershipProofType": selectedOwnerShipType,
+    //         "OwnershipProofUpload": ownerShipProof
+    //   }
+
+    //   const fetchDataWithTimeout = (url, options, timeout = 5000) => {
+    //     return Promise.race([
+    //        fetch(url, {
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //           Record: {
+    //             "BP": (accountData.BP_No).toString(),
+    //             "CA": (accountData.CA_No).toString(),
+    //             "Description": "Move Out Request from Mobile App",
+    //             "Category1": "Surrender of Supply",
+    //             "IDType": selectedIDType,
+    //             "IDProof": idProof,
+    //             "OwnershipProofType": selectedOwnerShipType,
+    //             "OwnershipProofUpload": ownerShipProof
+    //           }
+    //         }),
+    //       })
+    //         .then((response) =>
+    //           response.json())
+    //         .then(responseData => {
+    //           var data = responseData.Record
+    //           console.log(responseData, "response")
+    //           setLoading(false);
+    //           Alert.alert(
+    //             '',
+    //             t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data[0].SR_Number),
+    //             [
+    //               {
+    //                 text: 'Ok',
+    //                 onPress: () => {
+    //                   navigation.navigate("ServiceRequest");
+    //                 },
+    //               },
+    //             ]
+    //           );
+    //           clearData()
+    //         }) .catch((error) => {
+    //           console.log(error, "error")
+    //         })
+    //     ]);
+    //   };
+
+     
+    //   }
+    // }
+    const fetchWithTimeout = (url, options, timeout = 180000) => {
+      return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Request timed out")), timeout)
+        ),
+      ]);
+    };
+    
+    const onPressSubmitBtn = async () => {
+      if (validateInputs()) {
+        const url = constant.BASE_URL + constant.MOVE_OUT;
+        console.log(url, "url");
+    
+        setLoading(true);
+    
+        const idProof = selectedImage ? selectedImage : file ? file : "";
+        const ownershipProof = selectedImage2 ? selectedImage2 : file2 ? file2 : "";
+    
+        const payload = {
           Record: {
-            "BP": (accountData.BP_No).toString(),
-            "CA": (accountData.CA_No).toString(),
-            "Description": "Move Out Request from Mobile App",
-            "Category1": "Surrender of Supply",
-            "IDType": selectedIDType,
-            "IDProof": idProof,
-            "OwnershipProofType": selectedOwnerShipType,
-            "OwnershipProofUpload": ownerShipProof
-          }
-        }),
-      })
-        .then((response) =>
-          response.json())
-        .then(responseData => {
-          var data = responseData.Record
-          console.log(responseData, "response")
-          setLoading(false);
-          Alert.alert(
-            '',
-            t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data[0].SR_Number),
-            [
-              {
-                text: 'Ok',
-                onPress: () => {
-                  navigation.navigate("ServiceRequest");
+            BP: accountData.BP_No.toString(),
+            CA: accountData.CA_No.toString(),
+            Description: "Move Out Request from Mobile App",
+            Category1: "Surrender of Supply",
+            IDType: selectedIDType,
+            IDProof: idProof,
+            OwnershipProofType: selectedOwnerShipType,
+            OwnershipProofUpload: ownershipProof,
+          },
+        };
+    
+        console.log("Payload:", JSON.stringify(payload));
+    
+        try {
+          const response = await fetchWithTimeout(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+    
+          const responseData = await response.json();
+          console.log("Response Data:", responseData);
+    
+          if (responseData.Record && responseData.Record[0]) {
+            const data = responseData.Record[0];
+            Alert.alert(
+              "",
+              t("Your request successfully submitted.....! ") +
+                t(" and Service Request Number: ") +
+                String(data.SR_Number),
+              [
+                {
+                  text: "Ok",
+                  onPress: () => {
+                    navigation.navigate("ServiceRequest");
+                  },
                 },
-              },
-            ]
+              ]
+            );
+            clearData();
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          Alert.alert(
+            "",
+            t("Something went wrong, please try again later."),
+            [{ text: "OK" }]
           );
-          clearData()
-        })
+        } finally {
+          setLoading(false);
+        }
       }
-    }
+    };
+    
     return (
         
         <ScrollView style={styles.DashBoardMain}>

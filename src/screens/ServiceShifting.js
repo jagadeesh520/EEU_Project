@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity, Alert }  from 'react-native';
+import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity, Alert, ActivityIndicator }  from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -65,6 +65,7 @@ const ServiceShifting = ({ navigation }) => {
     const [ invalidOwership, setInvalidOwnerShip] = useState("");
     const [ invalidIDProof, setInvalidIDProof] = useState("");
     const [ invalidOwnerShipProof, setInvalidOwnerShipProof] = useState("");
+    const [isLoading, setLoading]= useState(false);
 
     // Run useEffect only once when the component mounts
     useEffect(() => {
@@ -179,30 +180,30 @@ const ServiceShifting = ({ navigation }) => {
           includeBase64: true,
           mediaType: 'photo',
         }).then(async image => {
-          // setHeight(height);
-          // setWidth(width);
-          // setDocumentOption(false)
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-          // setImageName(imageFileName);
+          setHeight(height);
+          setWidth(width);
+          setDocumentOption(false)
+          const imagePathParts = image.path.split('/');
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+          setImageName(imageFileName);
 
-          // setSelectedImage(`data:${image.mime};base64,${image.data}`);
+          setSelectedImage(`data:${image.mime};base64,${image.data}`);
 
           console.log('Image captured:', image.data);
 
           // Ensure Base64 is sanitized
-          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          console.log('Sanitized Base64:', sanitizedBase64);
+          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+          // console.log('Sanitized Base64:', sanitizedBase64);
     
-          // Handle other properties
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
+          // // Handle other properties
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
     
-          setHeight(image.height);
-          setWidth(image.width);
-          setDocumentOption(false);
-          setImageName(imageFileName);
-          setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
+          // setHeight(image.height);
+          // setWidth(image.width);
+          // setDocumentOption(false);
+          // setImageName(imageFileName);
+          // setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
         }).catch(error => {
           console.log(error);
         });
@@ -216,29 +217,29 @@ const ServiceShifting = ({ navigation }) => {
           includeBase64: true,  
           mediaType: 'photo',
         }).then(async image => {
-          // setHeight(height);
-          // setWidth(width);
-          // setDocumentOption(false)
-          // setSelectedImage(`data:${image.mime};base64,${image.data}`)
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-          // setImageName(imageFileName);
+          setHeight(height);
+          setWidth(width);
+          setDocumentOption(false)
+          setSelectedImage(`data:${image.mime};base64,${image.data}`)
+          const imagePathParts = image.path.split('/');
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+          setImageName(imageFileName);
 
           console.log('Image captured:', image.data);
 
           // Ensure Base64 is sanitized
-          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          console.log('Sanitized Base64:', sanitizedBase64);
+          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+          // console.log('Sanitized Base64:', sanitizedBase64);
     
-          // Handle other properties
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
+          // // Handle other properties
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
     
-          setHeight(image.height);
-          setWidth(image.width);
-          setDocumentOption(false);
-          setImageName(imageFileName);
-          setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
+          // setHeight(image.height);
+          // setWidth(image.width);
+          // setDocumentOption(false);
+          // setImageName(imageFileName);
+          // setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
          
         }).catch(error => { 
           console.log(error);
@@ -255,21 +256,25 @@ const ServiceShifting = ({ navigation }) => {
           // setSelectedImage(null);
           // console.log(selectedFile, selectedFile.name)
           // setImageName(selectedFile.name);
+          // const selectedFile = res[0];
+          // // setFile(selectedFile);
+          // setSelectedImage(null);
+          setFile(res);
           const selectedFile = res[0];
-          // setFile(selectedFile);
-          setSelectedImage(null);
+          setFile(selectedFile.uri);
+          setImageName(selectedFile.name);
       
           console.log('Selected File:', selectedFile);
       
           // Read the file as Base64
-          const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
+          // const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
       
-          // Ensure no wrapping
-          const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
+          // // Ensure no wrapping
+          // const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
       
-          // Set the sanitized Base64
-          setImageName(selectedFile.name); // Set file name
-          setFile(sanitizedBase64);
+          // // Set the sanitized Base64
+          // setImageName(selectedFile.name); // Set file name
+          // setFile(sanitizedBase64);
 
         } catch (err) {
           if (DocumentPicker.isCancel(err)) {
@@ -329,28 +334,28 @@ const ServiceShifting = ({ navigation }) => {
           mediaType: 'photo',
         }).then(async image => {
           console.log('Image captured:', image.data);
-          // setHeight(height);
-          // setWidth(width);
-          // setDocumentOption1(false)
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-          // setImageName2(imageFileName);
-          // setSelectedImage1(`data:${image.mime};base64,${image.data}`);
-          // console.log('Image captured:', image.data);
-
-          // Ensure Base64 is sanitized
-          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          console.log('Sanitized Base64:', sanitizedBase64);
-    
-          // Handle other properties
+          setHeight(height);
+          setWidth(width);
+          setDocumentOption1(false)
           const imagePathParts = image.path.split('/');
           const imageFileName = imagePathParts[imagePathParts.length - 1];
-    
-          setHeight(image.height);
-          setWidth(image.width);
-          setDocumentOption1(false);
           setImageName2(imageFileName);
-          setSelectedImage1(`data:${image.mime};base64,${sanitizedBase64}`);
+          setSelectedImage1(`data:${image.mime};base64,${image.data}`);
+          console.log('Image captured:', image.data);
+
+          // Ensure Base64 is sanitized
+          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+          // console.log('Sanitized Base64:', sanitizedBase64);
+    
+          // // Handle other properties
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
+    
+          // setHeight(image.height);
+          // setWidth(image.width);
+          // setDocumentOption1(false);
+          // setImageName2(imageFileName);
+          // setSelectedImage1(`data:${image.mime};base64,${sanitizedBase64}`);
         }).catch(error => {
           console.log(error);
         });
@@ -366,29 +371,29 @@ const ServiceShifting = ({ navigation }) => {
           mediaType: 'photo',
         }).then(async image => {
           console.log('Image captured:', image.data);
-          // setHeight(height);
-          // setWidth(width);
-          // setDocumentOption1(false)
-          // setSelectedImage1(`data:${image.mime};base64,${image.data}`)
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-          // setImageName2(imageFileName);
+          setHeight(height);
+          setWidth(width);
+          setDocumentOption1(false)
+          setSelectedImage1(`data:${image.mime};base64,${image.data}`)
+          const imagePathParts = image.path.split('/');
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+          setImageName2(imageFileName);
 
           console.log('Image captured:', image.data);
 
           // Ensure Base64 is sanitized
-          const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          console.log('Sanitized Base64:', sanitizedBase64);
+          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
+          // console.log('Sanitized Base64:', sanitizedBase64);
     
-          // Handle other properties
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
+          // // Handle other properties
+          // const imagePathParts = image.path.split('/');
+          // const imageFileName = imagePathParts[imagePathParts.length - 1];
     
-          setHeight(image.height);
-          setWidth(image.width);
-          setDocumentOption1(false);
-          setImageName2(imageFileName);
-          setSelectedImage1(`data:${image.mime};base64,${sanitizedBase64}`);
+          // setHeight(image.height);
+          // setWidth(image.width);
+          // setDocumentOption1(false);
+          // setImageName2(imageFileName);
+          // setSelectedImage1(`data:${image.mime};base64,${sanitizedBase64}`);
          
         }).catch(error => { 
           console.log(error);
@@ -400,27 +405,30 @@ const ServiceShifting = ({ navigation }) => {
           const res = await DocumentPicker.pick({
             type: [DocumentPicker.types.pdf],
           });
+          setFile2(res);
+          const selectedFile = res[0];
+          setFile2(selectedFile.uri);
+          setImageName2(selectedFile.name);
           // setFile2(res);
           // const selectedFile = res[0];
           // setFile2(selectedFile);
           // setImageName2(selectedFile.name);
           // setSelectedImage1(null);
 
-          const selectedFile = res[0];
           // setFile(selectedFile);
-          setSelectedImage(null);
+          setSelectedImage1(null);
       
           console.log('Selected File:', selectedFile);
       
           // Read the file as Base64
-          const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
+          // const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
       
           // Ensure no wrapping
-          const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
+          // const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
       
           // Set the sanitized Base64
-          setImageName2(selectedFile.name); // Set file name
-          setFile2(sanitizedBase64); // Store Base64 data
+          // setImageName2(selectedFile.name); // Set file name
+          // setFile2(sanitizedBase64); // Store Base64 data
         } catch (err) {
           if (DocumentPicker.isCancel(err)) {
             console.log('User cancelled the picker');
@@ -478,7 +486,8 @@ const ServiceShifting = ({ navigation }) => {
       } 
       const onPressSubmitBtn = () => {
         var validate = validateInputs()
-        if (validateInputs()) { 
+        if (validateInputs()) {
+        setLoading(true); 
         var url = constant.BASE_URL + constant.SERVICE_SHIFTING
         var idProof = selectedImage ? selectedImage : file ? file : null
         var ownerShipProof = selectedImage1 ? selectedImage1 : file2 ? file2 : null
@@ -511,7 +520,8 @@ const ServiceShifting = ({ navigation }) => {
           .then((response) =>
             response.json())
           .then(responseData => {
-            var data = responseData.Record
+            var data = responseData.Record;
+            setLoading(false);
             Alert.alert(
               '',
               t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data.SR_Number),
@@ -623,7 +633,13 @@ const ServiceShifting = ({ navigation }) => {
                 <Text style={styles.RegisterBtnTxt}>{t("Ownership Proof Upload")}</Text>
                 <Upload name={'upload'} size={25}/>
               </TouchableOpacity> 
-              <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor: '#63AA5A', display:'flex', flexDirection: 'row' }]}
+              {isLoading &&
+                   < View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                     <ActivityIndicator size="small" />
+                     <Text style={{ marginLeft: 10, marginBottom: 10}} >Processing....</Text>
+                    </View>
+              } 
+              <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor:  isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
                 onPress={() => { onPressSubmitBtn() }}
               >
                 <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>

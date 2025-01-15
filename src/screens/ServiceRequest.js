@@ -24,7 +24,7 @@ const ServiceRequest = ({navigation}) => {
 
     const renderQuickLinks = (buttonImage, buttonText, navigationName) => {
         return (
-          <View>
+          <View style={{marginRight: buttonText === "Miscellaneous" ? 120 : null}}>
             <TouchableOpacity style={styles.ServiceQuickLinkCon} onPress={() => { navigation.navigate(navigationName) }}>
               <Image source={buttonImage} style={styles.ServiceQuickLinkImage} />
               <Text style={styles.ServiceQuickLnkText}>{buttonText}</Text>
@@ -39,13 +39,12 @@ const ServiceRequest = ({navigation}) => {
             <View style={{ marginTop: 20 }}>
           <Text style={styles.ServiceSubHeaderTxt}>{t("Services")}</Text>
           <View style={styles.ServiceSubHeader}>
-            {renderQuickLinks(ImagePath.Bill_History, t('Service Shifting'), "ServiceShifting")}
-            {renderQuickLinks(ImagePath.PaymentHistory, t('Name Change'), "NameChange")}
-            {renderQuickLinks(ImagePath.Complaints, t('Load Change'), "LoadChange")}
-            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Dis/Reconnection'), "DisOrReconnection")}
+            {/* {renderQuickLinks(ImagePath.Bill_History, t('Service Shifting'), "ServiceShifting")} */}
+            {/* {renderQuickLinks(ImagePath.PaymentHistory, t('Name Change'), "NameChange")} */}
+            {/* {renderQuickLinks(ImagePath.Complaints, t('Load Change'), "LoadChange")}
+            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Dis/Reconnection'), "DisOrReconnection")} */}
             {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Move Out SR'), "MoveOutServiceRequest")}
-            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Miscellaneous'), "Miscellaneous")}
-            
+            {/* {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Miscellaneous'), "Miscellaneous")} */}
           </View>
         </View>
              

@@ -47,8 +47,8 @@ const Dashboard = ({ navigation, route }) => {
 
   
   const [unpaidDueData, setUnpaidDueData] = useState({});
-  const [unpaidDemandData, setUnpaidDemandData] = useState({});
-  const [sumdDemandData, setSumDemandData] = useState({});
+  const [unpaidDemandData, setUnpaidDemandData] = useState([]);
+  const [sumdDemandData, setSumDemandData] = useState(0);
   const [isThemeOpen, setThemeOpen] = useState(false);
   const [checked, setChecked] = useState(theme);
   const [paymentHistoryData, setPaymentHistoryData] = useState([]);
@@ -57,7 +57,6 @@ const Dashboard = ({ navigation, route }) => {
   const [isConnected, setIsConnected] = useState(true);
 
 
-  console.log("sumdDemandData",sumdDemandData);
 
   const fetchWithTimeout = (url, options, timeout = 5000) => {
     return Promise.race([
@@ -169,10 +168,17 @@ const Dashboard = ({ navigation, route }) => {
       .then((response) =>
         response.json())
       .then(responseData => {
-        setUnpaidDemandData(responseData.MT_UnpaidDemandNote_Res.Record);
-        const result = responseData.MT_UnpaidDemandNote_Res.Record.reduce((total, currentValue) => total = total + parseFloat(currentValue.Amount),0);
-        console.log("welcome...",result)
-        setSumDemandData(result);
+        var data = responseData.MT_UnpaidDemandNote_Res.Record
+        setUnpaidDemandData(data);
+        console.log(responseData, "Dashboard---->", data)
+        const totalAmount = data.reduce((total, item) => {
+          // Parse Amount as a number and add to the total
+          const amount = parseFloat(item.Amount.trim());
+          return total + (isNaN(amount) ? 0 : amount);
+        }, 0);        
+        console.log(`Total Amount: ${totalAmount.toFixed(2)}`);
+        setSumDemandData(totalAmount);
+     
       })
   }
   const getPaymentHistory = (value) => {
@@ -382,7 +388,7 @@ const Dashboard = ({ navigation, route }) => {
             <View style={styles.DashboardPayBillMain}>
               <View>
                {/*  <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + ( unpaidDemandData.Amount ? unpaidDemandData.Amount : 0 )}</Text> */}
-                <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + (sumdDemandData && sumdDemandData)}</Text>
+                <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + (sumdDemandData ? sumdDemandData : 0)}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
               <TouchableOpacity style={styles.DashboardPayBillBtn}

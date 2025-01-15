@@ -44,7 +44,7 @@ const ServiceRequestStatus = ({navigation}) => {
     useEffect (()=> {
       retrieveData();
       getComplaintHistory();
-    }, []);
+    }, [complaintData]);
     useFocusEffect(
       useCallback(() => {
         retrieveData();
@@ -63,6 +63,7 @@ const ServiceRequestStatus = ({navigation}) => {
           response.json())
       .then(responseData => {
         if (responseData?.Record) { 
+          setLoading(false);
           let updatedComplaint = responseData.Record.map(item => {
             return {
               ...item,
@@ -71,7 +72,6 @@ const ServiceRequestStatus = ({navigation}) => {
           });
           setComplaintData(updatedComplaint);
         }
-        console.log(responseData.Record,"responseData.Record")
         setLoading(false)
       })
     }
@@ -168,12 +168,12 @@ const ServiceRequestStatus = ({navigation}) => {
               <View style={{ margin: 20 }}>
                 <View style={styles.ComplaintListMain}>
                     <Text style={styles.ComplaintListTitle}>{t("Recent Service Status")}</Text>
-                    <TouchableOpacity style={styles.ComplaintsBtn} onPress={() => { navigation.navigate("ServiceRequest"); }}>
+                    {/* <TouchableOpacity style={styles.ComplaintsBtn} onPress={() => { navigation.navigate("ServiceRequest"); }}>
                       <View style={styles.ComplaintListNewBntMain}> 
                        <Image source={ImagePath.PlusIcon} />  
                        <Text style={[styles.ComplaintsBtnTxt, {marginLeft: 10}]}>{t("NEW")}</Text>
                       </View> 
-                    </TouchableOpacity> 
+                    </TouchableOpacity>  */}
                   </View>
                
                 <ScrollView style={{ height: '100%' }}>

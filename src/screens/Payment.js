@@ -26,7 +26,7 @@ import {sha256, sha256Bytes} from 'react-native-sha256';
 const Payment = ({navigation}) => {
   const {t, i18n} = useTranslation();
   const {theme, styles, changeTheme} = Styles();
-  const [unpaidDueData, setUnpaidDueData] = useState({});
+  const [unpaidDueData, setUnpaidDueData] = useState([]);
   const [asyncData, setAsyncData] = useState({});
   const [isPayment, setIsPayment] = useState(false);
   const [isPaymentResponse, setIsPaymentResponse] = useState(false);
@@ -38,6 +38,7 @@ const Payment = ({navigation}) => {
   const [countryCode, setCountryCode] = useState('+251');
   const [isLoading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
+  const [tempCurrentData, setTempCurrentData] = useState({});
   const onBackPress = () => {
     navigation.goBack('BottomTab');
   };
@@ -45,8 +46,9 @@ const Payment = ({navigation}) => {
     retrieveData();
   }, [requestID]);
   const handleHash = async data => {
+    console.log(data, "handleHash" )
     let currentDateTime = moment(new Date()).format('YYDDMMHHmmss');
-    var requestId = data.CA + '_' + currentDateTime;
+    var requestId = data.CA_No + '_' + currentDateTime;
     setRequestID(requestId);
     try {
       const datas = 'a4504fb1-428f-4365-8e01-947013be9f36' + requestId;
@@ -69,10 +71,8 @@ const Payment = ({navigation}) => {
       .then(response => response.json())
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res;
-        console.log(responseData, 'responseData------>');
         setLoading(false)
         setUnpaidDueData(data.Record);
-        handleHash(data.Record);
       });
   };
 
@@ -82,6 +82,7 @@ const Payment = ({navigation}) => {
       if (value !== null) {
         getCurrentBill(JSON.parse(value));
         setAsyncData(JSON.parse(value));
+        handleHash(JSON.parse(value));
       }
     } catch (error) {
       console.error(error);
@@ -92,13 +93,14 @@ const Payment = ({navigation}) => {
   };
   const onPressPaymentProceed = async () => {
     var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
+    console.log(url, "url")
     let amount =
-      unpaidDueData && Object.keys(unpaidDueData).length > 0
-        ? (unpaidDueData?.Amount).trim()
+      tempCurrentData && Object.keys(tempCurrentData).length > 0
+        ? (tempCurrentData?.Amount).trim()
         : 0;
     let externalReference =
-      unpaidDueData && Object.keys(unpaidDueData).length > 0
-        ? (unpaidDueData?.Ref_No).toString()
+    tempCurrentData && Object.keys(tempCurrentData).length > 0
+        ? (tempCurrentData?.Ref_No).toString()
         : '';
     let currentDateTime = moment(new Date()).format('YYDDMMHHmmss');
     // let externalRef = externalReference + "_" + currentDateTime;
@@ -167,7 +169,7 @@ const Payment = ({navigation}) => {
         .then(responseData => {
           // setIsPaymentResponse(true);
           setIsPayment(false);
-          console.log(responseData, 'responseData');
+          console.log(isPayment)
           if (isPayment) {
             if (responseData.returnCode == 0) {
               Alert.alert(
@@ -236,7 +238,6 @@ const Payment = ({navigation}) => {
     }
   };
 
-  console.log(unpaidDueData, 'asyncData---->');
   return (
     <View>
       <CommonHeader
@@ -366,6 +367,8 @@ const Payment = ({navigation}) => {
                <TouchableOpacity style={styles.BillDuePayBillBtn} 
                 onPress={() =>{ 
                   setIsPayment(true)
+                  setTempCurrentData(list?.item);
+
                 }}
                >
                   <Text style={styles.BillDuePayBillBtnTxt}>{t("PAY VIA AWASH")}</Text>
