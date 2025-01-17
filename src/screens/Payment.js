@@ -51,7 +51,8 @@ const Payment = ({navigation}) => {
     var requestId = data.CA_No + '_' + currentDateTime;
     setRequestID(requestId);
     try {
-      const datas = '7fa6a887-99b4-4fa4-b68d-b4226845274d' + requestId;
+      // const datas = 'a4504fb1-428f-4365-8e01-947013be9f36' + requestId; // Development 
+      const datas = '7fa6a887-99b4-4fa4-b68d-b4226845274d' + requestId;   // Production
       const sha256Hash = await sha256(datas);
       setHash(sha256Hash);
     } catch (error) {
@@ -92,7 +93,8 @@ const Payment = ({navigation}) => {
     return number < 10 ? '0' + number : number.toString();
   };
   const onPressPaymentProceed = async () => {
-    var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
+    // var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
+    var url = constant.PAY_BASE_URL_PROD + constant.UNPAID_DEMAND_NOTE_PAYMENT;
     console.log(url, "url")
     let amount =
       tempCurrentData && Object.keys(tempCurrentData).length > 0
@@ -135,7 +137,7 @@ const Payment = ({navigation}) => {
       },
       paymentRequest: {
         amount: amount,
-        callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
+        callbackUrl: 'http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS',
         externalReference: externalRef,
         payerPhone: '251' + mobileNo,
         reason: externalReference,
@@ -158,8 +160,8 @@ const Payment = ({navigation}) => {
           paymentRequest: {
             amount: amount,
             // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-            // "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
-            callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
+            "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
+            // callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
             externalReference: externalRef,
             payerPhone: '251' + mobileNo,
             reason: externalReference,

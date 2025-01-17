@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity }  from 'react-native';
+import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity, ActivityIndicator }  from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,6 +24,7 @@ const Miscellaneous = ({navigation}) => {
     const { t, i18n } = useTranslation();
     const { theme, styles, changeTheme} = Styles();
     const [accountData, setAccountData] = useState({});
+    const [isLoading, setLoading]= useState(false);
 
     const [ firstName, setFirstName ] = useState("");
     const [ middleName, setMiddleName ] = useState("");
@@ -97,26 +98,26 @@ const Miscellaneous = ({navigation}) => {
     const [ selectedBB_No_of_Months, setSelectedBB_No_of_Months ]= useState("")
     const [ selectedCollectiveBilling, setselectedCollectiveBilling] = useState("");
     const [ Category1Option, setCategory1Option] = useState([
-        { label: "Name correction",  value:"Name correction" },
-        { label: "Address correction",  value:"Address correction" },
-        { label: "Request for instalment plan",  value:"Request for instalment plan" },
-        { label: "Post-paid: Property/meter number correction",  value:"Post-paid: Property/meter number correction" },
-        { label: "Pre-paid : Property/meter number correction",  value:"Pre-paid : Property/meter number correction" },
-        { label: "Temporary connection extension",  value:"Temporary connection extension" },
-        { label: "Clearance request",  value:"Clearance request" },
-        { label: "Date correction prepaid meter",  value:"Date correction prepaid meter" },
-        { label: "Requesting evidence",  value:"Requesting evidence" },
-        { label: "Request for due date deferral",  value:"Request for due date deferral" },
-        { label: "Unscheduled (interim) billing",  value:"Unscheduled (interim) billing" },
-        { label: "Group billing",  value:"Group billing" },
-        { label: "Budget billing",  value:"Budget billing" },
-        { label: "Direct debit",  value:"Direct debit" },
-        { label: "Transfer of open items",  value:"Transfer of open items" },
-        { label: "Failure of online payments",  value:"Failure of online payments" },
-        { label: "Power factor device purchase",  value:"Power factor device purchase" },
-        { label: "Others",  value:"Others" },
-        { label: "Update BP Type",  value:"Update BP Type" },
-        { label: "Tin number updating",  value:"Tin number updating" },
+        { label: "Name correction",  value:"M01" },
+        { label: "Address correction",  value:"M02" },
+        { label: "Request for instalment plan",  value:"M03" },
+        { label: "Post-paid: Property/meter number correction",  value:"M06" },
+        { label: "Pre-paid : Property/meter number correction",  value:"M07" },
+        { label: "Temporary connection extension",  value:"M08" },
+        { label: "Clearance request",  value:"M10" },
+        { label: "Date correction prepaid meter",  value:"M11" },
+        { label: "Requesting evidence",  value:"M12" },
+        { label: "Request for due date deferral",  value:"M13" },
+        { label: "Unscheduled (interim) billing",  value:"M15" },
+        { label: "Group billing",  value:"M16" },
+        { label: "Budget billing",  value:"M17" },
+        { label: "Direct debit",  value:"M18" },
+        { label: "Transfer of open items",  value:"M19" },
+        { label: "Failure of online payments",  value:"M20" },
+        { label: "Power factor device purchase",  value:"M99" },
+        { label: "Others",  value:"M21" },
+        { label: "Update BP Type",  value:"M22" },
+        { label: "Tin number updating",  value:"M23" },
     ]);
     const [ Temp_Conn_Type_Option, setTemp_Conn_Type_Option ] = useState([
         { label: "Construction",  value:"Construction" },
@@ -190,6 +191,7 @@ const Miscellaneous = ({navigation}) => {
         { label: "Order Copy of Court in case of Litigation",  value:"Order Copy of Court in case of Litigation" },
       ]);
     const [ selectedImage2, setSelectedImage2] = useState("");
+    const [ SelectedCategoryValue, setSelectedCategoryValue ] = useState("");
     useEffect(() => {
         retrieveData();
     }, []); // Empty array ensures this runs only once
@@ -774,6 +776,7 @@ const Miscellaneous = ({navigation}) => {
       const onPressSubmitBtn = () => {
         var validate = validateInputs()
         if (validateInputs()) { 
+        setLoading(true);
         var url = constant.BASE_URL + constant.MISCELLANEOUS;
         var idProof = selectedImage ? selectedImage : file ? file : null;
         var ownerShipProof = selectedImage2 ? selectedImage2 : file2 ? file2 : null;
@@ -781,7 +784,7 @@ const Miscellaneous = ({navigation}) => {
           "BP": (accountData.BP_No).toString(),
           "CA": (accountData.CA_No).toString(),
           "Description": requestDes,
-          "Category1": selectedCategory1,
+          "Category1": SelectedCategoryValue,
           "First_Name": firstName,
           "Middle_Name": middleName,
            "Last_Name": lastName,
@@ -824,7 +827,7 @@ const Miscellaneous = ({navigation}) => {
               "BP": (accountData.BP_No).toString(),
               "CA": (accountData.CA_No).toString(),
               "Description": requestDes,
-              "Category1": selectedCategory1,
+              "Category1": SelectedCategoryValue,
               "First_Name": firstName,
 		          "Middle_Name": middleName,
 	           	"Last_Name": lastName,
@@ -864,20 +867,21 @@ const Miscellaneous = ({navigation}) => {
           .then((response) =>
             response.json())
           .then(responseData => {
-            var data = responseData.Record
+            var data = responseData.Record;
+            setLoading(false);
             console.log(responseData, "response")
-            // Alert.alert(
-            //   '',
-            //   t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data.SR_Number),
-            //   [
-            //     {
-            //       text: 'Ok',
-            //       onPress: () => {
-            //         navigation.navigate("ServiceRequest");
-            //       },
-            //     },
-            //   ]
-            // );
+            Alert.alert(
+              '',
+              t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data.SR_Number),
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => {
+                    navigation.navigate("ServiceRequest");
+                  },
+                },
+              ]
+            );
             clearData()
           })
         }
@@ -914,7 +918,8 @@ const Miscellaneous = ({navigation}) => {
                 data={Category1Option}
                 value={selectedCategory1}
                 onChange={item => {
-                    setSelectedCategory1(item.value);
+                    setSelectedCategory1(item.label);
+                    setSelectedCategoryValue(item.value);
                    
                     if( (item.value)?.length > 0 ) {
                       setInvalidCategory1("")
@@ -1210,8 +1215,14 @@ const Miscellaneous = ({navigation}) => {
               <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption1(true); }}>
                 <Text style={styles.RegisterBtnTxt}>{t("Ownership Proof Upload")}</Text>
                 <Upload name={'upload'} size={25}/>
-              </TouchableOpacity> 
-              <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor: '#63AA5A', display:'flex', flexDirection: 'row' }]}
+              </TouchableOpacity>
+              {isLoading &&
+                   < View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                     <ActivityIndicator size="small" />
+                     <Text style={{ marginLeft: 10, marginBottom: 10}} >Processing....</Text>
+                    </View>
+              }  
+              <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
                 onPress={() => { onPressSubmitBtn() }}
               >
                 <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>

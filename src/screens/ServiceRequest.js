@@ -39,12 +39,12 @@ const ServiceRequest = ({navigation}) => {
             <View style={{ marginTop: 20 }}>
           <Text style={styles.ServiceSubHeaderTxt}>{t("Services")}</Text>
           <View style={styles.ServiceSubHeader}>
-            {/* {renderQuickLinks(ImagePath.Bill_History, t('Service Shifting'), "ServiceShifting")} */}
+            {renderQuickLinks(ImagePath.Bill_History, t('Service Shifting'), "ServiceShifting")}
             {/* {renderQuickLinks(ImagePath.PaymentHistory, t('Name Change'), "NameChange")} */}
-            {/* {renderQuickLinks(ImagePath.Complaints, t('Load Change'), "LoadChange")}
-            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Dis/Reconnection'), "DisOrReconnection")} */}
+             {renderQuickLinks(ImagePath.Complaints, t('Load Change'), "LoadChange")}
+            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Dis/Reconnection'), "DisOrReconnection")}
             {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Move Out SR'), "MoveOutServiceRequest")}
-            {/* {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Miscellaneous'), "Miscellaneous")} */}
+            {renderQuickLinks(ImagePath.UnpaidDemandNote, t('Miscellaneous'), "Miscellaneous")}
           </View>
         </View>
              
