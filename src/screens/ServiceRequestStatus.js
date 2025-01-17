@@ -44,7 +44,8 @@ const ServiceRequestStatus = ({navigation}) => {
     useEffect (()=> {
       retrieveData();
       getComplaintHistory();
-    }, [complaintData]);
+      //complaintData - this is getting looping while processing.
+    }, []);
     useFocusEffect(
       useCallback(() => {
         retrieveData();
