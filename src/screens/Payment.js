@@ -100,7 +100,6 @@ const Payment = ({navigation}) => {
       tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Amount).trim()
         : 0;
-      console.log("amountttttttttttttttttttttt",amount);
     let externalReference =
     tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Ref_No).toString()
@@ -137,7 +136,7 @@ const Payment = ({navigation}) => {
       },
       paymentRequest: {
         amount: amount,
-        callbackUrl: 'http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS',
+        callbackUrl: 'http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS',
         externalReference: externalRef,
         payerPhone: '251' + mobileNo,
         reason: externalReference,
@@ -160,7 +159,7 @@ const Payment = ({navigation}) => {
           paymentRequest: {
             amount: amount,
             // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-            "callbackUrl": "http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS",
+            "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",
             // callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
             externalReference: externalRef,
             payerPhone: '251' + mobileNo,
