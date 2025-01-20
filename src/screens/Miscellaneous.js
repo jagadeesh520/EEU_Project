@@ -775,6 +775,7 @@ const Miscellaneous = ({navigation}) => {
       } 
       const onPressSubmitBtn = () => {
         var validate = validateInputs()
+        console.log(validate, "entered")
         if (validateInputs()) { 
         setLoading(true);
         var url = constant.BASE_URL + constant.MISCELLANEOUS;
@@ -787,7 +788,7 @@ const Miscellaneous = ({navigation}) => {
           "Category1": SelectedCategoryValue,
           "First_Name": firstName,
           "Middle_Name": middleName,
-           "Last_Name": lastName,
+          "Last_Name": lastName,
           "Floor": floor,
           "Woreda": woreda,
           "Kebele": kebele,
@@ -802,8 +803,8 @@ const Miscellaneous = ({navigation}) => {
           "No_of_Installment": no_of_Installment,
           "Install_Doc_Reference": install_Doc_Reference,
           "Temp_Conn_Type": selected_Temp_Conn_Type,
-          "Temp_Conn_Ext_Date": temp_Conn_Ext_Date,
-          "Defferal_Date": defferal_Date,
+          "Temp_Conn_Ext_Date": moment(temp_Conn_Ext_Date).format('DD-MM-YYYY'),
+          "Defferal_Date": moment(defferal_Date).format('DD-MM-YYYY'),
           "Defferal_Doc_Reference": defferal_Doc_Reference,
           "Collective_Billing": selectedCollectiveBilling,
           "Collective_Bill_AC": collective_Bill_AC,
@@ -819,7 +820,7 @@ const Miscellaneous = ({navigation}) => {
           "OwnershipProofType": selectedOwnerShipType,
           "OwnershipProofUpload": ownerShipProof
         }
-        console.log(data, "missss");
+        console.log(data, "missss", url);
         fetch(url, {
           method: 'POST',
           body: JSON.stringify({
@@ -845,8 +846,8 @@ const Miscellaneous = ({navigation}) => {
 		          "No_of_Installment": no_of_Installment,
 		          "Install_Doc_Reference": install_Doc_Reference,
               "Temp_Conn_Type": selected_Temp_Conn_Type,
-	          	"Temp_Conn_Ext_Date": temp_Conn_Ext_Date,
-		          "Defferal_Date": defferal_Date,
+	          	"Temp_Conn_Ext_Date": moment(temp_Conn_Ext_Date).format('DD-MM-YYYY'),
+		          "Defferal_Date": moment(temp_Conn_Ext_Date).format('DD-MM-YYYY'),
 		          "Defferal_Doc_Reference": defferal_Doc_Reference,
 		          "Collective_Billing": selectedCollectiveBilling,
 		          "Collective_Bill_AC": collective_Bill_AC,

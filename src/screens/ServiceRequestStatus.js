@@ -186,7 +186,7 @@ const ServiceRequestStatus = ({navigation}) => {
             <Text style={styles.ComplaintListTitle}>
               {t('Recent Service Status')}
             </Text>
-           {/*  <TouchableOpacity
+            <TouchableOpacity
               style={styles.ComplaintsBtn}
               onPress={() => {
                 navigation.navigate('ServiceRequest');
@@ -197,7 +197,7 @@ const ServiceRequestStatus = ({navigation}) => {
                   {t('NEW')}
                 </Text>
               </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
 
           <ScrollView style={{height: '100%'}}>
