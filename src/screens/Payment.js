@@ -94,7 +94,7 @@ const Payment = ({navigation}) => {
   };
   const onPressPaymentProceed = async () => {
     // var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
-    var url = constant.PAY_BASE_URL_PROD + constant.UNPAID_DEMAND_NOTE_PAYMENT;
+    var url = constant.PAY_BASE_URL_PROD // prod
     console.log(url, "url")
     let amount =
       tempCurrentData && Object.keys(tempCurrentData).length > 0
@@ -142,7 +142,7 @@ const Payment = ({navigation}) => {
         reason: externalReference,
       },
     };
-   // console.log(data, 'data');
+   console.log(data, 'data');
     if (num_of_attempt <= 100) {
       fetch(url, {
         method: 'POST',
@@ -151,15 +151,16 @@ const Payment = ({navigation}) => {
         },
         body: JSON.stringify({
           authorization: {
-            merchantCode: '220261',
-            merchantTillNumber: '22026100',
+            merchantCode: '453847',
+            merchantTillNumber: '45384700',
             requestId: requestID,
             requestSignature: hashPassword,
           },
           paymentRequest: {
             amount: amount,
             // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-            "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",
+            // "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",
+            "callbackUrl": "https://10.10.84.19/RESTAdapter/paymentDataAWAS",
             // callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
             externalReference: externalRef,
             payerPhone: '251' + mobileNo,
