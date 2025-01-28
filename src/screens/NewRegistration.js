@@ -310,6 +310,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       .then((response) =>
         response.json())
       .then(responseData => {
+        console.log(responseData, "set--->")
         const regionsArray = responseData?.Record
         const sortedRegion = regionsArray && regionsArray.length > 0 && regionsArray.sort((a, b) => a.Region.localeCompare(b.Region));
         const regionList = sortedRegion && sortedRegion.length > 0 && sortedRegion.map(item => ({
@@ -729,7 +730,15 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
           var data = responseData.MT_NewServiceConnection_Res.Record
           let ServiceRequestNumber =   data?.ServiceRequestNumber ? data?.ServiceRequestNumber : "";
           setLoading(false)
-          // if(data?.CANumber) {
+          if(data?.CANumber == "CA Failure") {
+            Alert.alert(
+              '',
+              "Contract account creation failed. Please resubmit",
+              [
+                { text: 'OK', onPress: () =>{} },
+              ]
+            );
+          } else { 
             Alert.alert(
               '',
               t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber) + "  "+ t("BP Number : ") + String(data.BP),
@@ -744,6 +753,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
               ]
             );
             clearData()
+          }
           // }
         })
         .catch((error) => {
@@ -1218,7 +1228,6 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
         </View>
       )
     } 
-    console.log(selectedPhaseType, "selectedPhaseType")
     const zoneData =[];
     const renderItems = (item) => {
       return (
