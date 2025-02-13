@@ -729,7 +729,15 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
           var data = responseData.MT_NewServiceConnection_Res.Record
           let ServiceRequestNumber =   data?.ServiceRequestNumber ? data?.ServiceRequestNumber : "";
           setLoading(false)
-          // if(data?.CANumber) {
+          if(data?.CANumber == "CA Failure") {
+            Alert.alert(
+              '',
+              "Contract account creation failed. Please resubmit",
+              [
+                { text: 'OK', onPress: () =>{} },
+              ]
+            );
+          } else { 
             Alert.alert(
               '',
               t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber) + "  "+ t("BP Number : ") + String(data.BP),
@@ -744,7 +752,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
               ]
             );
             clearData()
-          // }
+          }
         })
         .catch((error) => {
           console.log('error---->new service', error);
