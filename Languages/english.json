@@ -322,6 +322,8 @@
         "Ownership proof type can't be empty": "Ownership proof type can't be empty",
         "ID proof can't be empty": "ID proof can't be empty",
         "Ownership proof can't be empty": "Ownership proof can't be empty",
-        "Category1 can't be empty": "Category1 can't be empty"
+        "Category1 can't be empty": "Category1 can't be empty",
+        "Document Upload": "Document Upload",
+        "NSC Application Track": "NSC Application Track"
     } 
 }

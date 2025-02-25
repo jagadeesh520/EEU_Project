@@ -310,6 +310,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       .then((response) =>
         response.json())
       .then(responseData => {
+        console.log(responseData, "set--->")
         const regionsArray = responseData?.Record
         const sortedRegion = regionsArray && regionsArray.length > 0 && regionsArray.sort((a, b) => a.Region.localeCompare(b.Region));
         const regionList = sortedRegion && sortedRegion.length > 0 && sortedRegion.map(item => ({
@@ -591,12 +592,12 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       } else {
         setInvalidInstallType('');
       }
-      if (selectedImage === '' && file == null) {
-        setInvalidImage(t("ID Softcopy can't be empty"));
-        valid = false;
-      } else {
-        setInvalidImage('');
-      }
+      // if (selectedImage === '' && file == null) {
+      //   setInvalidImage(t("ID Softcopy can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidImage('');
+      // }
       if (selectPartnerType === '') {
         setInvalidPartnerType(t("Partner Type can't be empty"));
         valid = false;
@@ -609,18 +610,18 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       // } else {
       //   setInvalidPhaseType('');
       // }
-      if (selectedIDType === '') {
-        setInvalidIDType(t("ID Type can't be empty"));
-        valid = false;
-      } else {
-        setInvalidIDType('');
-      }
-      if (IDNumber === '') {
-        setInvalidIDNumber(t("ID Number can't be empty"));
-        valid = false;
-      } else {
-        setInvalidIDNumber('');
-      }
+      // if (selectedIDType === '') {
+      //   setInvalidIDType(t("ID Type can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidIDType('');
+      // }
+      // if (IDNumber === '') {
+      //   setInvalidIDNumber(t("ID Number can't be empty"));
+      //   valid = false;
+      // } else {
+      //   setInvalidIDNumber('');
+      // }
       if (orgName1 === '' && selectedPartnerCategory == "2") {
         setInvalidOrgName1(t("Organization Name1 can't be empty"));
         valid = false;
@@ -740,19 +741,20 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
           } else { 
             Alert.alert(
               '',
-              t('New service has been successfully created, CA Number: ') + String(data.CANumber) + t(" and Service Request Number: ") + String(ServiceRequestNumber) + "  "+ t("BP Number : ") + String(data.BP),
+              t('New service has been successfully submitted, Application Number: ') + String(data.CANumber),
               [
                 {
-                  text: 'COPY CA Number',
+                  text: 'COPY Application Number',
                   onPress: () => {
                     Clipboard.setString(String(data.CANumber)); // Copy CA Number as a string
-                    navigation.navigate("Registration");
+                    navigation.navigate("CANumberTrack");
                   },
                 },
               ]
             );
             clearData()
           }
+          // }
         })
         .catch((error) => {
           console.log('error---->new service', error);
@@ -1226,7 +1228,6 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
         </View>
       )
     } 
-    console.log(selectedPhaseType, "selectedPhaseType")
     const zoneData =[];
     const renderItems = (item) => {
       return (
@@ -1303,7 +1304,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
                   {renderPreview("Connection end date", moment(connEndDate).format('DD-MM-YYYY') )}
                   {renderPreview("Install type", insType )}
 
-                  <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Identity Details") + (" *")}</Text>
+                  {/* <Text style={[styles.NewServiceHeader, {marginTop: 20}]}>{t("Identity Details") + (" *")}</Text>
 
                   {renderPreview("ID type", idType )}
                   {renderPreview("ID Number", IDNumber )}
@@ -1326,7 +1327,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
                       style={{ width: '100%', height: 100, marginBottom: 20, flex: 0.3 }}
                       resizeMode="cover"
                     />  : <Text style={[styles.Margin_10, {color: themeObj.imageNameColor, flex: 0.3}] }>{imageName2}</Text>   }           
-                  </View>
+                  </View> */}
                   <View>
                   <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
                     onPress={() => { 
@@ -1802,7 +1803,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
             <Text style={styles.ErrorMsg}>{invalidCusService}</Text>
            </View> */}
            
-           <Text style={styles.NewServiceHeader}>{t("Identity Details") + (" *")}</Text>
+           {/* <Text style={styles.NewServiceHeader}>{t("Identity Details") + (" *")}</Text>
            
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("ID type")  + (" *")}</Text>   
@@ -1856,12 +1857,13 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
            <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption2(true) }}>
               <Text style={styles.RegisterBtnTxt}>{t("ID Softcopy Upload") + " 2"}</Text>
               <Upload name={'upload'} size={25}/>
-           </TouchableOpacity> 
+           </TouchableOpacity>  */}
            <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
             onPress={() => {
               var validate = validateInputs()
+              console.log("preview true",validate)
               if (validateInputs()) { 
-                console.log("preview true")
+                console.log("preview true",validate)
                setIsPreview(true) 
               } 
                

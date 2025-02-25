@@ -322,6 +322,9 @@
         "Ownership proof type can't be empty": "የባለቤትነት ማረጋገጫ አይነት ባዶ ሊሆን አይችልም።",
         "ID proof can't be empty": "የመታወቂያ ማረጋገጫ ባዶ ሊሆን አይችልም።",
         "Ownership proof can't be empty": "የባለቤትነት ማረጋገጫ ባዶ ሊሆን አይችልም።",
-        "Category1 can't be empty": "ምድብ 1 ባዶ ሊሆን አይችልም።"
+        "Category1 can't be empty": "ምድብ 1 ባዶ ሊሆን አይችልም።",
+        "Document Upload": "የሰነድ ጭነት",
+        "NSC Application Track": "NSC መተግበሪያ ትራክ"
+
     } 
 }

@@ -23,7 +23,8 @@ import React from 'react'
     KEBELE: '/kebeleProd',
     CSC: '/cscProd',
     VALIDATION: '/CAValidationPostProd',
-    NEW_REGISTRATION_POST: '/NewRegistrationPostProd'
+    NEW_REGISTRATION_POST: '/NewRegistrationPostProd',
+    APPLICATION_TRACK: '/ApplicationStatusProd'
 
 
 
