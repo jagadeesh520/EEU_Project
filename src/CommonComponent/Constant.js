@@ -49,5 +49,6 @@ import React from 'react'
     LOAD_CHANGE: '/LoadChange',
     MISCELLANEOUS: '/Miscellaneous',
     VALIDATION: '/CAValidationPost',
-    NEW_REGISTRATION_POST: '/NewRegistrationPost'
+    NEW_REGISTRATION_POST: '/NewRegistrationPost',
+    APPLICATION_TRACK: '/ApplicationStatus'
  }

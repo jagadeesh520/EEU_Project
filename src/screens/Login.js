@@ -352,6 +352,22 @@ const Login = ({ navigation }) => {
           }}>
             <Text style={styles.LoginCreateTxt}>{t("APPLY FOR NEW SERVICE")}</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.LoginCreateBtn} 
+          onPress={() =>{
+            if(!isConnected) {
+              Alert.alert(
+                    '',
+                    "No internet connection! Please check your connection,",
+                    [
+                      { text: 'OK', onPress: () =>{} },
+                    ]
+              );
+            } else {
+              navigation.navigate('CANumberTrack')
+            }  
+          }}>
+            <Text style={styles.LoginCreateTxt}>{t("NSC APPLICATION TRACK")}</Text>
+          </TouchableOpacity>
           <View style={styles.FooterContainer}>
             <Text style={styles.FooterText}>{"© Copyright 2024"}</Text>
           </View>
