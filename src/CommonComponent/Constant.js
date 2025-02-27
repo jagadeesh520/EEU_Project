@@ -50,5 +50,6 @@ import React from 'react'
     MISCELLANEOUS: '/Miscellaneous',
     VALIDATION: '/CAValidationPost',
     NEW_REGISTRATION_POST: '/NewRegistrationPost',
-    APPLICATION_TRACK: '/ApplicationStatus'
+    APPLICATION_TRACK: '/ApplicationStatus',
+    APPLICATION_ATTACHMENTS: '/ApplicationAttachment'
  }

@@ -13,9 +13,18 @@ import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import Gallery from 'react-native-vector-icons/MaterialIcons';
+import Upload from 'react-native-vector-icons/Feather';
+import FileUpload from 'react-native-vector-icons/MaterialCommunityIcons';
+import Camera from 'react-native-vector-icons/Entypo';
+import Close from 'react-native-vector-icons/AntDesign';
+import ImagePicker from 'react-native-image-crop-picker';
+import DocumentPicker from 'react-native-document-picker';
+import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
+import RNFS from 'react-native-fs';  // Import RNFS
+import { useThemes, darkTheme, lightTheme } from './../CommonComponent/Theme';
 // Component
-const DocumentUpload = ({ route }) => {
+const DocumentUpload = ({ route, navigation }) => {
   const { t, i18n } = useTranslation();
   const toast = useToast();
   const { theme, styles, changeTheme } = Styles();
@@ -33,8 +42,13 @@ const DocumentUpload = ({ route }) => {
   const [ selectedImage, setSelectedImage ] = useState("");
   const [ selectedImage2, setSelectedImage2] = useState("");
   const [isLoading, setLoading]= useState(false);
-  const startDate = new Date();
-  const startResult = startDate.setDate(startDate.getDate());
+  const { themes, themeObj } = useThemes();
+  const [ IDNumber, setIDNumber ] = useState(""); 
+
+  const [ invalidIDType, setInvalidIDType] = useState("");
+  const [ invalidIDNumber, setInvalidIDNumber] = useState("");
+  const [ invalidIDProof, setInvalidIDProof] = useState("");
+
   const [ IDTypeOptions, setIDTypeOptions ] = useState([
     { label: "Passport",  value:"Passport" },
     { label: "Residential ID",  value:"Residential ID" },
@@ -340,12 +354,12 @@ const handlePDFUpload2 = async () => {
     // setFile2(res);
     // const selectedFile = res[0];
     // setFile2(selectedFile);
-    // setImageName2(selectedFile.name);
+    // setImageName2(selectedFile.name);  
     // setSelectedImage1(null);
 
     const selectedFile = res[0];
     // setFile(selectedFile);
-    setSelectedImage(null);
+    setSelectedImage2(null);
 
     console.log('Selected File:', selectedFile);
 
@@ -365,7 +379,129 @@ const handlePDFUpload2 = async () => {
       throw err;
     }
   }
-}
+ }
+ const validateInputs = () => {
+  let valid = true;
+
+  if (selectedIDType === '') {
+    setInvalidIDType(t("ID Type can't be empty"));
+    valid = false;
+  } else {
+    setInvalidIDType('');
+  }
+  if (IDNumber === '') {
+    setInvalidIDNumber(t("ID Number can't be empty"));
+    valid = false;
+  } else {
+    setInvalidIDNumber('');
+  }
+  // if (selectedOwnerShipType === '') {
+  //   setInvalidOwnerShip(t("Ownership proof type can't be empty"));
+  //   valid = false;
+  // } else {
+  //   setInvalidOwnerShip('');
+  // }
+  if ( imageName == null && file == null) {
+    setInvalidIDProof(t("ID proof can't be empty"));
+    valid = false;
+  } else {
+    setInvalidIDProof('');
+  }
+  // if (imageName2 == null && file2 == null) {
+  //   setInvalidOwnerShipProof(t("Ownership proof can't be empty"));
+  //   valid = false;
+  // } else {
+  //   setInvalidOwnerShipProof('');
+  // }
+   return valid;
+  }
+  const submitOnClick = () => {
+    const idProof = selectedImage ? selectedImage : file ? file : "";
+    const idProof2 = selectedImage2 ? selectedImage2 : file2 ? file2 : "";
+   var data =  {
+    "ApplicationNo": applicationDetails?.ApplicationNo ? applicationDetails?.ApplicationNo : "",
+    "BP":  applicationDetails?.BP ? applicationDetails?.BP : "",
+    "CA": applicationDetails?.CA ? applicationDetails?.CA : "",
+    "SRNumber": applicationDetails?.SRNumber ? applicationDetails?.SRNumber : "",
+    "IDType": selectedIDType,
+    "IDNo": IDNumber,
+    "IDAttachment1": idProof,
+    "IDAttachment2": idProof2,
+   }
+   console.log(data, "data---->")
+   if (validateInputs()) {
+    fetch(constant.BASE_URL + constant.APPLICATION_ATTACHMENTS, {
+      method: 'POST',
+      body: JSON.stringify({
+          Root: {
+            "ApplicationNo": applicationDetails?.ApplicationNo ? applicationDetails?.ApplicationNo : "",
+            "BP":  applicationDetails?.BP ? applicationDetails?.BP : "",
+            "CA": applicationDetails?.CA ? applicationDetails?.CA : "",
+            "SRNumber": applicationDetails?.SRNumber ? applicationDetails?.SRNumber : "",
+            "IDType": selectedIDType,
+            "IDNo": IDNumber,
+            "IDattachment1": idProof,
+            "IDattachment2": idProof2,
+          }
+   }),
+    })
+      .then((response) => response.json())
+      .then(async (responseData) => {
+        console.log(responseData, "upload--->")
+        var status = responseData.Root.Status ? responseData.Root.Status : ""
+
+        if(responseData.Root.Status == "Attachment Created Successfully") {
+         Alert.alert(
+          '',
+          t('Your application has been successfully completed and please create your Mob App login account using your CA number and proceed for payment after login. Contract Account Number: ') + String(applicationDetails.CA),
+          [
+            {
+              text: 'COPY CA Number',
+              onPress: () => {
+                Clipboard.setString(String(applicationDetails.CA)); // Copy CA Number as a string
+                navigation.navigate("Registration");
+              },
+            },
+          ]
+         );
+      } else if(responseData.Root.Status == "CA Creation Failure") {
+        Alert.alert(
+         '',
+         t('Your Application process has failed..!!! Please check status again after sometime or please contact EEU ...!!! ') ,
+         [
+           {
+             text: '',
+             onPress: () => {
+              //  Clipboard.setString(String(applicationDetails.CA)); // Copy CA Number as a string
+              //  navigation.navigate("Registration");
+             },
+           },
+         ]
+        );
+      } else if(responseData.Root.Status == "BP Creation Failure") {
+        Alert.alert(
+         '',
+         t('Your Application process has failed..!!! Please check status again after sometime or please contact EEU ...!!! ') ,
+         [
+           {
+             text: '',
+             onPress: () => {
+              //  Clipboard.setString(String(applicationDetails.CA)); // Copy CA Number as a string
+              //  navigation.navigate("Registration");
+             },
+           },
+         ]
+        );
+      }
+   })
+      .catch((error) => {
+        console.log(error, "error")
+        // showToast('error', error);
+        
+      });
+   }
+  }
+  console.log(applicationDetails, "check--->")
   return (
     <View style={styles.StartMain}>
       <View style={styles.StartSubContainer}>
@@ -422,6 +558,23 @@ const handlePDFUpload2 = async () => {
            />
                  <Text style={styles.ErrorMsg}>{invalidIDType}</Text>
             </View>
+            <View>
+            <TextInput
+            placeholder={t("Enter ID Number")}
+            value={IDNumber}
+            maxLength={16}
+            keyboardType="number"
+            style={styles.documentUploadInput}
+            placeholderTextColor="#9E9E9E"
+            onChangeText={(text) =>{ 
+                setIDNumber(text);
+                if( text && text.length > 0 ) {
+                  setInvalidIDNumber("")
+                }
+            }}
+          />
+            <Text style={styles.ErrorMsg}>{invalidIDNumber}</Text>
+          </View>
            <View>
            {imageName && imageName ?
               <View style={styles.NewServiceDocument}> 
@@ -433,7 +586,7 @@ const handlePDFUpload2 = async () => {
              }
               </View>
               <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption(true); }}>
-                <Text style={styles.RegisterBtnTxt}>{t("ID Proof Upload")}</Text>
+                <Text style={styles.RegisterBtnTxt}>{t("ID Proof Upload") + " 1"}</Text>
                 <Upload name={'upload'} size={25}/>
               </TouchableOpacity> 
            <View>
@@ -443,11 +596,11 @@ const handlePDFUpload2 = async () => {
                 <TouchableOpacity style={[ styles.Margin_10, {marginLeft: 5} ]} onPress={() => { setImageName2('') }}>
                     <Close name="closecircle" size={20} color={"black"}/>
                 </TouchableOpacity>
-              </View> : <Text style={[styles.ErrorMsg, { marginTop: 20 }]}>{invalidOwnerShipProof}</Text> 
+              </View> : null
              }
               </View>
               <TouchableOpacity style={styles.RegisterBtnUpload} onPress={() => { setDocumentOption1(true); }}>
-                <Text style={styles.RegisterBtnTxt}>{t("Ownership Proof Upload")}</Text>
+                <Text style={styles.RegisterBtnTxt}>{t("ID Proof Upload" + " 2")}</Text>
                 <Upload name={'upload'} size={25}/>
               </TouchableOpacity> 
               {isLoading &&
@@ -458,7 +611,7 @@ const handlePDFUpload2 = async () => {
               } 
               <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: isLoading ? '#DCDCDC' : '#63AA5A', display:'flex', flexDirection: 'row' }]}
                 onPress={() => { 
-                  onPressSubmitBtn();
+                  submitOnClick();
                 }}
               >
                 <Text style={styles.RegisterBtnTxt}>{t("SUBMIT")}</Text>
