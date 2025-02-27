@@ -687,7 +687,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
               "IDSoftCopyUpload": selectedImage,
               "PhaseType": selectedPhaseType
       }
-      console.log(data, "post data")
+      // console.log(data, "post data")
       fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -728,6 +728,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
         .then((response) => response.json())
         .then(async (responseData) => {
           var data = responseData.MT_NewServiceConnection_Res.Record
+          console.log(data, "res------->", responseData, url)
           let ServiceRequestNumber =   data?.ServiceRequestNumber ? data?.ServiceRequestNumber : "";
           setLoading(false)
           if(data?.CANumber == "CA Failure") {
