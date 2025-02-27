@@ -144,7 +144,22 @@ const CANumberTrack = ({ navigation }) => {
               },
             ]
           );            
-         } else if(data.Status == "BP Created"){
+         }  else if(data.Status == "CA AND SR CREATED") { 
+          Alert.alert(
+           '',
+           t('Your application successfully processed, Please attached your ID proof  to complete your application'),
+           [
+             {
+               text: '',
+               onPress: () => {
+                 // Clipboard.setString(String(data.CA)); // Copy CA Number as a string
+                 navigation.navigate("DocumentUpload", {applicationDetails: data});
+               },
+             },
+           ]
+         );            
+        }
+          else if(data.Status == "BP Created"){
           Alert.alert(
             '',
             t('Your Application under process Business partner has created and Service Request creation is in progress, Please check the status after sometime'),

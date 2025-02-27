@@ -29,7 +29,7 @@ import FindCSC from './src/screens/FindCSC';
 import ServiceRequestStatus from './src/screens/ServiceRequestStatus';
 import Location from 'react-native-vector-icons/FontAwesome5';
 import CANumberTrack from './src/screens/CANumberTrack';
-// import DocumentUpload from './src/screens/DocumentUpload';
+import DocumentUpload from './src/screens/DocumentUpload';
 import CommonComponent from './src/CommonComponent/CommonComponent';
 import { ImagePath } from './src/CommonComponent/ImagePath'; 
 import MultipleOption from './src/CommonComponent/MultipleOption'; 
@@ -179,7 +179,7 @@ const App = () => {
           <Stack.Screen name="Miscellaneous" component={Miscellaneous} />
           <Stack.Screen name="ServiceRequestStatus" component={ServiceRequestStatus} />
           <Stack.Screen name="CANumberTrack" component={CANumberTrack} />
-          {/* <Stack.Screen name="DocumentUpload" component={DocumentUpload}/> */}
+          <Stack.Screen name="DocumentUpload" component={DocumentUpload}/>
         </Stack.Navigator>
       </>
     );
