@@ -884,6 +884,16 @@ const Styles = () => {
             backgroundColor: '#FEFEFE',
             marginRight: wp(10)
         },
+        documentUploadInput: {
+            fontSize: wp(14),
+            borderWidth: 1,
+            borderColor: 'lightgray',
+            borderRadius: 5,
+            marginTop: wp(10),
+            paddingLeft: wp(10),
+            color: '#666666',
+            width: wp(300)
+        },
         LoginSubTxt: {
             fontSize: wp(14),
             color: '#333333',

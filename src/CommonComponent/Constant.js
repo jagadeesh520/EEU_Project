@@ -24,7 +24,9 @@ import React from 'react'
     CSC: '/cscProd',
     VALIDATION: '/CAValidationPostProd',
     NEW_REGISTRATION_POST: '/NewRegistrationPostProd',
-    APPLICATION_TRACK: '/ApplicationStatusProd'
+    APPLICATION_TRACK: '/ApplicationStatusProd',
+    APPLICATION_ATTACHMENTS: '/ApplicationAttachmentProd'
+
 
 
 

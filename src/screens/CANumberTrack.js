@@ -93,19 +93,19 @@ const CANumberTrack = ({ navigation }) => {
   const submitOnClick = () => {
     var data =  {
         "ApplicationNo": applicationNo,
-        "ApplicationDate":  moment(applicationDate).format('DD-MM-YYYY'),
+        "ApplicationDate": isOthers ? moment(applicationDate).format('DD/MM/YYYY') : "",
         "MobNo": mobileNo,
         "Email": emailID,
         "FirstName": firstName
   }
-  console.log(data, "data---->"+ (constant.BASE_URL + constant.APPLICATION_TRACK))
+  console.log(data, "data---->")
     if (validateInputs()) {
       fetch(constant.BASE_URL + constant.APPLICATION_TRACK, {
         method: 'POST',
         body: JSON.stringify({
             Record: {
               "ApplicationNo": applicationNo,
-              "ApplicationDate": isOthers ? moment(applicationDate).format('DD-MM-YYYY') : "",
+              "ApplicationDate": isOthers ? moment(applicationDate).format('DD/MM/YYYY') : "",
               "MobNo": mobileNo,
               "Email": emailID,
               "FirstName": firstName
@@ -133,13 +133,13 @@ const CANumberTrack = ({ navigation }) => {
           } else if(data.Status == "CA and SR Created") { 
            Alert.alert(
             '',
-            t('Your application successfully processed, Contract Account Number: ') + String(data.CA),
+            t('Your application successfully processed, Please attached your ID proof  to complete your application'),
             [
               {
-                text: 'COPY CA Number',
+                text: '',
                 onPress: () => {
-                  Clipboard.setString(String(data.CA)); // Copy CA Number as a string
-                  navigation.navigate("Registration");
+                  // Clipboard.setString(String(data.CA)); // Copy CA Number as a string
+                  navigation.navigate("DocumentUpload", {applicationDetails: data});
                 },
               },
             ]
@@ -153,7 +153,7 @@ const CANumberTrack = ({ navigation }) => {
                 text: '',
                 onPress: () => {
                   // Clipboard.setString(String(data.CA)); // Copy CA Number as a string
-                  // navigation.navigate("DocumentUpload");
+                  // navigation.navigate("DocumentUpload", {applicationDetails: data});
                 },
               },
             ]
@@ -167,7 +167,7 @@ const CANumberTrack = ({ navigation }) => {
                text: '',
                onPress: () => {
                 //  Clipboard.setString(String(data.CA)); // Copy CA Number as a string
-                //  navigation.navigate("DocumentUpload", {applicationDetails: data});
+                 navigation.navigate("DocumentUpload", {applicationDetails: data});
                },
              },
            ]
@@ -181,18 +181,18 @@ const CANumberTrack = ({ navigation }) => {
                text: '',
                onPress: () => {
                 //  Clipboard.setString(String(data.CA)); // Copy CA Number as a string
-                // navigation.navigate("DocumentUpload", {applicationDetails: data});
+                navigation.navigate("DocumentUpload", {applicationDetails: data});
               },
              },
            ]
          );            
-        } else if(data.Status == "Finished") { 
+        } else if(data.Status == "FINISHED") { 
           Alert.alert(
            '',
            t('Your Apllication is fully processed, please create your Mob App login account using your CA number and proceed for payment after login.') ,
            [
              {
-               text: '',
+               text: 'COPY CA Number',
                onPress: () => {
                  Clipboard.setString(String(data.CA)); // Copy CA Number as a string
                  navigation.navigate("Registration");
@@ -200,6 +200,20 @@ const CANumberTrack = ({ navigation }) => {
              },
            ]
          );            
+        } else {
+          Alert.alert(
+            '',
+             responseData.Root.Status,
+            [
+              {
+                text: '',
+                onPress: () => {
+                 //  Clipboard.setString(String(data.CA)); // Copy CA Number as a string
+                 // navigation.navigate("DocumentUpload", {applicationDetails: data});
+               },
+              },
+            ]
+          );   
         }
     })
         .catch((error) => {
