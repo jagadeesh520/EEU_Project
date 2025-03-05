@@ -653,7 +653,8 @@ const Styles = () => {
             borderRadius: wp(20),
             paddingVertical: wp(10),
             paddingHorizontal: wp(20),
-            marginTop: wp(20)
+            marginTop: wp(20),
+            width: wp(100),
         },
         ComplaintsBtnTxt: {
             color: '#000',
@@ -795,8 +796,10 @@ const Styles = () => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            width: wp(50)
         },
+        
         ComplaintListHeader: {
             fontSize: wp(16),
             fontWeight: 'bold',

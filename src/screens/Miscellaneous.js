@@ -917,7 +917,7 @@ const Miscellaneous = ({navigation}) => {
                 style={styles.QuesComplaintDropdown}
                 renderItem={renderItem}
                 data={Category1Option}
-                value={selectedCategory1}
+                value={SelectedCategoryValue}
                 onChange={item => {
                     setSelectedCategory1(item.label);
                     setSelectedCategoryValue(item.value);

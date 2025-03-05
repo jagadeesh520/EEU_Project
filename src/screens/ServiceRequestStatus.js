@@ -45,7 +45,6 @@ const ServiceRequestStatus = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  console.log('complaintData', complaintData);
 
   const {theme, styles, changeTheme} = Styles();
   const onBackPress = () => {
@@ -62,6 +61,8 @@ const ServiceRequestStatus = ({navigation}) => {
     }, []),
   );
   const getComplaintHistory = value => {
+    setComplaintData([]);
+    setLoading(true);
     fetch(constant.BASE_URL + constant.COMPLAINT_LIST, {
       method: 'POST',
       body: JSON.stringify({
@@ -180,24 +181,27 @@ const ServiceRequestStatus = ({navigation}) => {
         </View>
       )}
       <View style={styles.container}></View>
+      <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', marginRight: 20 }}>
+      <TouchableOpacity
+        style={styles.ComplaintsBtn}
+        onPress={() => {
+         navigation.navigate('ServiceRequest');
+        }}
+      >
+        <View style={styles.ComplaintListNewBntMain}>
+           <Image source={ImagePath.PlusIcon} />
+           <Text style={[styles.ComplaintsBtnTxt, {marginLeft: 10}]}>
+            {t('NEW')}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      </View>
       {complaintData && complaintData.length > 0 && !isRaiseComplaint ? (
         <View style={{margin: 20}}>
           <View style={styles.ComplaintListMain}>
             <Text style={styles.ComplaintListTitle}>
               {t('Recent Service Status')}
             </Text>
-            <TouchableOpacity
-              style={styles.ComplaintsBtn}
-              onPress={() => {
-                navigation.navigate('ServiceRequest');
-              }}>
-              <View style={styles.ComplaintListNewBntMain}>
-                <Image source={ImagePath.PlusIcon} />
-                <Text style={[styles.ComplaintsBtnTxt, {marginLeft: 10}]}>
-                  {t('NEW')}
-                </Text>
-              </View>
-            </TouchableOpacity>
           </View>
 
           <ScrollView style={{height: '100%'}}>

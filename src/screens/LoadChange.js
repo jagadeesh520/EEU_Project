@@ -136,7 +136,7 @@ const LoadChange = ({navigation}) => {
     }, []); // Empty array ensures this runs only once
 
     const onBackPress = () => {
-        navigation.goBack("BottomTab");
+        navigation.goBack("ServiceRequest");
     };
 
     const retrieveData = async () => {
