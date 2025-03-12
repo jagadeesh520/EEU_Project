@@ -23,6 +23,8 @@ import DocumentPicker from 'react-native-document-picker';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import RNFS from 'react-native-fs';  // Import RNFS
 import { useThemes, darkTheme, lightTheme } from './../CommonComponent/Theme';
+import RNImageToPdf from 'react-native-image-to-pdf';
+
 // Component
 const DocumentUpload = ({ route, navigation }) => {
   const { t, i18n } = useTranslation();
@@ -140,42 +142,40 @@ const openGallery = () => {
     console.log(error);
   });
 }
-const openCamera = () => {
-  ImagePicker.openCamera({
-    width: 400,
-    height: 400,
-    cropping: true,
-    useFrontCamera: false,
-    includeBase64: true,  
-    mediaType: 'photo',
-  }).then(async image => {
-    // setHeight(height);
-    // setWidth(width);
-    // setDocumentOption(false)
-    // setSelectedImage(`data:${image.mime};base64,${image.data}`)
-    // const imagePathParts = image.path.split('/');
-    // const imageFileName = imagePathParts[imagePathParts.length - 1];
-    // setImageName(imageFileName);
+const openCamera = async () => {
+  try {
+    // Step 1: Open Camera
+    const image = await ImagePicker.openCamera({
+      width: 400,
+      height: 400,
+      cropping: true,
+      useFrontCamera: false,
+      includeBase64: false, // No need for base64
+      mediaType: 'photo',
+    });
 
-    console.log('Image captured:', image.data);
+    console.log('Image Path:', image.path);
 
-    // Ensure Base64 is sanitized
-    const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-    console.log('Sanitized Base64:', sanitizedBase64);
+    // Step 2: Convert Image to PDF
+    const options = {
+      imagePaths: [image.path], // Captured image path
+      name: 'CapturedImage.pdf',
+      maxSize: {
+        width: 900,
+        height: Math.round(900 * (image.height / image.width)),
+      },
+      quality: 0.7, // Compression level
+    };
 
-    // Handle other properties
-    const imagePathParts = image.path.split('/');
-    const imageFileName = imagePathParts[imagePathParts.length - 1];
+    const pdf = await RNImageToPdf.createPDFbyImages(options);
+    console.log('PDF Path:', pdf.filePath);
 
-    setHeight(image.height);
-    setWidth(image.width);
-    setDocumentOption(false);
-    setImageName(imageFileName);
-    setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
-   
-  }).catch(error => { 
-    console.log(error);
-  });
+    Alert.alert('Success', `PDF saved at: ${pdf.filePath}`);
+
+  } catch (error) {
+    console.error('Error:', error);
+    Alert.alert('Error', 'Failed to convert image to PDF');
+  }
 }
 const handlePDFUpload = async () => { 
   try {

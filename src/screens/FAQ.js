@@ -25,7 +25,7 @@ const FAQModal = ({ navigation }) => {
     }
     return (
         <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={t("FAQ")} onBackPress ={onBackPress} navigation={navigation} navigation={navigation}/>
+            <CommonHeader title={t("FAQ")} onBackPress ={onBackPress} navigation={navigation}/>
             {/* <View style={styles.FAQheaderMain}>
                 <TouchableOpacity
                     style={styles.FAQbackicon}
