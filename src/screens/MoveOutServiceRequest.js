@@ -593,8 +593,8 @@ const MoveOutServiceRequest = ({navigation}) => {
         
         <ScrollView style={styles.DashBoardMain}>
          <CommonHeader title={t("Move Out Service Request")} onBackPress ={onBackPress} navigation={navigation}/>
-         <View style={ styles.DarkTheme, styles.serviceShiftingMain }>
-          <View style={[styles.Margin_30, { width: '72%'   }]}>
+         <View style={[styles.DarkTheme, styles.serviceShiftingMain]}>
+          <View style={[styles.Margin_30, { width: '72%'}]}>
             <Text style={styles.LoginSubTxt}>{t("BP") + " *"}</Text>    
             <View style={{ padding: 10, borderWidth: 0.5, borderRadius: 2, borderColor: 'grey', marginTop: 10, backgroundColor: '#EEEEEE'  }}>
               <Text style={styles.DashBoradProfilAccText}>{accountData.BP_No}</Text>
