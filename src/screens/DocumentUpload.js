@@ -1,6 +1,6 @@
 // Imports
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, StyleSheet, Modal, FlatList, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, StyleSheet, Modal, FlatList, Alert, ActivityIndicator } from 'react-native';
 import { Button, Menu } from 'react-native-paper';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
@@ -430,6 +430,7 @@ const handlePDFUpload2 = async () => {
    }
    console.log(data, "data---->")
    if (validateInputs()) {
+    setLoading(true);
     fetch(constant.BASE_URL + constant.APPLICATION_ATTACHMENTS, {
       method: 'POST',
       body: JSON.stringify({
@@ -449,7 +450,7 @@ const handlePDFUpload2 = async () => {
       .then(async (responseData) => {
         console.log(responseData, "upload--->")
         var status = responseData.Root.Status ? responseData.Root.Status : ""
-
+        setLoading(false);
         if(responseData.Root.Status == "Attachment Created Successfully") {
          Alert.alert(
           '',

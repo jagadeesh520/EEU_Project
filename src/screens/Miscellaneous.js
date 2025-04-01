@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity, ActivityIndicator }  from 'react-native';
+import { View, Text, TextInput, ScrollView, Alert, Modal, TouchableOpacity, ActivityIndicator }  from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,6 +48,7 @@ const Miscellaneous = ({navigation}) => {
     const [transfer_CA, setTransfer_CA] = useState("");
     const [transfer_Doc_Ref, setTransfer_Doc_Ref] = useState("");
     const [no_of_PF_Device, setNo_of_PF_Device] = useState("");
+    const [connStartDate, setConnStartDate] = useState(new Date());
 
     const [ invalidIDType, setInvalidIDType] = useState("");
     const [ invalidIDProof, setInvalidIDProof] = useState("");
@@ -69,6 +70,7 @@ const Miscellaneous = ({navigation}) => {
     const [invalidTemp_Conn_Ext_Date, setInvalidTemp_Conn_Ext_Date] = useState("");
     const [invalidTemp_Conn_Type, setInvalidTemp_Conn_Type] = useState("");
     const [invalidDefferal_Date , setInvalidDefferal_Date ] = useState("");
+    const [invalidActivityDate , setInvalidActivityDate ] = useState("");
     const [invalidDefferal_Doc_Reference, setInvalidDefferal_Doc_Reference] = useState("");
     const [ invalidCollectiveBilling, setInvalidCollectiveBilling ] = useState("");
     const [ invalidCollective_Bill_AC, setInvalidCollective_Bill_AC ] = useState("");
@@ -84,6 +86,7 @@ const Miscellaneous = ({navigation}) => {
     const [ requestDes, setRequestDes ] = useState("");
     const [ temp_Conn_Ext_Date, setTemp_Conn_Ext_Date ] = useState(new Date());
     const [ defferal_Date, setDefferal_Date] = useState(new Date());
+    const [ activityDate, setActivityDate] = useState(new Date());
     const [ selectedCategory1, setSelectedCategory1] = useState("");
     const [ Collective_Billing_Option, setCollective_Billing_Option] = useState([
         { label: "Create Parent CA",  value:"Create Parent CA" },
@@ -115,9 +118,10 @@ const Miscellaneous = ({navigation}) => {
         { label: "Transfer of open items",  value:"M19" },
         { label: "Failure of online payments",  value:"M20" },
         { label: "Power factor device purchase",  value:"M99" },
-        { label: "Others",  value:"M21" },
+        { label: "Others",  value:"M30" },
         { label: "Update BP Type",  value:"M22" },
         { label: "Tin number updating",  value:"M23" },
+        { label: "Power Factor",  value:"M21" },
     ]);
     const [ Temp_Conn_Type_Option, setTemp_Conn_Type_Option ] = useState([
         { label: "Construction",  value:"Construction" },
@@ -164,6 +168,8 @@ const Miscellaneous = ({navigation}) => {
     const [ selectedImage, setSelectedImage ] = useState("");
     const [file, setFile] = useState(null);
     const [file2, setFile2] = useState(null);
+    const [isShowDefferalDate, setIsShowDefferralDate ] = useState(false)
+    const [isShowActivityDate, setIsShowActivityDate ] = useState(false)
 
     const [ IDTypeOptions, setIDTypeOptions ] = useState([
         { label: "Passport",  value:"Passport" },
@@ -227,7 +233,7 @@ const Miscellaneous = ({navigation}) => {
             <TextInput
             placeholder={t(placeholder)}
             value={value}
-            style={styles.LoginTextInput}
+            style={[styles.LoginTextInput, {backgroundColor:'white'}]}
             placeholderTextColor="#9E9E9E"
             onChangeText={(text) =>{ 
               updateState(text);
@@ -239,20 +245,21 @@ const Miscellaneous = ({navigation}) => {
         )
     }
     const onChangeTempConnection = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+        const currentDate = selectedDate || defferal_Date;
         setTemp_Conn_Ext_Date(currentDate);
         setShow(false)
       };
     
-      const showDatepickerStartConnection = () => {
-        setShow(true);
-      };
       const onChangeDefferalConnection = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+        const currentDate = selectedDate || defferal_Date;
         setDefferal_Date(currentDate);
-        setShow(false)
+        setIsShowDefferralDate(false)
       };
-    
+       const onChangeActivityConnection = (event, selectedDate) => {
+        const currentDate = selectedDate || activityDate;
+        setActivityDate(currentDate);
+        setIsShowActivityDate(false)
+      };
       const showDatepickerEndConnection = () => {
         setShow(true);
       };
@@ -451,7 +458,7 @@ const Miscellaneous = ({navigation}) => {
         openGallery2()
        
       };
-      openGallery2 = () => {
+      const openGallery2 = () => {
         ImagePicker.openPicker({
           width: 400,
           height: 400,
@@ -536,7 +543,7 @@ const Miscellaneous = ({navigation}) => {
   
           const selectedFile = res[0];
           // setFile(selectedFile);
-          setSelectedImage(null);
+          setSelectedImage2(null);
       
       
           // Read the file as Base64
@@ -678,6 +685,12 @@ const Miscellaneous = ({navigation}) => {
         } else {
           setInvalidDefferal_Date('');
         }
+        if (selectedCategory1 === 'Unscheduled (interim) billing' && activityDate === '' ) {
+          setInvalidActivityDate(t("Activity Date can't be empty"));
+          valid = false;
+        } else {
+          setInvalidActivityDate('');
+        }
         if (selectedCategory1 === 'Request for due date deferral' && defferal_Doc_Reference === '' ) {
           setInvalidDefferal_Doc_Reference(t("Defferal Doc Reference can't be empty"));
           valid = false;
@@ -804,7 +817,7 @@ const Miscellaneous = ({navigation}) => {
           "Install_Doc_Reference": install_Doc_Reference,
           "Temp_Conn_Type": selected_Temp_Conn_Type,
           "Temp_Conn_Ext_Date": moment(temp_Conn_Ext_Date).format('DD-MM-YYYY'),
-          "Defferal_Date": moment(defferal_Date).format('DD-MM-YYYY'),
+          "Defferal_Date": selectedCategory1 === "Unscheduled (interim) billing" ? moment(activityDate).format('DD-MM-YYYY') : moment(defferal_Date).format('DD-MM-YYYY'),
           "Defferal_Doc_Reference": defferal_Doc_Reference,
           "Collective_Billing": selectedCollectiveBilling,
           "Collective_Bill_AC": collective_Bill_AC,
@@ -847,7 +860,7 @@ const Miscellaneous = ({navigation}) => {
 		          "Install_Doc_Reference": install_Doc_Reference,
               "Temp_Conn_Type": selected_Temp_Conn_Type,
 	          	"Temp_Conn_Ext_Date": moment(temp_Conn_Ext_Date).format('DD-MM-YYYY'),
-		          "Defferal_Date": moment(temp_Conn_Ext_Date).format('DD-MM-YYYY'),
+		          "Defferal_Date": selectedCategory1 === "Unscheduled (interim) billing" ? moment(activityDate).format('DD-MM-YYYY') : moment(defferal_Date).format('DD-MM-YYYY'),
 		          "Defferal_Doc_Reference": defferal_Doc_Reference,
 		          "Collective_Billing": selectedCollectiveBilling,
 		          "Collective_Bill_AC": collective_Bill_AC,
@@ -873,7 +886,7 @@ const Miscellaneous = ({navigation}) => {
             console.log(responseData, "response")
             Alert.alert(
               '',
-              t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data.SR_Number),
+              t('Your request successfully submitted.....! ') + t(" and Service Request Number: ") + String(data[0].SR_Number),
               [
                 {
                   text: 'Ok',
@@ -888,8 +901,9 @@ const Miscellaneous = ({navigation}) => {
         }
       }
     return (
-        <ScrollView style={styles.DashBoardMain}>
+       <View style={styles.mainHeaderCon}>
          <CommonHeader title={t("Miscellaneous")} onBackPress ={onBackPress} navigation={navigation}/>
+         <ScrollView style={styles.DashBoardMain}>
          <View style={ [styles.DarkTheme, styles.serviceShiftingMain ]}>
           <View style={[styles.Margin_30, { width: '72%'   }]}>
             <Text style={styles.LoginSubTxt}>{t("BP") + " *"}</Text>    
@@ -903,7 +917,7 @@ const Miscellaneous = ({navigation}) => {
               <Text style={styles.DashBoradProfilAccText}>{accountData.CA_No}</Text>
             </View>
           </View> 
-          {renderTextInput("Request Description", "Enter the reuest description", requestDes, setRequestDes, invalidRequestDes, setInvalidRequestDes)} 
+          {renderTextInput("Request Description", "Enter the request description", requestDes, setRequestDes, invalidRequestDes, setInvalidRequestDes)} 
           <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Category1")  + (" *")}</Text>   
             <Dropdown
@@ -914,7 +928,7 @@ const Miscellaneous = ({navigation}) => {
                 labelField="label"
                 valueField="value"
                 placeholder={t("Select the Category1")}
-                style={styles.QuesComplaintDropdown}
+                style={[styles.QuesComplaintDropdown, {backgroundColor: 'white'}]}
                 renderItem={renderItem}
                 data={Category1Option}
                 value={SelectedCategoryValue}
@@ -982,7 +996,7 @@ const Miscellaneous = ({navigation}) => {
            </View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Temp_Conn_Ext_Date")}</Text>   
-            <TouchableOpacity onPress={showDatepickerStartConnection} style={styles.QuesComplaintDropdown}>
+            <TouchableOpacity onPress={() => setShow(true)} style={styles.QuesComplaintDropdown}>
                <TextInput
                  style={{color: '#666666', fontSize: 12}}
                  value={moment(temp_Conn_Ext_Date).format('DD-MM-YYYY')}
@@ -993,7 +1007,7 @@ const Miscellaneous = ({navigation}) => {
             {show && (
              <DateTimePicker
                testID="dateTimePicker"
-               value={connStartDate}
+               value={temp_Conn_Ext_Date}
                mode="date"
                display="default"
                onChange={onChangeTempConnection}
@@ -1005,21 +1019,21 @@ const Miscellaneous = ({navigation}) => {
            <View>
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("Defferal_Date")}</Text>   
-            <TouchableOpacity onPress={showDatepickerStartConnection} style={styles.QuesComplaintDropdown}>
+            <TouchableOpacity onPress={() => setIsShowDefferralDate(true)} style={styles.QuesComplaintDropdown}>
                <TextInput
                  style={{color: '#666666', fontSize: 12}}
-                 value={moment().format('DD-MM-YYYY')}
+                 value={moment(defferal_Date).format('DD-MM-YYYY')}
                  placeholder={t("Select Date")}
                  editable={false}
               />
              </TouchableOpacity>
-            {show  && (
+            {isShowDefferalDate  && (
              <DateTimePicker
-               testID="dateTimePicker"
-               value={defferal_Date}
-               mode="date"
-               display="default"
-               onChange={onChangeDefferalConnection}
+             testID="defferalDate"
+             value={defferal_Date}
+             mode="date"
+             display="default"
+             onChange={onChangeDefferalConnection}
              />
             )}
            </View>
@@ -1142,7 +1156,28 @@ const Miscellaneous = ({navigation}) => {
            <View>
             {renderTextInput("TIN_Number", "Enter the TIN_Number", TIN_Number, setTIN_Number, invalidTIN_Number, setInvalidTIN_Number)}
            </View> : null }
-
+           { selectedCategory1 == "Unscheduled (interim) billing" ? 
+            <View style={styles.Margin_10}>
+             <Text style={styles.LoginSubTxt}>{t("Activity Date")}</Text>   
+             <TouchableOpacity onPress={() => setIsShowActivityDate(true)} style={styles.QuesComplaintDropdown}>
+               <TextInput
+                 style={{color: '#666666', fontSize: 12}}
+                 value={moment(activityDate).format('DD-MM-YYYY')}
+                 placeholder={t("Select Date")}
+                 editable={false}
+              />
+             </TouchableOpacity>
+             {isShowActivityDate  && (
+              <DateTimePicker
+               testID="defferalDate"
+               value={activityDate}
+               mode="date"
+               display="default"
+               onChange={onChangeActivityConnection}
+              />
+              )}
+              <Text style={styles.ErrorMsg}>{invalidActivityDate}</Text>
+           </View> : null } 
            <View style={styles.Margin_10}>
             <Text style={styles.LoginSubTxt}>{t("ID type")  + (" *")}</Text>   
             <Dropdown
@@ -1316,6 +1351,7 @@ const Miscellaneous = ({navigation}) => {
             </View>
           </Modal>  
         </ScrollView>  
+      </View>  
     );
 };
 

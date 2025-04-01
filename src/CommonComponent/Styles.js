@@ -30,6 +30,10 @@ const Styles = () => {
             height: fullHeight,
             backgroundColor: themeObj.themeBackgroundColor,
         },
+        mainHeaderCon: {
+            height: '100%', 
+            backgroundColor: themeObj.themeBackgroundColor 
+        },
         DashboardProContainer: {
             // backgroundColor: topBarBackgroundcolor,
             paddingVertical: wp(10),
@@ -157,7 +161,9 @@ const Styles = () => {
         ServiceQuickLnkText: {
             fontSize: wp(10),
             color: '#666666',
-            marginTop: wp(10)
+            marginTop: wp(10),
+            width: wp(100),
+            flexWrap: 'wrap'
         },
         ServiceQuickLinkImage: {
             height: hp(30),
@@ -299,6 +305,7 @@ const Styles = () => {
             fontWeight: '500'
         },
         LoginLockButton: { position: 'absolute', left: wp(300), display: 'flex', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
+        LoginCallOption: { display: 'flex', flexDirection: 'row' },
         RegisterLockButton: {  position: 'absolute', left: wp(250), display: 'flex', alignItems: 'flex-center', justifyContent: 'flex-end', alignSelf: 'center' },
 
         DashboardPaymentCon: {
@@ -346,6 +353,13 @@ const Styles = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
+        },
+        commonSubContainer: {
+            height: fullHeight,
+            backgroundColor: themeObj.commonHeaderBG,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
         },
         StartSubContainer1: {
             height: '75%',
@@ -477,9 +491,10 @@ const Styles = () => {
         CommonHeaderMain: {
             backgroundColor: themeObj.headerBackgroundColor,
             display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            height: fullHeight,
+            // flexDirection: 'column',
+            // alignItems: 'center',
+            // justifyContent: 'space-between',
             padding: wp(10)
         },
         CommonHeaderBackBtn: {
@@ -651,10 +666,12 @@ const Styles = () => {
         ComplaintsBtn: {
             backgroundColor: '#FFF',
             borderRadius: wp(20),
-            paddingVertical: wp(10),
-            paddingHorizontal: wp(20),
-            marginTop: wp(20),
+            height: hp(35),
             width: wp(100),
+            display: 'flex', 
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         ComplaintsBtnTxt: {
             color: '#000',
@@ -797,7 +814,6 @@ const Styles = () => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
-            width: wp(50)
         },
         
         ComplaintListHeader: {
@@ -948,7 +964,9 @@ const Styles = () => {
             width: wp(40),
             marginRight: wp(10)
         },
-        CallIcon: { height: wp(40), width: wp(40) },
+        CallIcon: { height: wp(30), width: wp(30) },
+        LoginCallIcon: { height: wp(10), width: wp(10), marginLeft: wp(20) },
+
         CallText: { fontSize: wp(12) },
 
         FAQbackicon: {
@@ -1178,6 +1196,9 @@ const Styles = () => {
             flex: 1,
             resizeMode: 'cover', // Adjusts the image to cover the entire background
             justifyContent: 'center',
+        },
+        dashboardHeader : {
+            height: hp(150)
         },
         serviceShiftingMain: {
            

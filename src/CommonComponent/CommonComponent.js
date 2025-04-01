@@ -22,18 +22,27 @@ const CommonHeader = ({ navigation, title, onBackPress }) => {
       </View>
     );
   };
-
+  console.log(title, "title-text amharic")
   return (
-    <View style={[styles.CommonHeaderMain, { alignItems: 'flex-start' }]}>
+    <View>
+        <View style={styles.commonSubContainer}>
+        <Image source={ImagePath.Logo} style={{ width: 20, height: 20 }} />
+        <Text style={styles.StartMainHeader}>{t("Ethiopian Electric Utility")}</Text>
+      </View>
+    <View style={styles.CommonHeaderMain}>
+     <View style={{ display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View style={styles.CommonHeaderBackBtn}>
         <TouchableOpacity onPress={onBackPress}>
           <Image source={ImagePath.LeftArrow} />
         </TouchableOpacity>
         <Text style={styles.CommonHeaderTxt}>{t(title)}</Text>
       </View> 
-      <View style={[styles.LanguageContainer, { flexDirection: 'column', display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }]}>
+      <View style={[styles.LanguageContainer]}>
         <MultipleOption navigation={navigation} />
-         <Dropdown
+      </View>  
+      </View> 
+      <View style={{ display: 'flex', flexDirection: 'row', flex:1, justifyContent: 'flex-end'}}>
+        <Dropdown
              placeholderStyle={styles.RaiseComplaintDropdownTxt}
              selectedTextStyle={styles.RaiseComplaintDropdownTxt}
              inputSearchStyle={styles.RaiseComplaintDropdownTxt}
@@ -41,7 +50,7 @@ const CommonHeader = ({ navigation, title, onBackPress }) => {
              labelField="label"
              valueField="value"
              placeholder={t("Language")}
-             style={[styles.LanguageDropdown, { marginTop: -10 }]}
+             style={[styles.LanguageDropdown]}
              renderItem={renderItems}
              data={languageOption}
              value={selectedLang}
@@ -49,10 +58,24 @@ const CommonHeader = ({ navigation, title, onBackPress }) => {
                setSelectedLang(item.value);
                i18n.changeLanguage(item.value)
              }}               
-        />
-      </View>  
-      </View> 
-     
+          />
+          { title === "Service Request Status" || title === "የአገልግሎት ጥያቄ ሁኔታ" ? 
+          <TouchableOpacity
+           style={styles.ComplaintsBtn}
+           onPress={() => {
+            navigation.navigate('ServiceRequest');
+           }}
+          >
+           <View style={styles.ComplaintListNewBntMain}>
+             <Image source={ImagePath.PlusIcon} />
+             <Text style={[styles.ComplaintsBtnTxt, {marginLeft: 10}]}>{t('NEW')}</Text>
+           </View>
+          </TouchableOpacity> : null }
+        </View>
+        </View> 
+    
+      </View>
+
   );
 };
 

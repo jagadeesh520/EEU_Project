@@ -169,8 +169,8 @@ const ServiceRequestStatus = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={styles.DashBoardMain}>
-      <CommonHeader
+    <View style={styles.mainHeaderCon}>
+       <CommonHeader
         title={t('Service Request Status')}
         onBackPress={onBackPress}
         navigation={navigation}
@@ -180,9 +180,10 @@ const ServiceRequestStatus = ({navigation}) => {
           <ActivityIndicator size="large" />
         </View>
       )}
+    <ScrollView style={styles.DashBoardMain}>
       <View style={styles.container}></View>
       <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', marginRight: 20 }}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.ComplaintsBtn}
         onPress={() => {
          navigation.navigate('ServiceRequest');
@@ -194,7 +195,7 @@ const ServiceRequestStatus = ({navigation}) => {
             {t('NEW')}
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       </View>
       {complaintData && complaintData.length > 0 && !isRaiseComplaint ? (
         <View style={{margin: 20}}>
@@ -422,6 +423,7 @@ const ServiceRequestStatus = ({navigation}) => {
         </View>
       ) : null}
     </ScrollView>
+    </View>  
   );
 };
 

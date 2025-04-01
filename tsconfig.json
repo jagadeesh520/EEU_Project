@@ -1,14 +1,4 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
-  "compilerOptions": {
-    "strict": true,
-    "noImplicitAny": true,
-    "target": "esnext",
-    "module": "esnext",
-    "jsx": "react-native",
-    "lib": ["esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
-  }
+ 
 }

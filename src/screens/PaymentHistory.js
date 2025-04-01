@@ -402,17 +402,19 @@ const PaymentHistory = ({navigation}) => {
   
       let file = await RNHTMLtoPDF.convert(options)
       // console.log(file.filePath);
-      alert(file.filePath);
+      Alert(file.filePath);
     // }   
   }
     return (
-      <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={"Payment History"} onBackPress ={onBackPress} navigation={navigation}/>
-            {isLoading &&
-              < View style={styles.Loader}>
-                <ActivityIndicator size="large" />
-              </View>
-            }   
+      <View style={styles.mainHeaderCon}>
+      <CommonHeader title={t("Payment History")} onBackPress ={onBackPress} navigation={navigation}/>
+         {isLoading &&
+           < View style={styles.Loader}>
+             <ActivityIndicator size="large" />
+           </View>
+         }   
+        <ScrollView style={styles.DashBoardMain}>
+           
             { paymentHistoryData && paymentHistoryData.length > 0 && paymentHistoryData[0].Remarks != "No Bills Generated Yet" ? 
              <View style={{ padding: 20 }}>
             <TouchableOpacity onPress={() => navigation.navigate('ViewPaymentHistoryTable')} style={styles.linkButton}>
@@ -513,6 +515,7 @@ const PaymentHistory = ({navigation}) => {
                  </View>  */}
                  {/* : null } */}
         </ScrollView>
+      </View>  
     );
 };
  

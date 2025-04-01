@@ -114,6 +114,8 @@
         "More": "ተጨማሪ",
         "Language": "ቋንቋ",
         "Are you sure to Logout ?": "መውጣታቸውን እርግጠኛ ነዎት ?",
+        "Are you sure you want to logout ?":"እርግጠኛ ነህ መውጣት ትፈልጋለህ?",
+        "Hold on!":"ቆይ አንዴ!",
         "Which is a common cause of electrical fires ?": "የተለመደው የኤሌክትሪክ እሳት መንስኤ የትኛው ነው ?",
         "Overloading circuits": "ከመጠን በላይ መጫን ወረዳዎች",
         "What does the term “overloading” mean in electrical safety ?": "በኤሌክትሪክ ደህንነት ውስጥ ከመጠን በላይ መጫን የሚለው ቃል ምን ማለት ነው?",
@@ -324,6 +326,13 @@
         "Ownership proof can't be empty": "የባለቤትነት ማረጋገጫ ባዶ ሊሆን አይችልም።",
         "Category1 can't be empty": "ምድብ 1 ባዶ ሊሆን አይችልም።",
         "Document Upload": "የሰነድ ጭነት",
-        "NSC Application Track": "NSC መተግበሪያ ትራክ"
+        "NSC APPLICATION TRACK": "ኤን.ኤስ.ሲ ማመልከቻ ትራክ",
+        "Cancel": "ሰርዝ",
+        "Yes": "አዎ",
+        "Service Request Status": "የአገልግሎት ጥያቄ ሁኔታ",
+        "Recent Service Status": "የቅርብ ጊዜ የአገልግሎት ሁኔታ",
+        "Welcome Back!": "እንኳን ደህና መጣህ!",
+        "You returned to the app.": "ወደ መተግበሪያው ተመልሰዋል።",
+        "OK": "እሺ"
     } 
 }

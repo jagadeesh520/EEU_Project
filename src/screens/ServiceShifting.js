@@ -538,11 +538,10 @@ const ServiceShifting = ({ navigation }) => {
           })
         }
       }
-      console.log(selectedImage, "image")
     return (
-        <ScrollView style={styles.DashBoardMain}>
-
-            <CommonHeader title={t("Service Shifting")} onBackPress={onBackPress} navigation={navigation} />
+       <View style={styles.mainHeaderCon}>
+         <CommonHeader title={t("Service Shifting")} onBackPress={onBackPress} navigation={navigation} />
+         <ScrollView style={styles.DashBoardMain}>
             <View style={ [styles.DarkTheme, styles.serviceShiftingMain] }>
             <View style={[styles.Margin_30, { width: '72%'   }]}>
                 <Text style={styles.LoginSubTxt}>{t("BP") + " *"}</Text>    
@@ -733,6 +732,7 @@ const ServiceShifting = ({ navigation }) => {
             </View>
           </Modal>  
         </ScrollView>
+      </View>  
     );
 };
 

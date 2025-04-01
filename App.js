@@ -37,6 +37,7 @@ import { useTranslation } from 'react-i18next';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-native-paper';
 import Styles from './src/CommonComponent/Styles';
+import { AppStateProvider } from './src/CommonComponent/AppStateProvider';
 // Navigation
 import { NavigationContainer, useNavigation, useIsFocused, useNavigationState } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -186,6 +187,7 @@ const App = () => {
   };
 
   return (
+  //  <AppStateProvider> 
     <ToastProvider>
       <Provider>
         <StatusBar animated={true} barStyle={'dark-content'} backgroundColor={styles.statusBarColor} />
@@ -194,6 +196,7 @@ const App = () => {
         </NavigationContainer>
       </Provider>
     </ToastProvider>
+  //  </AppStateProvider> 
   );
 };
 

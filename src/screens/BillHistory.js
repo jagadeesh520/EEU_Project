@@ -304,13 +304,15 @@ const BillHistory = ({navigation}) => {
         alert(file.filePath);
     }
     return (
-        <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={t("Bill History")} onBackPress ={onBackPress} navigation={navigation}/>
+       <View style={styles.mainHeaderCon}>
+         <CommonHeader title={t("Bill History")} onBackPress ={onBackPress} navigation={navigation}/>
             {isLoading &&
               < View style={styles.Loader}>
                 <ActivityIndicator size="large" />
               </View>
             }  
+        <ScrollView style={styles.DashBoardMain}>
+           
            <View style={styles.DarkTheme}> 
            { billHistoryData && billHistoryData.length > 0 && billHistoryData[0].Remarks != "No Bills Generated Yet" ?    
              <View style={{ padding: 20 }}>
@@ -439,6 +441,7 @@ const BillHistory = ({navigation}) => {
             </TouchableOpacity>
             </View>  */}
         </ScrollView>
+        </View>
     );
 };
  

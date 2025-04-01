@@ -11,7 +11,7 @@ import {
   ScrollView,
   FlatList,
   Button,
-  DatePicker,
+  ActivityIndicator,
 } from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
@@ -36,7 +36,7 @@ const Payment = ({navigation}) => {
   const [isSubmit, setSubmit] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState('');
   const [countryCode, setCountryCode] = useState('+251');
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [tempCurrentData, setTempCurrentData] = useState({});
   const onBackPress = () => {
@@ -72,7 +72,6 @@ const Payment = ({navigation}) => {
       .then(response => response.json())
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res;
-        setLoading(false)
         setUnpaidDueData(data.Record);
       });
   };
@@ -496,23 +495,29 @@ const Payment = ({navigation}) => {
                 </View>
                 <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
               </View>
+              {isLoading &&
+                   <View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                     <ActivityIndicator size="small" />
+                     <Text style={{ marginLeft: 10}} >Processing....</Text>
+                   </View>
+              } 
               <View style={{display: 'flex', flexDirection: 'row'}}>
                 <TouchableOpacity
                   style={[styles.PaymentBtn, {backgroundColor: '#63AA5A'}]}
                   onPress={() => {
                     setIsPayment(false);
+                    setLoading(false);
                   }}>
                   <Text style={[styles.RegisterBtnTxt, {color: '#FFF'}]}>
                     {t('CANCEL')}
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.PaymentBtn,
-                    {backgroundColor: '#63AA5A', marginLeft: 10},
-                  ]}
+                 
+                <TouchableOpacity disabled={isLoading}
+                  style={[styles.PaymentBtn, { backgroundColor: isLoading ? '#DCDCDC' : '#63AA5A' }]}
                   onPress={() => { 
                     setSubmit(true);
+                    setLoading(true);
                     onPressPaymentProceed();
                   }}>
                   <Text style={[styles.RegisterBtnTxt, {color: '#FFF'}]}>

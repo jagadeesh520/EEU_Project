@@ -578,9 +578,9 @@ const LoadChange = ({navigation}) => {
       }
     }
     return (
-        
+       <View style={styles.mainHeaderCon}>
+        <CommonHeader title={t("Load Change")} onBackPress ={onBackPress} navigation={navigation}/>
         <ScrollView style={styles.DashBoardMain}>
-         <CommonHeader title={t("Load Change")} onBackPress ={onBackPress} navigation={navigation}/>
          <View style={[styles.DarkTheme, styles.serviceShiftingMain]}>
           <View style={[styles.Margin_30, { width: '72%'   }]}>
             <Text style={styles.LoginSubTxt}>{t("BP") + " *"}</Text>    
@@ -891,6 +891,7 @@ const LoadChange = ({navigation}) => {
             </View>
           </Modal>  
         </ScrollView> 
+      </View>   
     );
 };
 

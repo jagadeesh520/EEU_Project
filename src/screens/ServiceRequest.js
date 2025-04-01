@@ -24,7 +24,7 @@ const ServiceRequest = ({navigation}) => {
 
     const renderQuickLinks = (buttonImage, buttonText, navigationName) => {
         return (
-          <View style={{marginRight: buttonText === "Miscellaneous" ? 120 : null}}>
+          <View style={{}}>
             <TouchableOpacity style={styles.ServiceQuickLinkCon} onPress={() => { navigation.navigate(navigationName) }}>
               <Image source={buttonImage} style={styles.ServiceQuickLinkImage} />
               <Text style={styles.ServiceQuickLnkText}>{buttonText}</Text>

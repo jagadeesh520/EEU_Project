@@ -536,9 +536,9 @@ const DisOrReconnection = ({navigation}) => {
     }
 
     return (
-        
-        <ScrollView style={styles.DashBoardMain}>
+       <View style={styles.mainHeaderCon}>
          <CommonHeader title={t("Dis/Reconnection")} onBackPress ={onBackPress} navigation={navigation}/>
+         <ScrollView style={styles.DashBoardMain}>
          <View style={[styles.DarkTheme, styles.serviceShiftingMain]}>
           <View style={[styles.Margin_30, { width: '72%'   }]}>
             <Text style={styles.LoginSubTxt}>{t("BP") + " *"}</Text>    
@@ -786,6 +786,7 @@ const DisOrReconnection = ({navigation}) => {
             </View>
           </Modal>  
         </ScrollView> 
+      </View>  
     );
 };
 

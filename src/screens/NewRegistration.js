@@ -37,7 +37,8 @@ const NewRegistration = ({navigation}) => {
     const [ answer, setAnswer] = useState("")
     const [ accountNo, setAccountNo ] = useState("")
     const [ password, setPassword ] = useState("")
-    const [ accountStatus, setAccountStatus] = useState("")
+    const [ accountStatus, setAccountStatus] = useState("");
+    const [ isValidInput, setIsValidInput] = useState(false)
     const [ genderOption, setGenderOption ] = useState([
       { label: "Male",  value:"2" },
       { label: "Female", value:"1"},
@@ -84,12 +85,97 @@ const NewRegistration = ({navigation}) => {
       { label: "WOLEDIYA DST WOLEDIYA CSC",  value:"CF01" },
     ])
     const [ installTypeOptions, setInstallTypeOptions ] = useState([
-      { label: "Active Staff Consumption",  value:"001" },
-      { label: "Domestic",  value:"023" },
-      { label: "Food Process",  value:"029" },
-      { label: "Mix building",  value:"082" },
-      { label: "Street light",  value:"086" },
-      { label: "Bottled water factory",  value:"089" }
+      { label: "Active Staff Consumption", value: "001" },
+      { label: "Agro Industry", value: "002" },
+      { label: "Air Transport", value: "003" },
+      { label: "Alcohol/Wine Factory", value: "004" },
+      { label: "Asbestos Industry", value: "005" },
+      { label: "Bakery", value: "006" },
+      { label: "Bar", value: "007" },
+      { label: "Barberry/Beauty Salon", value: "008" },
+      { label: "Beer Factory", value: "009" },
+      { label: "Bill Board/Advertisement", value: "010" },
+      { label: "Cement Industry", value: "011" },
+      { label: "Ceramic Factory", value: "012" },
+      { label: "Chemical Industry", value: "013" },
+      { label: "Church", value: "014" },
+      { label: "Cigarette Industry", value: "015" },
+      { label: "Cinema", value: "016" },
+      { label: "Clinic", value: "017" },
+      { label: "Coffee Process Production", value: "018" },
+      { label: "Communication Institutions", value: "019" },
+      { label: "Construction", value: "020" },
+      { label: "Cotton Process/Thread Factory", value: "021" },
+      { label: "Crusher", value: "022" },
+      { label: "Domestic", value: "023" },
+      { label: "Edible Oil Production", value: "024" },
+      { label: "Electric Industry", value: "025" },
+      { label: "Embassy", value: "026" },
+      { label: "Fiber Industry", value: "027" },
+      { label: "Flour Mill", value: "028" },
+      { label: "Food Process", value: "029" },
+      { label: "Garage/Workshop", value: "030" },
+      { label: "Garment Industry", value: "031" },
+      { label: "Gas Station", value: "032" },
+      { label: "Glass Industry", value: "033" },
+      { label: "Government Organization", value: "034" },
+      { label: "Grocery/Butchery", value: "035" },
+      { label: "Home & Office Furniture Factor", value: "036" },
+      { label: "Hospital", value: "037" },
+      { label: "Hotel", value: "038" },
+      { label: "International Organization", value: "039" },
+      { label: "Laundry", value: "040" },
+      { label: "Leather & Leather Production", value: "041" },
+      { label: "Library", value: "042" },
+      { label: "Lift/Elevator /escalator (building)", value: "043" },
+      { label: "Lift/Elevator /escalator (Residential)", value: "044" },
+      { label: "Machine Industry", value: "045" },
+      { label: "Metal Melting Industry", value: "046" },
+      { label: "Metal Products Factory", value: "047" },
+      { label: "Mosque", value: "048" },
+      { label: "Motor Vehicle Manufacturing", value: "049" },
+      { label: "Museum", value: "050" },
+      { label: "Office use", value: "051" },
+      { label: "Other Recreational Center", value: "052" },
+      { label: "Own Consumption", value: "053" },
+      { label: "Palace", value: "054" },
+      { label: "Plastic Industry", value: "055" },
+      { label: "Printing Press", value: "056" },
+      { label: "Private Organization", value: "057" },
+      { label: "Private School", value: "058" },
+      { label: "Public Recreational Center", value: "059" },
+      { label: "Pulp & Paper Manufacturing", value: "060" },
+      { label: "Public School", value: "061" },
+      { label: "Research and Development Center", value: "062" },
+      { label: "Retired Staff Consumption", value: "063" },
+      { label: "Shop", value: "064" },
+      { label: "Soft Drink", value: "065" },
+      { label: "Store/Warehouse", value: "066" },
+      { label: "Textile Industry", value: "067" },
+      { label: "Tyre Factory", value: "068" },
+      { label: "Water Supply Service", value: "069" },
+      { label: "Wood Work", value: "070" },
+      { label: "Wooden Manufacturing", value: "071" },
+      { label: "Irrigation", value: "072" },
+      { label: "Horticulture", value: "073" },
+      { label: "Railway", value: "074" },
+      { label: "Jipson", value: "075" },
+      { label: "Export Oriented Industries", value: "076" },
+      { label: "Condominiums Housing", value: "077" },
+      { label: "Micro & Small Scale Industries", value: "078" },
+      { label: "Road Construction", value: "079" },
+      { label: "Mall", value: "080" },
+      { label: "Market Center", value: "081" },
+      { label: "Mix Building", value: "082" },
+      { label: "Industry Park", value: "083" },
+      { label: "Stadium", value: "084" },
+      { label: "Super Market", value: "085" },
+      { label: "Street Light", value: "086" },
+      { label: "Mining", value: "087" },
+      { label: "Dry Port", value: "088" },
+      { label: "Bottled Water Factory", value: "089" },
+      { label: "Kenya_Ex", value: "090" },
+      { label: "Soap Factory", value: "091" }
     ]);
     const [ phaseTypeOptions, setPhaseTypeOptions ] = useState([
       { label: "Single Phase",  value:"1" },
@@ -488,7 +574,9 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
 
     const validateInputs = () => {
       let valid = true;
-  
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const MobRegex = mobileNo.replace(/[^0-9]/g, '');
+
       if (firstName === '' && selectedPartnerCategory == "1") {
         setInvalidFirstName(t("First name can't be empty"));
         valid = false;
@@ -507,16 +595,31 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       } else {
         setInvalidTitle('');
       }
-      if ( email== '' && selectedPartnerCategory == "2") {
-        setInvalidEmail(t("Email can't be empty"));
+      if ((email === '' || !emailRegex.test(email)) && selectedPartnerCategory == "2") {
+        if (email === '') {
+          setInvalidEmail(t("Email can't be empty"));
+        } else {
+          setInvalidEmail(t("Please enter a valid email address"));
+        }
         valid = false;
       } else {
-        setInvalidEmail('');
+        setInvalidEmail(''); // Clears error when email is valid
+      }
+      if ((email != '' && !emailRegex.test(email)) ) {
+          setInvalidEmail(t("Please enter a valid email address"));
+        valid = false;
+      } else {
+        setInvalidEmail(''); // Clears error when email is valid
       }
       if ( mobileNo == '') {
         setInvalidMobileNo(t("Mobile number can't be empty"));
         valid = false;
-      } else {
+      } else if (MobRegex.length < 9 && mobileNo.length > 1) {
+        setInvalidMobileNo('Mobile number must be 9 digits.');
+        valid = false;
+      } else if(  mobileNo && mobileNo[0] == 0) {
+        setInvalidMobileNo('Invalid mobile number');
+      }else {
         setInvalidMobileNo('');
       }
       if ( selectedGender == '' && selectedPartnerCategory == "1") {
@@ -654,7 +757,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
     const onPressRegistration = () => {
       var validate = validateInputs()
 
-      if (validateInputs()) { 
+      if (validate) { 
       const url = constant.BASE_URL + constant.NEW_SERVICE_CREATION
       var data =  {
               "PartnerCategory": selectedPartnerCategory,
@@ -876,9 +979,9 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
                 }
                  // Set error message if the length is not valid
                 if (MobRegex.length < 9 && text.length > 1) {
-                  setErrorMsg('Phone number must be 9 digits.');
+                  setErrorMsg('Mobile number must be 9 digits.');
                 }  
-                if(text[0] == 0) {
+                if(  name === "Mobile No"  && text[0] == 0) {
                   setErrorMsg('Invalid mobile number');
                 }
                 if( name === "Mobile No" && text == "" ){
@@ -1359,6 +1462,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
                   <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: accountStatus == "VALID CA" || isLoading ? '#DCDCDC' : '#F29037', display:'flex', flexDirection: 'row' }]}
                     onPress={() => {
                       setIsPreview(false);
+                    
                     }}
                   >
                     <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("GO BACK")}</Text>
@@ -1764,7 +1868,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
                labelField="label"
                valueField="value"
                placeholder={t("Select the install type")}
-               style={styles.QuesComplaintDropdown}
+               style={[styles.QuesComplaintDropdown, { marginBottom: 150 }]}
                renderItem={renderItem}
                data={installTypeOptions}
                value={selectedInstallType}
