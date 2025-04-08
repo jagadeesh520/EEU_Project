@@ -27,7 +27,7 @@ const ServiceRequest = ({navigation}) => {
           <View style={{}}>
             <TouchableOpacity style={styles.ServiceQuickLinkCon} onPress={() => { navigation.navigate(navigationName) }}>
               <Image source={buttonImage} style={styles.ServiceQuickLinkImage} />
-              <Text style={styles.ServiceQuickLnkText}>{buttonText}</Text>
+              <Text style={[styles.ServiceQuickLnkText, {marginLeft: 20}]}>{buttonText}</Text>
             </TouchableOpacity>
           </View>
         )

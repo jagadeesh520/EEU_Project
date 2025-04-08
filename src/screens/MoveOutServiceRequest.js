@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity, Alert, ActivityIndicator }  from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
@@ -17,6 +17,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import { constant } from '../CommonComponent/Constant';
 import RNFS from 'react-native-fs';  // Import RNFS
+import { AppStateContext } from '../CommonComponent/AppStateProvider';
 
 // create a component
 const MoveOutServiceRequest = ({navigation}) => {
@@ -39,6 +40,7 @@ const MoveOutServiceRequest = ({navigation}) => {
     const [ selectedImage, setSelectedImage ] = useState("");
     const [ selectedImage2, setSelectedImage2] = useState("");
     const [isLoading, setLoading]= useState(false);
+    const { setIsUploading } = useContext(AppStateContext);
 
     const [ IDTypeOptions, setIDTypeOptions ] = useState([
         { label: "Passport",  value:"Passport" },
@@ -131,82 +133,107 @@ const MoveOutServiceRequest = ({navigation}) => {
       }
       openGallery()
     };
-    const openGallery = () => {
-      ImagePicker.openPicker({
-        width: 400,
-        height: 400,
-        cropping: true,
-        useFrontCamera: false,
-        includeBase64: true,
-        mediaType: 'photo',
-      }).then(async image => {
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption(false)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName(imageFileName);
-
-        // setSelectedImage(`data:${image.mime};base64,${image.data}`);
-
-        console.log('Image captured:', image.data);
-
-        // Ensure Base64 is sanitized
-        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-        console.log('Sanitized Base64:', sanitizedBase64);
-  
-        // Handle other properties
-        const imagePathParts = image.path.split('/');
-        const imageFileName = imagePathParts[imagePathParts.length - 1];
-  
-        setHeight(image.height);
-        setWidth(image.width);
-        setDocumentOption(false);
-        setImageName(imageFileName);
-        setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
-      }).catch(error => {
-        console.log(error);
-      });
-    }
-    const openCamera = () => {
-      ImagePicker.openCamera({
-        width: 400,
-        height: 400,
-        cropping: true,
-        useFrontCamera: false,
-        includeBase64: true,  
-        mediaType: 'photo',
-      }).then(async image => {
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption(false)
-        // setSelectedImage(`data:${image.mime};base64,${image.data}`)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName(imageFileName);
-
-        console.log('Image captured:', image.data);
-
-        // Ensure Base64 is sanitized
-        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-        console.log('Sanitized Base64:', sanitizedBase64);
-  
-        // Handle other properties
-        const imagePathParts = image.path.split('/');
-        const imageFileName = imagePathParts[imagePathParts.length - 1];
-  
-        setHeight(image.height);
-        setWidth(image.width);
-        setDocumentOption(false);
-        setImageName(imageFileName);
-        setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
-       
-      }).catch(error => { 
-        console.log(error);
-      });
-    }
-    const handlePDFUpload = async () => { 
+    const openGallery = async () => {
+      if (typeof setIsUploading !== "function") {
+        console.error("❌ setIsUploading is not a function. Ensure AppStateProvider wraps this component.");
+        return;
+      }
+    
       try {
+        setIsUploading(true);
+    
+        const image = await ImagePicker.openPicker({
+          width: 400,
+          height: 400,
+          cropping: true,
+          useFrontCamera: false,
+          includeBase64: true,
+          mediaType: "photo",
+        });
+    
+        if (!image) {
+          throw new Error("No image selected");
+        }
+    
+        console.log("📸 Image Captured:", image.data);
+    
+        // ✅ Sanitize Base64 data
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
+        console.log("✅ Sanitized Base64:", sanitizedBase64);
+    
+        // ✅ Extract filename from path
+        const imageFileName = image.path.split("/").pop();
+    
+        // ✅ Update states with extracted values
+        setHeight(image.height);
+        setWidth(image.width);
+        setDocumentOption(false);
+        setImageName(imageFileName);
+        setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
+      } catch (error) {
+        console.error("❌ Error selecting image:", error);
+      } finally {
+        // Slight delay to avoid false positives
+        setTimeout(() => {
+          setIsUploading(false);
+        }, 500);
+      }
+    };
+    
+    const openCamera = async () => {
+      if (typeof setIsUploading !== "function") {
+        console.error("❌ setIsUploading is not a function. Ensure AppStateProvider wraps this component.");
+        return;
+      }
+    
+      try {
+        setIsUploading(true);
+    
+        const image = await ImagePicker.openCamera({
+          width: 400,
+          height: 400,
+          cropping: true,
+          useFrontCamera: false,
+          includeBase64: true,
+          mediaType: "photo",
+        });
+    
+        if (!image) {
+          throw new Error("No image captured");
+        }
+    
+        console.log("📸 Image Captured:", image.data);
+    
+        // ✅ Sanitize Base64 data
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
+        console.log("✅ Sanitized Base64:", sanitizedBase64);
+    
+        // ✅ Extract filename from path
+        const imageFileName = image.path.split("/").pop();
+    
+        // ✅ Update states with extracted values
+        setHeight(image.height);
+        setWidth(image.width);
+        setDocumentOption(false);
+        setImageName(imageFileName);
+        setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
+      } catch (error) {
+        console.error("❌ Error capturing image:", error);
+      } finally {
+        // Slight delay to avoid false positives
+        setTimeout(() => {
+          setIsUploading(false);
+        }, 500);
+      }
+    };
+      
+    const handlePDFUpload = async () => { 
+      if (typeof setIsUploading !== "function") {
+        console.error("❌ setIsUploading is not a function. Ensure AppStateProvider wraps this component.");
+        return;
+      }
+      try {
+        setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -238,6 +265,11 @@ const MoveOutServiceRequest = ({navigation}) => {
         } else {
           throw err;
         }
+      } finally {
+        // Slight delay to avoid false positives
+        setTimeout(() => {
+          setIsUploading(false);
+        }, 500);
       }
     }
     const handleCameraCapture2 = async () => {
@@ -298,84 +330,109 @@ const MoveOutServiceRequest = ({navigation}) => {
       openGallery2()
      
     };
-    openGallery2 = () => {
-      ImagePicker.openPicker({
-        width: 400,
-        height: 400,
-        cropping: true,
-        useFrontCamera: false,
-        includeBase64: true,
-        mediaType: 'photo',
-      }).then(async image => {
-        console.log('Image captured:', image.data);
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption1(false)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName2(imageFileName);
-        // setSelectedImage1(`data:${image.mime};base64,${image.data}`);
-        // console.log('Image captured:', image.data);
-
-        // Ensure Base64 is sanitized
-        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-        console.log('Sanitized Base64:', sanitizedBase64);
-  
-        // Handle other properties
-        const imagePathParts = image.path.split('/');
-        const imageFileName = imagePathParts[imagePathParts.length - 1];
-  
+    const openGallery2 = async () => {
+      if (typeof setIsUploading !== "function") {
+        console.error("❌ setIsUploading is not a function. Ensure AppStateProvider wraps this component.");
+        return;
+      }
+    
+      setIsUploading(true);
+    
+      try {
+        const image = await ImagePicker.openPicker({
+          width: 400,
+          height: 400,
+          cropping: true,
+          useFrontCamera: false,
+          includeBase64: true,
+          mediaType: "photo",
+        });
+    
+        if (!image) {
+          throw new Error("No image selected");
+        }
+    
+        console.log("📸 Image Captured:", image.data);
+    
+        // ✅ Sanitize Base64 data
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
+        console.log("✅ Sanitized Base64:", sanitizedBase64);
+    
+        // ✅ Extract filename from path
+        const imageFileName = image.path.split("/").pop();
+    
+        // ✅ Update states with extracted values
         setHeight(image.height);
         setWidth(image.width);
         setDocumentOption1(false);
         setImageName2(imageFileName);
         setSelectedImage2(`data:${image.mime};base64,${sanitizedBase64}`);
-      }).catch(error => {
-        console.log(error);
-      });
-    }
-   
-    const openCamera2 = () => {
-      ImagePicker.openCamera({
-        width: 400,
-        height: 400,
-        cropping: true,
-        useFrontCamera: false,
-        includeBase64: true,  
-        mediaType: 'photo',
-      }).then(async image => {
-        console.log('Image captured:', image.data);
-        // setHeight(height);
-        // setWidth(width);
-        // setDocumentOption1(false)
-        // setSelectedImage2(`data:${image.mime};base64,${image.data}`)
-        // const imagePathParts = image.path.split('/');
-        // const imageFileName = imagePathParts[imagePathParts.length - 1];
-        // setImageName2(imageFileName);
-
-        console.log('Image captured:', image.data);
-
-        // Ensure Base64 is sanitized
-        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-        console.log('Sanitized Base64:', sanitizedBase64);
-  
-        // Handle other properties
-        const imagePathParts = image.path.split('/');
-        const imageFileName = imagePathParts[imagePathParts.length - 1];
-  
+      } catch (error) {
+        console.error("❌ Error selecting image:", error);
+      } finally {
+        // Slight delay to avoid false positives
+        setTimeout(() => {
+          setIsUploading(false);
+        }, 500);
+      }
+    };
+    
+    const openCamera2 = async () => {
+      if (typeof setIsUploading !== "function") {
+        console.error("❌ setIsUploading is not a function. Ensure AppStateProvider wraps this component.");
+        return;
+      }
+    
+      setIsUploading(true);
+    
+      try {
+        const image = await ImagePicker.openCamera({
+          width: 400,
+          height: 400,
+          cropping: true,
+          useFrontCamera: false,
+          includeBase64: true,
+          mediaType: "photo",
+        });
+    
+        if (!image) {
+          throw new Error("No image captured");
+        }
+    
+        console.log("📸 Image Captured:", image.data);
+    
+        // ✅ Sanitize Base64 data
+        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
+        console.log("✅ Sanitized Base64:", sanitizedBase64);
+    
+        // ✅ Extract filename from path
+        const imageFileName = image.path.split("/").pop();
+    
+        // ✅ Update states with extracted values
         setHeight(image.height);
         setWidth(image.width);
         setDocumentOption1(false);
         setImageName2(imageFileName);
         setSelectedImage2(`data:${image.mime};base64,${sanitizedBase64}`);
-       
-      }).catch(error => { 
-        console.log(error);
-      });
-    }
+      } catch (error) {
+        console.error("❌ Error capturing image:", error);
+      } finally {
+        // Slight delay to avoid false positives
+        setTimeout(() => {
+          setIsUploading(false);
+        }, 500);
+      }
+    };
+    
+    
     
     const handlePDFUpload2 = async () => { 
+      if (typeof setIsUploading !== "function") {
+        console.error("❌ setIsUploading is not a function. Ensure AppStateProvider wraps this component.");
+        return;
+      }
       try {
+        setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -406,6 +463,11 @@ const MoveOutServiceRequest = ({navigation}) => {
         } else {
           throw err;
         }
+      } finally {
+        // Slight delay to avoid false positives
+        setTimeout(() => {
+          setIsUploading(false);
+        }, 500);
       }
     }
     const validateInputs = () => {
@@ -584,7 +646,10 @@ const MoveOutServiceRequest = ({navigation}) => {
             [{ text: "OK" }]
           );
         } finally {
-          setLoading(false);
+          // Slight delay to avoid false positives
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
         }
       }
     };

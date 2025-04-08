@@ -155,6 +155,7 @@ const Styles = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            alignContent: 'center',
             padding:wp(20),
             justifyContent: 'space-between',
         },

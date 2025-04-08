@@ -61,7 +61,7 @@ const IdleTimer = ({ navigation, routeName }) => {
         const currentTime = Date.now();
         const elapsed = currentTime - idleTime;
 
-        if (elapsed >= 300000 && routeName !== 'Login' && routeName !== 'StartScreen') { // 5 minutes in milliseconds
+        if (elapsed >= 150000 && routeName !== 'Login' && routeName !== 'StartScreen') { // 5 minutes in milliseconds
           Alert.alert(
               '',
               "Your session has expired due to inactivity. Please log in again to resume.",

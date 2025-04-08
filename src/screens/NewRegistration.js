@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Alert, ScrollView, Modal, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
@@ -20,7 +20,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Close from 'react-native-vector-icons/AntDesign';
 import {data} from '../../Languages/data';
 import Icon from 'react-native-vector-icons/AntDesign';
-
+import { AppStateContext } from '../CommonComponent/AppStateProvider';
 
 const NewRegistration = ({navigation}) => {
     const toast = useToast();
@@ -39,6 +39,8 @@ const NewRegistration = ({navigation}) => {
     const [ password, setPassword ] = useState("")
     const [ accountStatus, setAccountStatus] = useState("");
     const [ isValidInput, setIsValidInput] = useState(false)
+    const { setIsUploading } = useContext(AppStateContext);
+
     const [ genderOption, setGenderOption ] = useState([
       { label: "Male",  value:"2" },
       { label: "Female", value:"1"},
@@ -1108,6 +1110,8 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       openGallery()
     };
     openGallery = () => {
+     try {
+      setIsUploading(true); // Prevent Welcome Back alert
       ImagePicker.openPicker({
         width: 400,
         height: 400,
@@ -1127,16 +1131,22 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       }).catch(error => {
         console.log(error);
       });
+      
+     } finally {
+      setIsUploading(false); // Restore normal behavior after upload attempt
+    }
     }
     const openCamera = () => {
-      ImagePicker.openCamera({
+      try {
+       setIsUploading(true); // Prevent Welcome Back alert
+       ImagePicker.openCamera({
         width: 400,
         height: 400,
         cropping: true,
         useFrontCamera: false,
         includeBase64: true,  
         mediaType: 'photo',
-      }).then(async image => {
+       }).then(async image => {
         console.log('Image captured:', image.data);
         setHeight(height);
         setWidth(width);
@@ -1149,6 +1159,9 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       }).catch(error => { 
         console.log(error);
       });
+      } finally {
+        setIsUploading(false);
+      }
     }
     const handleCameraCapture = async () => {
       const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
@@ -1171,6 +1184,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
     };
     const handlePDFUpload = async () => { 
       try {
+        setIsUploading(true); // Prevent Welcome Back alert
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -1184,6 +1198,8 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
         } else {
           throw err;
         }
+      } finally {
+        setIsUploading(false);
       }
     }
     const handleImagePicker2 = async () => {
@@ -1205,6 +1221,8 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       openGallery2()
     };
     openGallery2 = () => {
+     try{
+      setIsUploading(true); 
       ImagePicker.openPicker({
         width: 400,
         height: 400,
@@ -1224,8 +1242,13 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       }).catch(error => {
         console.log(error);
       });
+     } finally {
+      setIsUploading(false);
+     }
     }
     const openCamera2 = () => {
+      try {
+       setIsUploading(true);
       ImagePicker.openCamera({
         width: 400,
         height: 400,
@@ -1246,6 +1269,9 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       }).catch(error => { 
         console.log(error);
       });
+     } finally {
+      setIsUploading(false);
+     }
     }
     const handleCameraCapture2 = async () => {
       const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
@@ -1268,6 +1294,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
     };
     const handlePDFUpload2 = async () => { 
       try {
+        setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -1281,6 +1308,8 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
         } else {
           throw err;
         }
+      } finally {
+        setIsUploading(false);
       }
     }
     const onChangeStartConnection = (event, selectedDate) => {
