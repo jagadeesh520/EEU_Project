@@ -269,6 +269,9 @@ const LoadChange = ({navigation}) => {
 
     // ✅ Extract filename from path
     const imageFileName = image.path.split("/").pop();
+    if (global.resetIdleTimer) {
+      global.resetIdleTimer();
+    }
 
     // ✅ Update states with extracted values
     setHeight(image.height);
@@ -309,6 +312,9 @@ const openCamera = async () => {
     }
 
     console.log("📸 Image Captured:", image);
+    if (global.resetIdleTimer) {
+      global.resetIdleTimer();
+    }
 
     // ✅ Sanitize Base64 data
     const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
@@ -359,7 +365,10 @@ const openCamera = async () => {
         // Set the sanitized Base64
         setImageName(selectedFile.name); // Set file name
         setFile(sanitizedBase64);
-
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
           console.log('User cancelled the picker');
@@ -433,7 +442,10 @@ const openCamera = async () => {
         if (!image) {
           throw new Error("No image selected");
         }
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         console.log("🖼️ Image Selected:", image);
     
         // ✅ Sanitize Base64 data
@@ -482,7 +494,10 @@ const openCamera = async () => {
         }
     
         console.log("📸 Image Captured:", image);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // ✅ Sanitize Base64 data
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
         console.log("🔍 Sanitized Base64:", sanitizedBase64);
@@ -521,7 +536,10 @@ const openCamera = async () => {
         const selectedFile = res[0];
         // setFile(selectedFile);
         setSelectedImage(null);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         console.log('Selected File:', selectedFile);
     
         // Read the file as Base64

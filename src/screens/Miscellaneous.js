@@ -322,7 +322,10 @@ const Miscellaneous = ({navigation}) => {
           }
       
           console.log("📸 Image Captured:", image.data);
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           // Sanitize Base64
           const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
       
@@ -366,7 +369,10 @@ const Miscellaneous = ({navigation}) => {
           if (!image) {
             throw new Error("No image captured");
           }
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           console.log("📸 Image Captured:", image.data);
       
           // Sanitize Base64
@@ -414,7 +420,10 @@ const Miscellaneous = ({navigation}) => {
       
           // Ensure no wrapping
           const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           // Set the sanitized Base64
           setImageName(selectedFile.name); // Set file name
           setFile(sanitizedBase64);
@@ -511,7 +520,10 @@ const Miscellaneous = ({navigation}) => {
           if (!image) {
             throw new Error("No image selected");
           }
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           console.log("📸 Image Captured:", image.data);
       
           // Sanitize Base64
@@ -557,7 +569,10 @@ const Miscellaneous = ({navigation}) => {
           if (!image) {
             throw new Error("No image captured");
           }
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           console.log("📸 Image Captured:", image.data);
       
           // Sanitize Base64
@@ -608,7 +623,10 @@ const Miscellaneous = ({navigation}) => {
       
           // Ensure no wrapping
           const sanitizedBase64 = base64Content.replace(/(\r\n|\n|\r)/gm, '');
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           // Set the sanitized Base64
           setImageName2(selectedFile.name); // Set file name
           setFile2(sanitizedBase64); // Store Base64 data

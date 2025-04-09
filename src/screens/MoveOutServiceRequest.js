@@ -163,7 +163,10 @@ const MoveOutServiceRequest = ({navigation}) => {
     
         // ✅ Extract filename from path
         const imageFileName = image.path.split("/").pop();
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // ✅ Update states with extracted values
         setHeight(image.height);
         setWidth(image.width);
@@ -248,7 +251,10 @@ const MoveOutServiceRequest = ({navigation}) => {
         setSelectedImage(null);
     
         console.log('Selected File:', selectedFile);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // Read the file as Base64
         const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
     
@@ -353,7 +359,10 @@ const MoveOutServiceRequest = ({navigation}) => {
         }
     
         console.log("📸 Image Captured:", image.data);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // ✅ Sanitize Base64 data
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
         console.log("✅ Sanitized Base64:", sanitizedBase64);
@@ -398,7 +407,10 @@ const MoveOutServiceRequest = ({navigation}) => {
         if (!image) {
           throw new Error("No image captured");
         }
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         console.log("📸 Image Captured:", image.data);
     
         // ✅ Sanitize Base64 data
@@ -445,7 +457,10 @@ const MoveOutServiceRequest = ({navigation}) => {
         const selectedFile = res[0];
         // setFile(selectedFile);
         setSelectedImage(null);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         console.log('Selected File:', selectedFile);
     
         // Read the file as Base64

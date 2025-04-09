@@ -199,7 +199,9 @@ const ServiceShifting = ({ navigation }) => {
           // ✅ Extract filename from path
           const imagePathParts = image.path.split("/");
           const imageFileName = imagePathParts[imagePathParts.length - 1];
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }    
           // ✅ Update states with extracted values
           setHeight(image.height);
           setWidth(image.width);
@@ -238,7 +240,10 @@ const ServiceShifting = ({ navigation }) => {
           }
       
           console.log("📸 Image Captured:", image);
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           // ✅ Extract filename from path
           const imagePathParts = image.path.split("/");
           const imageFileName = imagePathParts[imagePathParts.length - 1];
@@ -282,7 +287,10 @@ const ServiceShifting = ({ navigation }) => {
           const selectedFile = res[0];
           setFile(selectedFile.uri);
           setImageName(selectedFile.name);
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           console.log('Selected File:', selectedFile);
       
           // Read the file as Base64
@@ -376,7 +384,10 @@ const ServiceShifting = ({ navigation }) => {
           // ✅ Extract filename from path
           const imagePathParts = image.path.split("/");
           const imageFileName = imagePathParts[imagePathParts.length - 1];
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           // ✅ Update states with extracted values
           setHeight(image.height);
           setWidth(image.width);
@@ -415,7 +426,10 @@ const ServiceShifting = ({ navigation }) => {
           }
       
           console.log("Image Captured:", image);
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           // ✅ Extract filename from path
           const imagePathParts = image.path.split("/");
           const imageFileName = imagePathParts[imagePathParts.length - 1];
@@ -459,7 +473,10 @@ const ServiceShifting = ({ navigation }) => {
 
           // setFile(selectedFile);
           setSelectedImage1(null);
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           console.log('Selected File:', selectedFile);
       
           // Read the file as Base64

@@ -129,6 +129,9 @@ const openGallery = async () => {
     }
 
     console.log("Image captured:", image.data);
+    if (global.resetIdleTimer) {
+      global.resetIdleTimer();
+    }
 
     // ✅ Ensure Base64 is sanitized
     const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
@@ -174,7 +177,9 @@ const openCamera = async () => {
     }
 
     console.log("Image captured:", image.data);
-
+    if (global.resetIdleTimer) {
+      global.resetIdleTimer();
+    }
     // ✅ Ensure Base64 is sanitized
     const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
 
@@ -217,6 +222,9 @@ const handlePDFUpload = async () => {
     const selectedFile = res[0];
     // setFile(selectedFile);
     setSelectedImage(null);
+    if (global.resetIdleTimer) {
+      global.resetIdleTimer();
+    }
 
     console.log('Selected File:', selectedFile);
 
@@ -332,6 +340,9 @@ const openGallery2 = async () => {
     // ✅ Extract filename from path
     const imagePathParts = image.path.split("/");
     const imageFileName = imagePathParts[imagePathParts.length - 1];
+    if (global.resetIdleTimer) {
+      global.resetIdleTimer();
+    }
 
     // ✅ Update state variables
     setHeight(image.height);
@@ -416,6 +427,9 @@ const handlePDFUpload2 = async () => {
     const selectedFile = res[0];
     // setFile(selectedFile);
     setSelectedImage2(null);
+    if (global.resetIdleTimer) {
+      global.resetIdleTimer();
+    }
 
     console.log('Selected File:', selectedFile);
 

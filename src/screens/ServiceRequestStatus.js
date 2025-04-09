@@ -52,14 +52,14 @@ const ServiceRequestStatus = ({navigation}) => {
   };
   useEffect(() => {
     retrieveData();
-    getComplaintHistory();
+    // getComplaintHistory();
     //complaintData - this is getting looping while processing.
   }, []);
-  useFocusEffect(
-    useCallback(() => {
-      retrieveData();
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     retrieveData();
+  //   }, []),
+  // );
   const getComplaintHistory = value => {
     setComplaintData([]);
     setLoading(true);

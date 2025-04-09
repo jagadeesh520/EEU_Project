@@ -172,7 +172,10 @@ const DisOrReconnection = ({navigation}) => {
         // ✅ Sanitize Base64 data
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
         console.log("🔍 Sanitized Base64:", sanitizedBase64);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // ✅ Extract filename from path
         const imageFileName = image.path.split("/").pop();
     
@@ -215,7 +218,10 @@ const DisOrReconnection = ({navigation}) => {
         }
     
         console.log("📸 Image Captured:", image);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // ✅ Sanitize Base64 data
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
         console.log("🔍 Sanitized Base64:", sanitizedBase64);
@@ -258,9 +264,15 @@ const DisOrReconnection = ({navigation}) => {
         const selectedFile = res[0];
         // setFile(selectedFile);
         setSelectedImage(null);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         console.log('Selected File:', selectedFile);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // Read the file as Base64
         const base64Content = await RNFS.readFile(selectedFile.uri, 'base64');
     
@@ -363,7 +375,10 @@ const DisOrReconnection = ({navigation}) => {
         if (!image) {
           throw new Error("No image selected");
         }
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         console.log("📸 Image Captured:", image.data);
     
         // ✅ Sanitize Base64 data
@@ -413,7 +428,10 @@ const DisOrReconnection = ({navigation}) => {
         }
     
         console.log("📸 Image Captured:", image.data);
-    
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         // ✅ Sanitize Base64 data
         const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
         console.log("✅ Sanitized Base64:", sanitizedBase64);
@@ -455,7 +473,10 @@ const DisOrReconnection = ({navigation}) => {
         // setFile2(selectedFile);
         // setImageName2(selectedFile.name);
         // setSelectedImage1(null);
-
+        if (global.resetIdleTimer) {
+          global.resetIdleTimer();
+        }
+  
         const selectedFile = res[0];
         // setFile(selectedFile);
         setSelectedImage(null);
