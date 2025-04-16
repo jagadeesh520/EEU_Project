@@ -119,6 +119,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
       console.log(isPermitted);
       if (isPermitted !== RESULTS.GRANTED) {
+         setIsUploading(true); // ✅ Prevents "Welcome Back" alert
          const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
@@ -140,7 +141,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       }
     
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
     
         const image = await ImagePicker.openPicker({
           width: 400,
@@ -190,7 +191,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       }
     
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
     
         const image = await ImagePicker.openCamera({
           width: 400,
@@ -236,7 +237,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -282,6 +283,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
       console.log(isPermitted);
       if (isPermitted !== RESULTS.GRANTED) {
+        setIsUploading(true); // ✅ Prevents "Welcome Back" alert
          const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
@@ -302,6 +304,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
       console.log(isPermitted);
       if (isPermitted !== RESULTS.GRANTED) {
+        setIsUploading(true); // ✅ Prevents "Welcome Back" alert
          const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
@@ -321,6 +324,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
       console.log(isPermitted);
       if (isPermitted !== RESULTS.GRANTED) {
+        setIsUploading(true); // ✅ Prevents "Welcome Back" alert
          const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
@@ -342,7 +346,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
     
-      setIsUploading(true);
+      // setIsUploading(true);
     
       try {
         const image = await ImagePicker.openPicker({
@@ -392,7 +396,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
     
-      setIsUploading(true);
+      // setIsUploading(true);
     
       try {
         const image = await ImagePicker.openCamera({
@@ -444,7 +448,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });

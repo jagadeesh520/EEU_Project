@@ -131,6 +131,7 @@ const DisOrReconnection = ({navigation}) => {
       const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
       console.log(isPermitted);
       if (isPermitted !== RESULTS.GRANTED) {
+         setIsUploading(true); // ✅ Prevents "Welcome Back" alert
          const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
@@ -150,9 +151,8 @@ const DisOrReconnection = ({navigation}) => {
         console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
         return null; // Stop execution to avoid errors
       }
-      
       try {
-        setIsUploading(true);
+        // setIsUploading(true); // ✅ Prevents "Welcome Back" alert
     
         const image = await ImagePicker.openPicker({
           width: 400,
@@ -167,26 +167,22 @@ const DisOrReconnection = ({navigation}) => {
           throw new Error("No image selected");
         }
     
-        console.log("📸 Image Selected:", image);
+        console.log("📸 Image Captured:", image);
     
-        // ✅ Sanitize Base64 data
-        const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, "");
-        console.log("🔍 Sanitized Base64:", sanitizedBase64);
+        // ✅ Extract filename from path
+        const imagePathParts = image.path.split("/");
+        const imageFileName = imagePathParts[imagePathParts.length - 1];
         if (global.resetIdleTimer) {
           global.resetIdleTimer();
-        }
-  
-        // ✅ Extract filename from path
-        const imageFileName = image.path.split("/").pop();
-    
+        }    
         // ✅ Update states with extracted values
         setHeight(image.height);
         setWidth(image.width);
         setDocumentOption(false);
         setImageName(imageFileName);
-        setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
+        setSelectedImage(`data:${image.mime};base64,${image.data}`);
       } catch (error) {
-        console.error("❌ Error selecting image:", error);
+        console.error("Error picking image:", error);
       } finally {
         // Slight delay to avoid false positives
         setTimeout(() => {
@@ -339,6 +335,7 @@ const DisOrReconnection = ({navigation}) => {
       const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
       console.log(isPermitted);
       if (isPermitted !== RESULTS.GRANTED) {
+         setIsUploading(true); // ✅ Prevents "Welcome Back" alert
          const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
          console.log(isGranted);
          if(isGranted !== RESULTS.GRANTED) {
@@ -361,7 +358,7 @@ const DisOrReconnection = ({navigation}) => {
       }
     
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
     
         const image = await ImagePicker.openPicker({
           width: 400,
