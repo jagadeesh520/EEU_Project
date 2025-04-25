@@ -191,7 +191,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       }
     
       try {
-        // setIsUploading(true);
+        setIsUploading(true);
     
         const image = await ImagePicker.openCamera({
           width: 400,
@@ -237,7 +237,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
       try {
-        // setIsUploading(true);
+        setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -396,7 +396,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
     
-      // setIsUploading(true);
+      setIsUploading(true);
     
       try {
         const image = await ImagePicker.openCamera({
@@ -448,7 +448,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
       try {
-        // setIsUploading(true);
+        setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });

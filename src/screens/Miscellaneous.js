@@ -285,6 +285,7 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -445,6 +446,7 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -465,6 +467,7 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -484,6 +487,7 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
