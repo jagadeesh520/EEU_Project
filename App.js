@@ -84,6 +84,7 @@
       intervalRef.current = setInterval(() => {
         const now = Date.now();
         const elapsed = now - lastActive;
+        console.log("welcomr",elapsed)
 
         if (
           elapsed >= 120000 && // 2.5 min 
@@ -121,7 +122,7 @@
             { cancelable: false }
           );
         }
-      }, 5000);
+      }, 120000);
 
       return () => {
         appStateListener.remove();
