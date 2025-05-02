@@ -121,7 +121,7 @@
             { cancelable: false }
           );
         }
-      }, 5000);
+      }, 120000);
 
       return () => {
         appStateListener.remove();
