@@ -89,6 +89,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('release-key.jks')
+            storePassword 'eeu_android@2025'
+            keyAlias 'my-key-alias'
+            keyPassword 'eeu_android@2025'
+        }
     }
     buildTypes {
         debug {
