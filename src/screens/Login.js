@@ -129,6 +129,11 @@ const Login = ({ navigation }) => {
     } else {
     if (validateInputs()) {
       setLoading(true);
+      const Record = {
+        ContractAccount: accNo,
+        Password: password,
+      }
+      console.log((constant.BASE_URL + constant.LOGIN_POST) , Record)
       fetch(constant.BASE_URL + constant.LOGIN_POST, {
         method: 'POST',
         body: JSON.stringify({
