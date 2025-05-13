@@ -1,4 +1,4 @@
-package com.eeu
+package com.EthiopianElectricUtility
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
