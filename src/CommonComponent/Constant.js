@@ -1,7 +1,7 @@
 import React from 'react'
 
  export const constant = {
-    BASE_URL: 'http://197.156.76.70:8080',
+    BASE_URL: 'https://197.156.76.70:8080',
     PAY_BASE_URL: 'https://awashpay.awashbank.com/awashpaytest/Rest/', //dev
     PAY_BASE_URL_PROD: 'https://awashpay.awashbank.com:8225/awashbirrpro/merchant-api/', // Production
    //  LOGIN_POST: '/LoginProd',
