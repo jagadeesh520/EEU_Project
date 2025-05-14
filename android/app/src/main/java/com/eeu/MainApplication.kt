@@ -1,4 +1,4 @@
-package com.EthiopianElectricUtility
+package com.ethiopian.electric.utility
 
 import android.app.Application
 import com.facebook.react.PackageList

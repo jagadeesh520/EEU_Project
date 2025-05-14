@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">apmobapp.ethiopianelectricutility.et</domain>
+        <trust-anchors>
+            <certificates src="@raw/wildcard_ethiopianelectricutility_et" />
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
