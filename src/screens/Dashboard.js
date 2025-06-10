@@ -130,10 +130,10 @@ const Dashboard = ({ navigation, route }) => {
         ]);
         return true;
       };
-      BackHandler.addEventListener('hardwareBackPress', backAction);
+      // BackHandler.addEventListener('hardwareBackPress', backAction);
 
       return () => {
-        BackHandler.removeEventListener('hardwareBackPress', backAction);
+        // BackHandler.removeEventListener('hardwareBackPress', backAction);
       };
     }, [navigation])
   );
