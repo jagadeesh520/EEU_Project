@@ -22,7 +22,6 @@ const CommonHeader = ({ navigation, title, onBackPress }) => {
       </View>
     );
   };
-
   console.log(title, "title-text amharic")
   return (
     <View>
@@ -38,7 +37,6 @@ const CommonHeader = ({ navigation, title, onBackPress }) => {
         </TouchableOpacity>
         <Text style={styles.CommonHeaderTxt}>{t(title)}</Text>
       </View> 
-
       <View style={[styles.LanguageContainer]}>
         <MultipleOption navigation={navigation} />
       </View>  
@@ -77,6 +75,7 @@ const CommonHeader = ({ navigation, title, onBackPress }) => {
         </View> 
     
       </View>
+
   );
 };
 

@@ -30,13 +30,10 @@ const Styles = () => {
             height: fullHeight,
             backgroundColor: themeObj.themeBackgroundColor,
         },
-<<<<<<< HEAD
-=======
         mainHeaderCon: {
             height: '100%', 
             backgroundColor: themeObj.themeBackgroundColor 
         },
->>>>>>> development
         DashboardProContainer: {
             // backgroundColor: topBarBackgroundcolor,
             paddingVertical: wp(10),
@@ -158,23 +155,16 @@ const Styles = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-<<<<<<< HEAD
-=======
             alignContent: 'center',
->>>>>>> development
             padding:wp(20),
             justifyContent: 'space-between',
         },
         ServiceQuickLnkText: {
             fontSize: wp(10),
             color: '#666666',
-<<<<<<< HEAD
-            marginTop: wp(10)
-=======
             marginTop: wp(10),
             width: wp(100),
             flexWrap: 'wrap'
->>>>>>> development
         },
         ServiceQuickLinkImage: {
             height: hp(30),
@@ -316,10 +306,7 @@ const Styles = () => {
             fontWeight: '500'
         },
         LoginLockButton: { position: 'absolute', left: wp(300), display: 'flex', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
-<<<<<<< HEAD
-=======
         LoginCallOption: { display: 'flex', flexDirection: 'row' },
->>>>>>> development
         RegisterLockButton: {  position: 'absolute', left: wp(250), display: 'flex', alignItems: 'flex-center', justifyContent: 'flex-end', alignSelf: 'center' },
 
         DashboardPaymentCon: {
@@ -368,8 +355,6 @@ const Styles = () => {
             alignItems: 'center',
             justifyContent: 'center'
         },
-<<<<<<< HEAD
-=======
         commonSubContainer: {
             height: fullHeight,
             backgroundColor: themeObj.commonHeaderBG,
@@ -377,7 +362,6 @@ const Styles = () => {
             alignItems: 'center',
             justifyContent: 'center',
         },
->>>>>>> development
         StartSubContainer1: {
             height: '75%',
             backgroundColor: '#FFF',
@@ -508,16 +492,10 @@ const Styles = () => {
         CommonHeaderMain: {
             backgroundColor: themeObj.headerBackgroundColor,
             display: 'flex',
-<<<<<<< HEAD
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-=======
             height: fullHeight,
             // flexDirection: 'column',
             // alignItems: 'center',
             // justifyContent: 'space-between',
->>>>>>> development
             padding: wp(10)
         },
         CommonHeaderBackBtn: {
@@ -689,18 +667,12 @@ const Styles = () => {
         ComplaintsBtn: {
             backgroundColor: '#FFF',
             borderRadius: wp(20),
-<<<<<<< HEAD
-            paddingVertical: wp(10),
-            paddingHorizontal: wp(20),
-            marginTop: wp(20)
-=======
             height: hp(35),
             width: wp(100),
             display: 'flex', 
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center'
->>>>>>> development
         },
         ComplaintsBtnTxt: {
             color: '#000',
@@ -842,15 +814,10 @@ const Styles = () => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-<<<<<<< HEAD
-            justifyContent: 'center'
-        },
-=======
+
             justifyContent: 'center',
         },
-        
->>>>>>> development
-        ComplaintListHeader: {
+                ComplaintListHeader: {
             fontSize: wp(16),
             fontWeight: 'bold',
             color: '#212121',
@@ -998,13 +965,9 @@ const Styles = () => {
             width: wp(40),
             marginRight: wp(10)
         },
-<<<<<<< HEAD
-        CallIcon: { height: wp(40), width: wp(40) },
-=======
+
         CallIcon: { height: wp(30), width: wp(30) },
         LoginCallIcon: { height: wp(10), width: wp(10), marginLeft: wp(20) },
-
->>>>>>> development
         CallText: { fontSize: wp(12) },
 
         FAQbackicon: {
@@ -1235,12 +1198,9 @@ const Styles = () => {
             resizeMode: 'cover', // Adjusts the image to cover the entire background
             justifyContent: 'center',
         },
-<<<<<<< HEAD
-=======
         dashboardHeader : {
             height: hp(150)
         },
->>>>>>> development
         serviceShiftingMain: {
            
             display: 'flex',
