@@ -148,15 +148,16 @@ const Complaints = ({navigation}) => {
       };
     
     return (
-      <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={ isRaiseComplaint ? t("Raise Complaint") : t("Complaint")} onBackPress ={onBackPress} navigation={navigation}/>
+       <View style={styles.mainHeaderCon}>
+          <CommonHeader title={ isRaiseComplaint ? t("Raise Complaint") : t("Complaint")} onBackPress ={onBackPress} navigation={navigation}/>
             {isLoading &&
-              < View style={styles.Loader}>
-                <ActivityIndicator size="large" />
-              </View>
-            } 
+               < View style={styles.Loader}>
+                 <ActivityIndicator size="large" />
+               </View>
+             }  
+          <ScrollView style={styles.DashBoardMain}>
              <View style={styles.container}>
-    </View> 
+             </View> 
            {complaintData && complaintData.length > 0 && !isRaiseComplaint ? 
               <View style={{ margin: 20 }}>
                 <View style={styles.ComplaintListMain}>
@@ -310,6 +311,7 @@ const Complaints = ({navigation}) => {
                   
               </View> : null }
         </ScrollView>
+       </View> 
     );
 };
 

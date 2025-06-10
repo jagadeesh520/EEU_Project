@@ -1,6 +1,6 @@
 // Imports
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, StyleSheet, Modal, FlatList, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, StyleSheet, Modal, ActivityIndicator, Alert } from 'react-native';
 import { Button, Menu } from 'react-native-paper';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
@@ -21,6 +21,7 @@ const CANumberTrack = ({ navigation }) => {
   const { theme, styles, changeTheme } = Styles();
   const startDate = new Date();
   const startResult = startDate.setDate(startDate.getDate());
+  const [isLoading, setLoading] = useState(false);
 
   const [applicationNo, setApplicationNo] = useState('');
   const [applicationNoError, setApplicationNoError] = useState('');
@@ -100,6 +101,7 @@ const CANumberTrack = ({ navigation }) => {
   }
   console.log(data, "data---->")
     if (validateInputs()) {
+      setLoading(true);
       fetch(constant.BASE_URL + constant.APPLICATION_TRACK, {
         method: 'POST',
         body: JSON.stringify({
@@ -116,6 +118,7 @@ const CANumberTrack = ({ navigation }) => {
         .then(async (responseData) => {
           console.log(responseData, "responseData")
           var data = responseData.Root;
+          setLoading(false);
           if(data.Status == "Application Received Successfully") { 
             Alert.alert(
              '',
@@ -144,22 +147,7 @@ const CANumberTrack = ({ navigation }) => {
               },
             ]
           );            
-         }  else if(data.Status == "CA AND SR CREATED") { 
-          Alert.alert(
-           '',
-           t('Your application successfully processed, Please attached your ID proof  to complete your application'),
-           [
-             {
-               text: '',
-               onPress: () => {
-                 // Clipboard.setString(String(data.CA)); // Copy CA Number as a string
-                 navigation.navigate("DocumentUpload", {applicationDetails: data});
-               },
-             },
-           ]
-         );            
-        }
-          else if(data.Status == "BP Created"){
+         } else if(data.Status == "BP Created"){
           Alert.alert(
             '',
             t('Your Application under process Business partner has created and Service Request creation is in progress, Please check the status after sometime'),
@@ -365,7 +353,16 @@ const CANumberTrack = ({ navigation }) => {
            <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>{applicationNoError}</Text>
          </View>
         }
-          <TouchableOpacity style={styles.RegisterBtn} onPress={submitOnClick}>
+          {isLoading &&
+            <View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+              <ActivityIndicator size="small" />
+              <Text style={{ marginLeft: 10}} >Processing....</Text>
+            </View>
+          } 
+          <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: isLoading ? '#DCDCDC' : '#63AA5A' }]}
+           onPress={() => { 
+            submitOnClick()
+           }}>
             <Text style={styles.RegisterBtnTxt}>{t("Submit")}</Text>
           </TouchableOpacity>
         </View>

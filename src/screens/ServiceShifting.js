@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, ScrollView, Image, Modal, TouchableOpacity, Alert, ActivityIndicator }  from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
@@ -16,7 +16,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import { constant } from '../CommonComponent/Constant';
-import RNFS from 'react-native-fs';  // Import RNFS
+import { AppStateContext } from '../CommonComponent/AppStateProvider';
 
 const IDType = [
     { label: "Passport", value:"Passport" },
@@ -59,6 +59,7 @@ const ServiceShifting = ({ navigation }) => {
     const { themes, themeObj } = useThemes();
     const [ selectedImage, setSelectedImage ] = useState("");
     const [ selectedImage1, setSelectedImage1] = useState("");
+    const { setIsUploading } = useContext(AppStateContext);
 
     const [ invalidCategory1, setInvalidCategory1] = useState("");
     const [ invalidIDType, setInvalidIDType] = useState("");
@@ -73,9 +74,8 @@ const ServiceShifting = ({ navigation }) => {
     }, []); // Empty array ensures this runs only once
 
     const onBackPress = () => {
-        navigation.goBack("BottomTab");
+        navigation.goBack("ServiceRequest");
     };
-
     const retrieveData = async () => {
         try {
             const value = await AsyncStorage.getItem('accountData');
@@ -138,6 +138,7 @@ const ServiceShifting = ({ navigation }) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -156,6 +157,7 @@ const ServiceShifting = ({ navigation }) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -171,82 +173,104 @@ const ServiceShifting = ({ navigation }) => {
         }
         openCamera()
       };
-      const openGallery = () => {
-        ImagePicker.openPicker({
-          width: 400,
-          height: 400,
-          cropping: true,
-          useFrontCamera: false,
-          includeBase64: true,
-          mediaType: 'photo',
-        }).then(async image => {
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption(false)
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
-          setImageName(imageFileName);
-
-          setSelectedImage(`data:${image.mime};base64,${image.data}`);
-
-          console.log('Image captured:', image.data);
-
-          // Ensure Base64 is sanitized
-          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          // console.log('Sanitized Base64:', sanitizedBase64);
-    
-          // // Handle other properties
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-    
-          // setHeight(image.height);
-          // setWidth(image.width);
-          // setDocumentOption(false);
-          // setImageName(imageFileName);
-          // setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
-        }).catch(error => {
-          console.log(error);
-        });
-      }
-      const openCamera = () => {
-        ImagePicker.openCamera({
-          width: 400,
-          height: 400,
-          cropping: true,
-          useFrontCamera: false,
-          includeBase64: true,  
-          mediaType: 'photo',
-        }).then(async image => {
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption(false)
-          setSelectedImage(`data:${image.mime};base64,${image.data}`)
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
-          setImageName(imageFileName);
-
-          console.log('Image captured:', image.data);
-
-          // Ensure Base64 is sanitized
-          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          // console.log('Sanitized Base64:', sanitizedBase64);
-    
-          // // Handle other properties
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-    
-          // setHeight(image.height);
-          // setWidth(image.width);
-          // setDocumentOption(false);
-          // setImageName(imageFileName);
-          // setSelectedImage(`data:${image.mime};base64,${sanitizedBase64}`);
-         
-        }).catch(error => { 
-          console.log(error);
-        });
-      }
-      const handlePDFUpload = async () => { 
+      const openGallery = async () => {
+        if (typeof setIsUploading !== "function") {
+          console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
+          return null; // Stop execution to avoid errors
+        }
         try {
+          // setIsUploading(true); // ✅ Prevents "Welcome Back" alert
+      
+          const image = await ImagePicker.openPicker({
+            width: 400,
+            height: 400,
+            cropping: true,
+            useFrontCamera: false,
+            includeBase64: true,
+            mediaType: "photo",
+          });
+      
+          if (!image) {
+            throw new Error("No image selected");
+          }
+      
+          console.log("📸 Image Captured:", image);
+      
+          // ✅ Extract filename from path
+          const imagePathParts = image.path.split("/");
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }    
+          // ✅ Update states with extracted values
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption(false);
+          setImageName(imageFileName);
+          setSelectedImage(`data:${image.mime};base64,${image.data}`);
+        } catch (error) {
+          console.error("Error picking image:", error);
+        } finally {
+          // Slight delay to avoid false positives
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
+        }
+      };
+      
+      const openCamera = async () => {
+        if (typeof setIsUploading !== "function") {
+          console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
+          return null; // Stop execution to avoid errors
+        }
+        try {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
+      
+          const image = await ImagePicker.openCamera({
+            width: 400,
+            height: 400,
+            cropping: true,
+            useFrontCamera: false,
+            includeBase64: true,
+            mediaType: "photo",
+          });
+      
+          if (!image) {
+            throw new Error("No image captured");
+          }
+      
+          console.log("📸 Image Captured:", image);
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
+          // ✅ Extract filename from path
+          const imagePathParts = image.path.split("/");
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+      
+          // ✅ Update states with extracted values
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption(false);
+          setImageName(imageFileName);
+          setSelectedImage(`data:${image.mime};base64,${image.data}`);
+        } catch (error) {
+          console.error("❌ Error capturing image:", error);
+        } finally {
+          // Slight delay to avoid false positives
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
+        }
+      };
+      
+      const handlePDFUpload = async () => { 
+        if (typeof setIsUploading !== "function") {
+          console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
+          return null; // Stop execution to avoid errors
+        }
+        try {
+          setIsUploading(true);
           const res = await DocumentPicker.pick({
             type: [DocumentPicker.types.pdf],
           });
@@ -263,7 +287,10 @@ const ServiceShifting = ({ navigation }) => {
           const selectedFile = res[0];
           setFile(selectedFile.uri);
           setImageName(selectedFile.name);
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           console.log('Selected File:', selectedFile);
       
           // Read the file as Base64
@@ -282,12 +309,18 @@ const ServiceShifting = ({ navigation }) => {
           } else {
             throw err;
           }
+        } finally {
+          // Slight delay to avoid false positives
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
         }
       }
       const handleCameraCapture1 = async () => {
         const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -309,6 +342,7 @@ const ServiceShifting = ({ navigation }) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -324,84 +358,106 @@ const ServiceShifting = ({ navigation }) => {
         openGallery2()
        
       };
-      openGallery2 = () => {
-        ImagePicker.openPicker({
-          width: 400,
-          height: 400,
-          cropping: true,
-          useFrontCamera: false,
-          includeBase64: true,
-          mediaType: 'photo',
-        }).then(async image => {
-          console.log('Image captured:', image.data);
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption1(false)
-          const imagePathParts = image.path.split('/');
+      const openGallery2 = async () => {
+        if (typeof setIsUploading !== "function") {
+          console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
+          return null; // Stop execution to avoid errors
+        }
+        try {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
+      
+          const image = await ImagePicker.openPicker({
+            width: 400,
+            height: 400,
+            cropping: true,
+            useFrontCamera: false,
+            includeBase64: true,
+            mediaType: "photo",
+          });
+      
+          if (!image) {
+            throw new Error("No image selected");
+          }
+      
+          console.log("📸 Image Captured:", image);
+      
+          // ✅ Extract filename from path
+          const imagePathParts = image.path.split("/");
           const imageFileName = imagePathParts[imagePathParts.length - 1];
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
+          // ✅ Update states with extracted values
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption1(false);
           setImageName2(imageFileName);
           setSelectedImage1(`data:${image.mime};base64,${image.data}`);
-          console.log('Image captured:', image.data);
-
-          // Ensure Base64 is sanitized
-          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          // console.log('Sanitized Base64:', sanitizedBase64);
-    
-          // // Handle other properties
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-    
-          // setHeight(image.height);
-          // setWidth(image.width);
-          // setDocumentOption1(false);
-          // setImageName2(imageFileName);
-          // setSelectedImage1(`data:${image.mime};base64,${sanitizedBase64}`);
-        }).catch(error => {
-          console.log(error);
-        });
-      }
-     
-      const openCamera1 = () => {
-        ImagePicker.openCamera({
-          width: 400,
-          height: 400,
-          cropping: true,
-          useFrontCamera: false,
-          includeBase64: true,  
-          mediaType: 'photo',
-        }).then(async image => {
-          console.log('Image captured:', image.data);
-          setHeight(height);
-          setWidth(width);
-          setDocumentOption1(false)
-          setSelectedImage1(`data:${image.mime};base64,${image.data}`)
-          const imagePathParts = image.path.split('/');
-          const imageFileName = imagePathParts[imagePathParts.length - 1];
-          setImageName2(imageFileName);
-
-          console.log('Image captured:', image.data);
-
-          // Ensure Base64 is sanitized
-          // const sanitizedBase64 = image.data.replace(/(\r\n|\n|\r)/gm, '');
-          // console.log('Sanitized Base64:', sanitizedBase64);
-    
-          // // Handle other properties
-          // const imagePathParts = image.path.split('/');
-          // const imageFileName = imagePathParts[imagePathParts.length - 1];
-    
-          // setHeight(image.height);
-          // setWidth(image.width);
-          // setDocumentOption1(false);
-          // setImageName2(imageFileName);
-          // setSelectedImage1(`data:${image.mime};base64,${sanitizedBase64}`);
-         
-        }).catch(error => { 
-          console.log(error);
-        });
-      }
+        } catch (error) {
+          console.error("Error selecting image:", error);
+        } finally {
+          // Slight delay to avoid false positives
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
+        }
+      };
       
-      const handlePDFUpload1 = async () => { 
+     
+      const openCamera1 = async () => {
+        if (typeof setIsUploading !== "function") {
+          console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
+          return null; // Stop execution to avoid errors
+        }
         try {
+          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
+          const image = await ImagePicker.openCamera({
+            width: 400,
+            height: 400,
+            cropping: true,
+            useFrontCamera: false,
+            includeBase64: true,
+            mediaType: "photo",
+          });
+      
+          if (!image) {
+            throw new Error("No image captured");
+          }
+      
+          console.log("Image Captured:", image);
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
+          // ✅ Extract filename from path
+          const imagePathParts = image.path.split("/");
+          const imageFileName = imagePathParts[imagePathParts.length - 1];
+      
+          // ✅ Update states with extracted values
+          setHeight(image.height);
+          setWidth(image.width);
+          setDocumentOption1(false);
+          setImageName2(imageFileName);
+          setSelectedImage1(`data:${image.mime};base64,${image.data}`);
+        } catch (error) {
+          console.error("Error capturing image:", error);
+        } finally {
+          // Slight delay to avoid false positives
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
+        }
+      };
+      
+      
+      const handlePDFUpload1 = async () => {
+        if (typeof setIsUploading !== "function") {
+          console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
+          return null; // Stop execution to avoid errors
+        } 
+        try {
+          setIsUploading(true);
           const res = await DocumentPicker.pick({
             type: [DocumentPicker.types.pdf],
           });
@@ -417,7 +473,10 @@ const ServiceShifting = ({ navigation }) => {
 
           // setFile(selectedFile);
           setSelectedImage1(null);
-      
+          if (global.resetIdleTimer) {
+            global.resetIdleTimer();
+          }
+    
           console.log('Selected File:', selectedFile);
       
           // Read the file as Base64
@@ -435,6 +494,11 @@ const ServiceShifting = ({ navigation }) => {
           } else {
             throw err;
           }
+        } finally {
+          // Slight delay to avoid false positives
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
         }
       }
      
@@ -538,11 +602,10 @@ const ServiceShifting = ({ navigation }) => {
           })
         }
       }
-      console.log(selectedImage, "image")
     return (
-        <ScrollView style={styles.DashBoardMain}>
-
-            <CommonHeader title={t("Service Shifting")} onBackPress={onBackPress} navigation={navigation} />
+       <View style={styles.mainHeaderCon}>
+         <CommonHeader title={t("Service Shifting")} onBackPress={onBackPress} navigation={navigation} />
+         <ScrollView style={styles.DashBoardMain}>
             <View style={ [styles.DarkTheme, styles.serviceShiftingMain] }>
             <View style={[styles.Margin_30, { width: '72%'   }]}>
                 <Text style={styles.LoginSubTxt}>{t("BP") + " *"}</Text>    
@@ -659,8 +722,9 @@ const ServiceShifting = ({ navigation }) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption(false)
-                        handleCameraCapture() 
+                        setDocumentOption(false);
+                        setIsUploading(true);
+                        handleCameraCapture(); 
                     }}
                   >
                     <Camera name={"camera"} size={25} color={"#F29037"}/>
@@ -669,8 +733,9 @@ const ServiceShifting = ({ navigation }) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption(false)
-                        handleImagePicker() 
+                        setDocumentOption(false);
+                        setIsUploading(true);
+                        handleImagePicker(); 
                     }}
                   >
                     <Gallery name={"photo-library"} size={25} color={"#F29037"}/>
@@ -679,8 +744,9 @@ const ServiceShifting = ({ navigation }) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption(false)
-                        handlePDFUpload() 
+                        setDocumentOption(false);
+                        setIsUploading(true);
+                        handlePDFUpload(); 
                     }}
                   >
                     <FileUpload name={"file-upload"} size={25} color={"#F29037"}/>
@@ -703,6 +769,7 @@ const ServiceShifting = ({ navigation }) => {
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
                         setDocumentOption1(false)
+                        setIsUploading(true);
                         handleCameraCapture1() 
                     }}
                   >
@@ -712,8 +779,9 @@ const ServiceShifting = ({ navigation }) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption1(false)
-                        handleImagePicker1() 
+                        setDocumentOption1(false);
+                        setIsUploading(true);
+                        handleImagePicker1(); 
                     }}
                   >
                     <Gallery name={"photo-library"} size={25} color={"#F29037"}/>
@@ -722,8 +790,9 @@ const ServiceShifting = ({ navigation }) => {
                   <TouchableOpacity 
                     style={styles.registrationCameraBtn}
                     onPress={() => { 
-                        setDocumentOption1(false)
-                        handlePDFUpload1() 
+                        setDocumentOption1(false);
+                        setIsUploading(true);
+                        handlePDFUpload1(); 
                     }}
                   >
                     <FileUpload name={"file-upload"} size={25} color={"#F29037"}/>
@@ -733,6 +802,7 @@ const ServiceShifting = ({ navigation }) => {
             </View>
           </Modal>  
         </ScrollView>
+      </View>  
     );
 };
 

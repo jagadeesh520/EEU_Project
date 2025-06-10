@@ -1,6 +1,6 @@
 // Imports
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, StyleSheet, Modal, FlatList, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Switch, ActivityIndicator, Modal, FlatList, Alert, Linking } from 'react-native';
 import { Button, Menu } from 'react-native-paper';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
@@ -31,6 +31,7 @@ const Login = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
+  const [isLoading, setLoading]= useState(false);
   const fetchWithTimeout = (url, options, timeout = 5000) => {
     return Promise.race([
       fetch(url, options),
@@ -127,6 +128,7 @@ const Login = ({ navigation }) => {
       );
     } else {
     if (validateInputs()) {
+      setLoading(true);
       fetch(constant.BASE_URL + constant.LOGIN_POST, {
         method: 'POST',
         body: JSON.stringify({
@@ -138,6 +140,7 @@ const Login = ({ navigation }) => {
       })
         .then((response) => response.json())
         .then(async (responseData) => {
+          setLoading(false);
           console.log(responseData, "responseData")
           if (responseData && responseData?.status >= 500) {
             console.log('Server is down. Please try again later.');
@@ -211,7 +214,12 @@ const Login = ({ navigation }) => {
       <View style={styles.StartSubContainer}>
         <Image source={ImagePath.Logo} />
         <Text style={styles.StartMainHeader}>{t("Ethiopian Electric Utility")}</Text>
-        <Dropdown
+         <View style={{ display: 'flex', flexDirection: 'row', flex: 1, width: '90%', justifyContent: 'space-between', alignItems: 'center'}}> 
+          <TouchableOpacity style={styles.callButton} onPress={() => { Linking.openURL(`tel:${905}`) }} >
+            <Image source={require("../../assets/Call.png")} style={styles.CallIcon} />
+            <Text style={styles.CallText}>{905}</Text>
+          </TouchableOpacity> 
+          <Dropdown
                 placeholderStyle={styles.RaiseComplaintDropdownTxt}
                 selectedTextStyle={styles.RaiseComplaintDropdownTxt}
                 inputSearchStyle={styles.RaiseComplaintDropdownTxt}
@@ -228,7 +236,9 @@ const Login = ({ navigation }) => {
                   i18n.changeLanguage(item.value)
                 }}               
            />
-      </View>
+              
+        </View> 
+       </View>
       <ScrollView style={styles.StartSubContainer1}>
         <View style={styles.StartSub}>
           <Text style={styles.StartMainHeader}>{t("Login to your account")}</Text>
@@ -298,7 +308,17 @@ const Login = ({ navigation }) => {
               onValueChange={handleRememberMeToggle} 
             />
           </View>
-          <TouchableOpacity style={styles.RegisterBtn} onPress={submitOnClick}>
+           {isLoading &&
+              < View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                  <ActivityIndicator size="small" />
+                  <Text style={{ marginLeft: 10}} >Processing....</Text>
+              </View>
+            }  
+          <TouchableOpacity disabled={isLoading} style={[styles.RegisterBtn, { backgroundColor: isLoading ? '#DCDCDC' : '#63AA5A' }]}
+           onPress={ () => { 
+            submitOnClick() 
+           }}
+          >
             <Text style={styles.RegisterBtnTxt}>{t("LOGIN")}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Margin_20} 

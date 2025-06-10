@@ -324,6 +324,15 @@
         "Ownership proof can't be empty": "Ownership proof can't be empty",
         "Category1 can't be empty": "Category1 can't be empty",
         "Document Upload": "Document Upload",
-        "NSC Application Track": "NSC Application Track"
+        "NSC APPLICATION TRACK": "NSC APPLICATION TRACK",
+        "Are you sure you want to logout ?":"Are you sure you want to logout ?",
+        "Hold on!":"Hold on!",
+        "Cancel": "Cancel",
+        "Yes": "Yes",
+        "Service Request Status": "Service Request Status",
+        "Recent Service Status": "Recent Service Status",
+        "Welcome Back!": "Welcome Back!",
+        "You returned to the app.": "You returned to the app.",
+        "OK": "OK"
     } 
 }

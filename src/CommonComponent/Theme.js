@@ -16,7 +16,13 @@ export const lightTheme = {
   energySavingIcon: '#5FA756',
   headerBackgroundColor: '#70B767',
   headerText: '#F2F2F2',
+<<<<<<< HEAD
   imageNameColor: '#000'
+=======
+  imageNameColor: '#000',
+  commonHeaderBG: '#E5EEE0'
+
+>>>>>>> development
 };
 
 export const darkTheme = {
@@ -33,7 +39,12 @@ export const darkTheme = {
   energySavingIcon: '#F29037',
   headerBackgroundColor: '#5FA756',
   headerText: '#666666',
+<<<<<<< HEAD
   imageNameColor: '#666666'
+=======
+  imageNameColor: '#666666',
+  commonHeaderBG: '#5FA756'
+>>>>>>> development
 };
 
 export const useThemes = () => {

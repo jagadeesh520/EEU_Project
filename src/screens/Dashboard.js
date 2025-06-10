@@ -117,14 +117,14 @@ const Dashboard = ({ navigation, route }) => {
     React.useCallback(() => {
       retrieveData();
       const backAction = () => {
-        Alert.alert('Hold on!', 'Are you sure you want to logout?', [
+        Alert.alert(t('Hold on!'), t('Are you sure you want to logout ?'), [
           {
-            text: 'Cancel',
+            text: t('Cancel'),
             onPress: () => null,
             style: 'cancel',
           },
           {
-            text: 'YES',
+            text: t('Yes'),
             onPress: () => navigation.navigate('Login'),
           },
         ]);
@@ -269,10 +269,9 @@ const Dashboard = ({ navigation, route }) => {
   }
   
   return (
-    <ScrollView style={styles.DashBoardMain}>
-      {/* Profile Bar */}
-      <StatusBar animated={true} barStyle={'dark-content'} backgroundColor={styles.statusBarColor} />
-      <ImageBackground 
+   <View style={styles.mainHeaderCon}>
+    <View style={styles.dashboardHeader}>
+     <ImageBackground 
           source={ImagePath.FlagImageBackground} // Replace with your image URL
           style={styles.flagBackground}
           imageStyle={{ resizeMode: 'cover' }}
@@ -328,6 +327,11 @@ const Dashboard = ({ navigation, route }) => {
       </View>
       </View>
       </ImageBackground>
+      </View>  
+    <ScrollView style={styles.DashBoardMain}>
+      {/* Profile Bar */}
+      <StatusBar animated={true} barStyle={'dark-content'} backgroundColor={styles.statusBarColor} />
+     
       {/* Account Number Bar */}
       <View style={styles.DashboardAccContainer}>
         <Text style={styles.DashBoradProfilAccText}>{t("BP") + ": " + accountData.BP_No}</Text>
@@ -457,8 +461,9 @@ const Dashboard = ({ navigation, route }) => {
                 <Text style={styles.DashboardSubHeaderTxt1}>{t("ETB") + " : " + billHistoryData ? (billHistoryData[0]?.Amount ? (billHistoryData[0]?.Amount).trim() : 0) : 0}</Text>
                 {/*  <Text style={styles.DashboardUSDTxt}>{"ETB "+ unpaidDueData ? unpaidDueData.Invoice_Amount :''}</Text> */}
               </View>
-              <TouchableOpacity style={styles.DashboardPayBillBtn} onPress={() => { navigation.navigate("BillHistory") }}
+              <TouchableOpacity style={styles.DashboardPayBillBtn}
                 onPress={() =>{
+                  navigation.navigate("BillHistory")
                   if(!isConnected) {
                     Alert.alert(
                           '',
@@ -577,6 +582,7 @@ const Dashboard = ({ navigation, route }) => {
         </Modal>
       </View>
     </ScrollView>
+    </View> 
   );
 };
 

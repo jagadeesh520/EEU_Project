@@ -11,7 +11,7 @@ import {
   ScrollView,
   FlatList,
   Button,
-  DatePicker,
+  ActivityIndicator,
 } from 'react-native';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
@@ -36,7 +36,7 @@ const Payment = ({navigation}) => {
   const [isSubmit, setSubmit] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState('');
   const [countryCode, setCountryCode] = useState('+251');
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [tempCurrentData, setTempCurrentData] = useState({});
   const onBackPress = () => {
@@ -72,7 +72,6 @@ const Payment = ({navigation}) => {
       .then(response => response.json())
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res;
-        setLoading(false)
         setUnpaidDueData(data.Record);
       });
   };
@@ -94,12 +93,13 @@ const Payment = ({navigation}) => {
   };
   const onPressPaymentProceed = async () => {
     // var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
-    var url = constant.PAY_BASE_URL_PROD // prod
+    var url = constant.PAY_BASE_URL_PROD + constant.UNPAID_DEMAND_NOTE_PAYMENT;
     console.log(url, "url")
     let amount =
       tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Amount).trim()
         : 0;
+      console.log("amountttttttttttttttttttttt",amount);
     let externalReference =
     tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Ref_No).toString()
@@ -136,13 +136,13 @@ const Payment = ({navigation}) => {
       },
       paymentRequest: {
         amount: amount,
-        callbackUrl: 'http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS',
+        callbackUrl: 'http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS',
         externalReference: externalRef,
         payerPhone: '251' + mobileNo,
         reason: externalReference,
       },
     };
-   console.log(data, 'data');
+   // console.log(data, 'data');
     if (num_of_attempt <= 100) {
       fetch(url, {
         method: 'POST',
@@ -151,18 +151,16 @@ const Payment = ({navigation}) => {
         },
         body: JSON.stringify({
           authorization: {
-            merchantCode: '453847',
-            merchantTillNumber: '45384700',
+            merchantCode: '220261',
+            merchantTillNumber: '22026100',
             requestId: requestID,
             requestSignature: hashPassword,
           },
           paymentRequest: {
             amount: amount,
             // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-            // "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",
-            // "callbackUrl": "https://10.10.84.19/RESTAdapter/paymentDataAWAS",// production last change
-            // callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
-           "callbackUrl": "https://proxy.awash.com/RESTAdapter/paymentDataAWAS",
+            // "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",// Prod
+            callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
             externalReference: externalRef,
             payerPhone: '251' + mobileNo,
             reason: externalReference,
@@ -497,23 +495,29 @@ const Payment = ({navigation}) => {
                 </View>
                 <Text style={styles.ErrorMsg}>{ErrorMsg}</Text>
               </View>
+              {isLoading &&
+                   <View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                     <ActivityIndicator size="small" />
+                     <Text style={{ marginLeft: 10}} >Processing....</Text>
+                   </View>
+              } 
               <View style={{display: 'flex', flexDirection: 'row'}}>
                 <TouchableOpacity
                   style={[styles.PaymentBtn, {backgroundColor: '#63AA5A'}]}
                   onPress={() => {
                     setIsPayment(false);
+                    setLoading(false);
                   }}>
                   <Text style={[styles.RegisterBtnTxt, {color: '#FFF'}]}>
                     {t('CANCEL')}
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.PaymentBtn,
-                    {backgroundColor: '#63AA5A', marginLeft: 10},
-                  ]}
+                 
+                <TouchableOpacity disabled={isLoading}
+                  style={[styles.PaymentBtn, { backgroundColor: isLoading ? '#DCDCDC' : '#63AA5A' }]}
                   onPress={() => { 
                     setSubmit(true);
+                    setLoading(true);
                     onPressPaymentProceed();
                   }}>
                   <Text style={[styles.RegisterBtnTxt, {color: '#FFF'}]}>

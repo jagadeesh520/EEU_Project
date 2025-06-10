@@ -24,8 +24,9 @@ const FAQModal = ({ navigation }) => {
         navigation.goBack("BottomTab")
     }
     return (
+       <View style={styles.mainHeaderCon}> 
+        <CommonHeader title={t("FAQ")} onBackPress ={onBackPress} navigation={navigation}/>
         <ScrollView style={styles.DashBoardMain}>
-            <CommonHeader title={t("FAQ")} onBackPress ={onBackPress} navigation={navigation} navigation={navigation}/>
             {/* <View style={styles.FAQheaderMain}>
                 <TouchableOpacity
                     style={styles.FAQbackicon}
@@ -52,6 +53,7 @@ const FAQModal = ({ navigation }) => {
             </ScrollView>
             {/* </View> */}
         </ScrollView>
+       </View> 
     );
 };
 

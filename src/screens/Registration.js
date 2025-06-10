@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import Styles from '../CommonComponent/Styles';
 import { ImagePath } from '../CommonComponent/ImagePath';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,8 @@ const Registration = ({navigation}) => {
     const [invalidPassword, setInvalidPassword] = useState("")
     const [invalidSecurity, setInvalidSecurity] = useState("")
     const [invalidAnswer, setInvalidAnswer] = useState("")
-
+    const [ isVerifyAcc, setIsVerifyAcc ] = useState(false);
+    const [isLoading, setLoading]= useState(false);
     const validAccount = () => {
       setIsDisabled(!isDisabled)
       console.log('Yes button clicked')
@@ -58,6 +59,7 @@ const Registration = ({navigation}) => {
       });
     }; 
     const onVerifyAccountId = () => {
+      setLoading(true);
       var url = constant.BASE_URL + constant.VALIDATION
       fetch(url, {
         method: 'POST',
@@ -70,6 +72,7 @@ const Registration = ({navigation}) => {
         .then((response) =>
           response.json())
         .then(responseData => {
+          setLoading(false);
           console.log(responseData, "responseData")
           setAccountStatus(responseData.Record ? responseData.Record.Status : '')
           if (responseData.Record && responseData.Record.Status == "VALID CA") {
@@ -133,6 +136,7 @@ const Registration = ({navigation}) => {
     } 
     const onSignUpPressed = () => {
       if (validateInputs()) { 
+        setLoading(true);
         var url = constant.BASE_URL + constant.NEW_REGISTRATION_POST
      return fetch(url, {
         method: 'POST',
@@ -149,7 +153,7 @@ const Registration = ({navigation}) => {
       })
         .then((response) => response.json())
         .then(responseData => {
-          console.log(responseData, "Success! Registration No. Generated.")
+          setLoading(false);
           if (responseData.Record.Status == 'Success! Registration No. Generated.') {
             //storeData(responseData.Record.ContractAccount)
             showToast('success', responseData.Record.Status +" , Registration No: " + responseData.Record.RegistrationNo);
@@ -220,8 +224,18 @@ const Registration = ({navigation}) => {
                 maxLength={12}
               />
            </View>
-           <TouchableOpacity style={[styles.RegisterBtn, { backgroundColor: isDisabled ? '#DCDCDC' : '#63AA5A' }]} disabled={isDisabled} onPress={() => { onVerifyAccountId() }}>
-              <Text style={styles.RegisterBtnTxt} editable={!isDisabled  }>{t("VERIFY ACCOUNT NO")}</Text>
+            {isLoading && isVerifyAcc &&
+              <View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                <ActivityIndicator size="small" />
+                <Text style={{ marginLeft: 10, marginBottom: 10}} >Processing....</Text>
+              </View>
+            } 
+           <TouchableOpacity disabled={(isLoading || isDisabled)} style={[styles.RegisterBtn, { backgroundColor: isDisabled || isLoading ? '#DCDCDC' : '#63AA5A' }]} 
+              onPress={() => {
+                 setIsVerifyAcc(true);
+                 onVerifyAccountId()
+            }}>
+              <Text style={styles.RegisterBtnTxt} >{t("VERIFY ACCOUNT NO")}</Text>
            </TouchableOpacity> 
            <Text style={styles.StartMainHeader}>{t("Account Create")}</Text>
            <View style={styles.Margin_10}>
@@ -357,7 +371,13 @@ const Registration = ({navigation}) => {
            />
               <Text style={styles.ErrorMsg}>{invalidAnswer}</Text>
            </View>
-           <TouchableOpacity disabled = { isDisabled ? false : true } style={[styles.RegisterBtn, { backgroundColor: isDisabled ? '#63AA5A' : '#DCDCDC' }]} onPress={() => {onSignUpPressed()}}>
+           {isLoading && isVerifyAcc === false &&
+              <View style={[styles.NewLoader, { marginLeft: 10, display: 'flex', flexDirection: 'row' }]}>
+                <ActivityIndicator size="small" />
+                <Text style={{ marginLeft: 10, marginBottom: 10}} >Processing....</Text>
+              </View>
+            } 
+           <TouchableOpacity disabled = { isDisabled || isLoading ? false : true } style={[styles.RegisterBtn, { backgroundColor: isDisabled || isLoading ? '#63AA5A' : '#DCDCDC' }]} onPress={() => {onSignUpPressed()}}>
               <Text style={[styles.RegisterBtnTxt, { color: accountStatus == "VALID CA" ?  '#FFF' : '#666666' }]}>{t("REGISTER")}</Text>
            </TouchableOpacity> 
            </View>
