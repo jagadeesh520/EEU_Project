@@ -17,7 +17,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { constant } from '../CommonComponent/Constant';
 import moment from 'moment';
 import useTheme from '../CommonComponent/ThemeProvider';
-
+import { SafeAreaView, Platform } from 'react-native';
 
 // create a component
 const Dashboard = ({ navigation, route }) => {
@@ -130,10 +130,10 @@ const Dashboard = ({ navigation, route }) => {
         ]);
         return true;
       };
-      BackHandler.addEventListener('hardwareBackPress', backAction);
+      // BackHandler.addEventListener('hardwareBackPress', backAction);
 
       return () => {
-        BackHandler.removeEventListener('hardwareBackPress', backAction);
+        // BackHandler.removeEventListener('hardwareBackPress', backAction);
       };
     }, [navigation])
   );
@@ -269,6 +269,8 @@ const Dashboard = ({ navigation, route }) => {
   }
   
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+
    <View style={styles.mainHeaderCon}>
     <View style={styles.dashboardHeader}>
      <ImageBackground 
@@ -583,6 +585,7 @@ const Dashboard = ({ navigation, route }) => {
       </View>
     </ScrollView>
     </View> 
+    </SafeAreaView>
   );
 };
 

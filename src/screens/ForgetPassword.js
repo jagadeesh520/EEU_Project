@@ -6,6 +6,7 @@ import { constant } from '../CommonComponent/Constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useToast } from 'react-native-toast-notifications';
+import { SafeAreaView } from 'react-native';
 
 const ForgetPassword = ({navigation}) => {
     const toast = useToast();
@@ -105,6 +106,7 @@ const ForgetPassword = ({navigation}) => {
     }
     }
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={styles.StartMain}>
            <View style={styles.ResetMainContainer}>
              <TouchableOpacity style={{ left: 0, position: 'absolute', top: 30 }} onPress={() =>{ navigation.navigate("Login") }}>
@@ -168,6 +170,7 @@ const ForgetPassword = ({navigation}) => {
            </View>
           
         </View>
+        </SafeAreaView>
     );
 };
 

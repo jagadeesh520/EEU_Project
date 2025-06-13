@@ -18,6 +18,7 @@ import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import { constant } from '../CommonComponent/Constant';
 import RNFS from 'react-native-fs';  // Import RNFS
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
+import { SafeAreaView, Platform } from 'react-native';
 
 // create a component
 const MoveOutServiceRequest = ({navigation}) => {
@@ -191,7 +192,7 @@ const MoveOutServiceRequest = ({navigation}) => {
       }
     
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
     
         const image = await ImagePicker.openCamera({
           width: 400,
@@ -237,7 +238,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -396,7 +397,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
     
-      setIsUploading(true);
+      // setIsUploading(true);
     
       try {
         const image = await ImagePicker.openCamera({
@@ -448,7 +449,7 @@ const MoveOutServiceRequest = ({navigation}) => {
         return;
       }
       try {
-        setIsUploading(true);
+        // setIsUploading(true);
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.pdf],
         });
@@ -674,6 +675,7 @@ const MoveOutServiceRequest = ({navigation}) => {
     };
     
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
        <View style={styles.mainHeaderCon}>
         <CommonHeader title={t("Move Out Service Request")} onBackPress ={onBackPress} navigation={navigation}/>
         <ScrollView style={styles.DashBoardMain}>
@@ -879,6 +881,7 @@ const MoveOutServiceRequest = ({navigation}) => {
           </Modal>  
         </ScrollView> 
      </View>   
+     </SafeAreaView>
     );
 };
 

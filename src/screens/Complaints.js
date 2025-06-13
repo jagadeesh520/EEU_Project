@@ -9,7 +9,7 @@ import { constant } from '../CommonComponent/Constant';
 import { useTranslation } from 'react-i18next';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/AntDesign';
-
+import { SafeAreaView, Platform } from 'react-native';
 // create a component
 const Complaints = ({navigation}) => {
     const { t, i18n } = useTranslation();
@@ -148,6 +148,7 @@ const Complaints = ({navigation}) => {
       };
     
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
        <View style={styles.mainHeaderCon}>
           <CommonHeader title={ isRaiseComplaint ? t("Raise Complaint") : t("Complaint")} onBackPress ={onBackPress} navigation={navigation}/>
             {isLoading &&
@@ -312,6 +313,7 @@ const Complaints = ({navigation}) => {
               </View> : null }
         </ScrollView>
        </View> 
+       </SafeAreaView>
     );
 };
 

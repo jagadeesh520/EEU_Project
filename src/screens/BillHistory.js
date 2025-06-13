@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/AntDesign';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNFS from 'react-native-fs';  // Import RNFS
+import { SafeAreaView, Platform } from 'react-native';
 
  // create a component
 const BillHistory = ({navigation}) => {
@@ -304,6 +305,7 @@ const BillHistory = ({navigation}) => {
         alert(file.filePath);
     }
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
        <View style={styles.mainHeaderCon}>
          <CommonHeader title={t("Bill History")} onBackPress ={onBackPress} navigation={navigation}/>
             {isLoading &&
@@ -442,6 +444,7 @@ const BillHistory = ({navigation}) => {
             </View>  */}
         </ScrollView>
         </View>
+        </SafeAreaView>
     );
 };
  

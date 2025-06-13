@@ -24,6 +24,7 @@ import CommonHeader from '../CommonComponent/CommonComponent';
 import Styles from '../CommonComponent/Styles';
 import { constant } from '../CommonComponent/Constant';
 
+
 const ViewBillHistoryTable = ({ navigation }) => {
   const [accountID, setAccountID] = useState({});
 
@@ -124,6 +125,7 @@ const ViewBillHistoryTable = ({ navigation }) => {
     navigation.goBack("BottomTab")
   }
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <ScrollView style={styles.DashBoardMain}>
       <CommonHeader title={t("Bill History")} onBackPress ={onBackPress} navigation={navigation}/>
       <View style={styles.details}>
@@ -208,6 +210,7 @@ const ViewBillHistoryTable = ({ navigation }) => {
         <Text style={styles.footext}>Powered By NuriFlex</Text>
       </View> */}
     </ScrollView>
+    </SafeAreaView>
   );
 }
 export default ViewBillHistoryTable;

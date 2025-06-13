@@ -24,6 +24,7 @@ import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import RNFS from 'react-native-fs';  // Import RNFS
 import { useThemes, darkTheme, lightTheme } from './../CommonComponent/Theme';
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
+import { SafeAreaView, Platform } from 'react-native';
 
 // Component
 const DocumentUpload = ({ route, navigation }) => {
@@ -579,6 +580,7 @@ const handlePDFUpload2 = async () => {
   }
   console.log(applicationDetails, "check--->")
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <View style={styles.StartMain}>
       <View style={styles.StartSubContainer}>
         <Image source={ImagePath.Logo} />
@@ -782,6 +784,7 @@ const handlePDFUpload2 = async () => {
           </Modal> 
      </ScrollView>
    </View>
+   </SafeAreaView>
   );
 };
 export default DocumentUpload;

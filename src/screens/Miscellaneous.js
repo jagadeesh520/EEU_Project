@@ -20,6 +20,7 @@ import moment from 'moment';
 import RNFS from 'react-native-fs';  // Import RNFS
 import { constant } from '../CommonComponent/Constant';
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
+import { SafeAreaView, Platform } from 'react-native';
 
 // create a component
 const Miscellaneous = ({navigation}) => {
@@ -229,6 +230,7 @@ const Miscellaneous = ({navigation}) => {
     };
     const renderTextInput = (name, placeholder, value, updateState, ErrorMsg, setErrorMsg) => {
         return(
+          
           <View>
           
           <View style={styles.Margin_10}>
@@ -285,7 +287,6 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
-          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -446,7 +447,6 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
-          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -467,7 +467,6 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
-          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -487,7 +486,6 @@ const Miscellaneous = ({navigation}) => {
         const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
         console.log(isPermitted);
         if (isPermitted !== RESULTS.GRANTED) {
-          setIsUploading(true); // ✅ Prevents "Welcome Back" alert
            const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
            console.log(isGranted);
            if(isGranted !== RESULTS.GRANTED) {
@@ -985,6 +983,7 @@ const Miscellaneous = ({navigation}) => {
         }
       }
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
        <View style={styles.mainHeaderCon}>
          <CommonHeader title={t("Miscellaneous")} onBackPress ={onBackPress} navigation={navigation}/>
          <ScrollView style={styles.DashBoardMain}>
@@ -1435,7 +1434,8 @@ const Miscellaneous = ({navigation}) => {
             </View>
           </Modal>  
         </ScrollView>  
-      </View>  
+      </View>
+      </SafeAreaView>  
     );
 };
 

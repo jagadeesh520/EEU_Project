@@ -1,13 +1,16 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 // create a component
 const Support = () => {
     return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={styles.container}>
             <Text>Support</Text>
         </View>
+        </SafeAreaView>
     );
 };
 

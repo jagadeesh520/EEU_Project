@@ -6,7 +6,7 @@ import {ImagePath} from '../CommonComponent/ImagePath';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constant } from '../CommonComponent/Constant';
 import { useTranslation } from 'react-i18next';
-
+import { SafeAreaView, Platform } from 'react-native';
 // create a component
 const BillDue = ({navigation}) => {
     const { t, i18n } = useTranslation();
@@ -43,6 +43,7 @@ const BillDue = ({navigation}) => {
       }
     };
     return (
+<SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View>
             <CommonHeader title={t("Bill Due")} onBackPress ={onBackPress} navigation={navigation}/>
             { unpaidDueData && Object.keys(unpaidDueData).length > 0 ?
@@ -94,6 +95,7 @@ const BillDue = ({navigation}) => {
             </View>
             </View>: null }
         </View>
+        </SafeAreaView>
     );
 };
 

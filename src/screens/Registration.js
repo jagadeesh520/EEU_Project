@@ -7,6 +7,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useToast } from 'react-native-toast-notifications';
 import { constant } from '../CommonComponent/Constant';
+import { SafeAreaView, Platform } from 'react-native';
+
 const Registration = ({navigation}) => {
     const toast = useToast();
     const { t, i18n } = useTranslation();
@@ -200,6 +202,7 @@ const Registration = ({navigation}) => {
       );
     };
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={styles.StartMain}>
            <View style={styles.RegisterMainContainer}>
              <TouchableOpacity style={{ left: 0, position: 'absolute', top: 30 }} onPress={() =>{ navigation.navigate("Login") }}>
@@ -383,6 +386,7 @@ const Registration = ({navigation}) => {
            </View>
           </ScrollView>
         </View>
+        </SafeAreaView>
     );
 };
 

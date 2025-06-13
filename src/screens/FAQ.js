@@ -4,6 +4,7 @@ import BackIcon from 'react-native-vector-icons/Ionicons';
 import Styles from '../CommonComponent/Styles';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import { useTranslation } from 'react-i18next';
+import { SafeAreaView, Platform } from 'react-native';
 
 const FAQModal = ({ navigation }) => {
     const {theme, styles, changeTheme} = Styles()
@@ -24,6 +25,7 @@ const FAQModal = ({ navigation }) => {
         navigation.goBack("BottomTab")
     }
     return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
        <View style={styles.mainHeaderCon}> 
         <CommonHeader title={t("FAQ")} onBackPress ={onBackPress} navigation={navigation}/>
         <ScrollView style={styles.DashBoardMain}>
@@ -54,6 +56,7 @@ const FAQModal = ({ navigation }) => {
             {/* </View> */}
         </ScrollView>
        </View> 
+       </SafeAreaView>
     );
 };
 

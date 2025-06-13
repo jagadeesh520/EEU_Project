@@ -13,6 +13,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { SafeAreaView, Platform } from 'react-native';
 
 // Component
 const CANumberTrack = ({ navigation }) => {
@@ -226,6 +227,7 @@ const CANumberTrack = ({ navigation }) => {
     }
    }
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <View style={styles.StartMain}>
       <View style={styles.StartSubContainer}>
         <Image source={ImagePath.Logo} />
@@ -368,6 +370,7 @@ const CANumberTrack = ({ navigation }) => {
         </View>
      </ScrollView>
    </View>
+   </SafeAreaView>
   );
 };
 export default CANumberTrack;

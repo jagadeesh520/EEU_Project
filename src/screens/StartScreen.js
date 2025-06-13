@@ -4,6 +4,8 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Styles from './../CommonComponent/Styles';
 import { ImagePath } from './../CommonComponent/ImagePath';
 import { useThemes } from './../CommonComponent/Theme';
+import { SafeAreaView } from 'react-native';
+
 import {
     widthPercentageToDP as responsiveWidth,
     heightPercentageToDP as responsiveHeight,
@@ -20,6 +22,7 @@ import {
 const StartScreen = ({navigation}) => {
   const {theme, styles, changeTheme} = Styles()
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={styles.StartMain}>
             <View style={styles.StartSubContainer}>
                <Image source={ImagePath.Logo}/>
@@ -40,6 +43,7 @@ const StartScreen = ({navigation}) => {
                </TouchableOpacity> 
             </View>
         </View>
+        </SafeAreaView>
     );
 };
  

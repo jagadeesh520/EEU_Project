@@ -17,6 +17,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import { constant } from '../CommonComponent/Constant';
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
+import { SafeAreaView } from 'react-native';
 
 const IDType = [
     { label: "Passport", value:"Passport" },
@@ -603,6 +604,7 @@ const ServiceShifting = ({ navigation }) => {
         }
       }
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
        <View style={styles.mainHeaderCon}>
          <CommonHeader title={t("Service Shifting")} onBackPress={onBackPress} navigation={navigation} />
          <ScrollView style={styles.DashBoardMain}>
@@ -803,6 +805,7 @@ const ServiceShifting = ({ navigation }) => {
           </Modal>  
         </ScrollView>
       </View>  
+      </SafeAreaView>
     );
 };
 

@@ -18,7 +18,6 @@ export const lightTheme = {
   headerText: '#F2F2F2',
   imageNameColor: '#000',
   commonHeaderBG: '#E5EEE0'
-
 };
 
 export const darkTheme = {

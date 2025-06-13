@@ -8,6 +8,8 @@ import { constant } from '../CommonComponent/Constant';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import { sha256, sha256Bytes } from 'react-native-sha256';
+import { SafeAreaView } from 'react-native';
+
 // create a component
 const ServiceRequest = ({navigation}) => {
     const { t, i18n } = useTranslation();
@@ -34,6 +36,7 @@ const ServiceRequest = ({navigation}) => {
       }
     
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View>
             <CommonHeader title={t("Service Request")} onBackPress ={onBackPress} navigation={navigation}/>
             <View style={{ marginTop: 20 }}>
@@ -49,6 +52,7 @@ const ServiceRequest = ({navigation}) => {
         </View>
              
         </View>
+        </SafeAreaView>
     );
 };
 

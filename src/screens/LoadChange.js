@@ -18,7 +18,7 @@ import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import RNFS from 'react-native-fs';  // Import RNFS
 import { constant } from '../CommonComponent/Constant';
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
-
+import { SafeAreaView, Platform } from 'react-native';
 
 // create a component
 const LoadChange = ({navigation}) => {
@@ -700,6 +700,7 @@ const openCamera = async () => {
       }
     }
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
        <View style={styles.mainHeaderCon}>
         <CommonHeader title={t("Load Change")} onBackPress ={onBackPress} navigation={navigation}/>
         <ScrollView style={styles.DashBoardMain}>
@@ -1020,6 +1021,7 @@ const openCamera = async () => {
           </Modal>  
         </ScrollView> 
       </View>   
+      </SafeAreaView>
     );
 };
 

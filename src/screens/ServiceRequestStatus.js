@@ -19,6 +19,7 @@ import {useTranslation} from 'react-i18next';
 import {useToast} from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useFocusEffect} from '@react-navigation/native';
+import { SafeAreaView } from 'react-native';
 
 // create a component
 const ServiceRequestStatus = ({navigation}) => {
@@ -169,6 +170,7 @@ const ServiceRequestStatus = ({navigation}) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <View style={styles.mainHeaderCon}>
        <CommonHeader
         title={t('Service Request Status')}
@@ -424,6 +426,7 @@ const ServiceRequestStatus = ({navigation}) => {
       ) : null}
     </ScrollView>
     </View>  
+    </SafeAreaView>
   );
 };
 

@@ -4,6 +4,7 @@ import BackIcon from 'react-native-vector-icons/Ionicons';
 import Styles from '../CommonComponent/Styles';
 import CommonHeader from '../CommonComponent/CommonComponent';
 import { useTranslation } from 'react-i18next';
+import { SafeAreaView, Platform } from 'react-native';
 
 const Share = ({ navigation }) => {
   const {theme, styles, changeTheme} = Styles()
@@ -12,6 +13,7 @@ const Share = ({ navigation }) => {
     navigation.goBack("BottomTab")
   }
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <ScrollView style={styles.DashBoardMain}>
       <CommonHeader title={t("Contact Us")} onBackPress ={onBackPress} navigation={navigation}/>
       {/* <View style={styles.ContactheaderMain}>
@@ -43,6 +45,7 @@ const Share = ({ navigation }) => {
         <Text style={styles.ContactaddressText}>0111550811/12</Text>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

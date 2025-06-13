@@ -21,6 +21,7 @@ import Close from 'react-native-vector-icons/AntDesign';
 import {data} from '../../Languages/data';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
+import { SafeAreaView, Platform } from 'react-native';
 
 const NewRegistration = ({navigation}) => {
     const toast = useToast();
@@ -1369,6 +1370,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       );
     };
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={styles.StartMain}>
            <View style={styles.RegisterMainContainer}>
              <TouchableOpacity style={{ left: 0, position: 'absolute', top: 30 }} onPress={() =>{ navigation.navigate("Login") }}>
@@ -2095,6 +2097,7 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
           </ScrollView> }
          
         </View>
+        </SafeAreaView>
     );
 };
 

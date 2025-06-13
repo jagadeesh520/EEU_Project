@@ -22,6 +22,8 @@ import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
 import {sha256, sha256Bytes} from 'react-native-sha256';
+import { SafeAreaView, Platform } from 'react-native';
+
 // create a component
 const Payment = ({navigation}) => {
   const {t, i18n} = useTranslation();
@@ -72,7 +74,6 @@ const Payment = ({navigation}) => {
       .then(response => response.json())
       .then(responseData => {
         const data = responseData.MT_UnpaidDemandNote_Res;
-        setLoading(false)
         setUnpaidDueData(data.Record);
       });
   };
@@ -94,12 +95,13 @@ const Payment = ({navigation}) => {
   };
   const onPressPaymentProceed = async () => {
     // var url = constant.PAY_BASE_URL + constant.UNPAID_DEMAND_NOTE_PAYMENT;
-    var url = constant.PAY_BASE_URL_PROD // prod
+    var url = constant.PAY_BASE_URL_PROD + constant.UNPAID_DEMAND_NOTE_PAYMENT;
     console.log(url, "url")
     let amount =
       tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Amount).trim()
         : 0;
+      console.log("amountttttttttttttttttttttt",amount);
     let externalReference =
     tempCurrentData && Object.keys(tempCurrentData).length > 0
         ? (tempCurrentData?.Ref_No).toString()
@@ -129,24 +131,20 @@ const Payment = ({navigation}) => {
     //console.log(externalRef, 'externalRef---->');
     var data = {
       authorization: {
-        merchantCode: '453847',
-        merchantTillNumber: '45384700',
+        merchantCode: '220261',
+        merchantTillNumber: '22026100',
         requestId: requestID,
         requestSignature: hashPassword,
       },
       paymentRequest: {
         amount: amount,
-        // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-        // "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",
-        // "callbackUrl": "https://10.10.84.19/RESTAdapter/paymentDataAWAS",// production last change
-        // callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
-       "callbackUrl": "https://proxy.awash.com/RESTAdapter/paymentDataAWAS",
+        callbackUrl: 'http://172.16.7.251:50100/RESTAdapter/paymentDataAWAS',
         externalReference: externalRef,
         payerPhone: '251' + mobileNo,
         reason: externalReference,
-      }
+      },
     };
-   console.log(data, 'data');
+   // console.log(data, 'data');
     if (num_of_attempt <= 100) {
       fetch(url, {
         method: 'POST',
@@ -155,18 +153,16 @@ const Payment = ({navigation}) => {
         },
         body: JSON.stringify({
           authorization: {
-            merchantCode: '453847',
-            merchantTillNumber: '45384700',
+            merchantCode: '220261',
+            merchantTillNumber: '22026100',
             requestId: requestID,
             requestSignature: hashPassword,
           },
           paymentRequest: {
             amount: amount,
             // "callbackUrl": "http://anerpap6.ethiopianelectricutility.et:50100/RESTAdapter/paymentDataAWAS",
-            // "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",
-            // "callbackUrl": "https://10.10.84.19/RESTAdapter/paymentDataAWAS",// production last change
-            // callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
-           "callbackUrl": "https://proxy.awash.com/RESTAdapter/paymentDataAWAS",
+            // "callbackUrl": "http://172.16.7.252:50100/RESTAdapter/paymentDataAWAS",// Prod
+            callbackUrl: 'http://10.10.88.144/RESTAdapter/paymentDataAWAS',
             externalReference: externalRef,
             payerPhone: '251' + mobileNo,
             reason: externalReference,
@@ -247,6 +243,7 @@ const Payment = ({navigation}) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <View>
       <CommonHeader
         title={t('Unpaid Demand Note')}
@@ -536,6 +533,7 @@ const Payment = ({navigation}) => {
         </TouchableWithoutFeedback>
       </Modal>
     </View>
+    </SafeAreaView>
   );
 };
 

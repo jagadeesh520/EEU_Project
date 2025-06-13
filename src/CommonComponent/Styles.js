@@ -814,10 +814,10 @@ const Styles = () => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+
             justifyContent: 'center',
         },
-        
-        ComplaintListHeader: {
+                ComplaintListHeader: {
             fontSize: wp(16),
             fontWeight: 'bold',
             color: '#212121',
@@ -884,6 +884,7 @@ const Styles = () => {
         },
         LoginTextInput: {
             width: wp(300),
+            minHeight: wp(40),
             fontSize: wp(14),
             borderWidth: 1,
             borderColor: 'lightgray',
@@ -965,9 +966,9 @@ const Styles = () => {
             width: wp(40),
             marginRight: wp(10)
         },
+
         CallIcon: { height: wp(30), width: wp(30) },
         LoginCallIcon: { height: wp(10), width: wp(10), marginLeft: wp(20) },
-
         CallText: { fontSize: wp(12) },
 
         FAQbackicon: {

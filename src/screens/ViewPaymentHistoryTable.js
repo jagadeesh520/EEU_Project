@@ -124,6 +124,7 @@ export default function ViewPaymentHistoryTable ({ navigation }) {
     navigation.goBack("BottomTab")
   }
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <ScrollView style={styles.DashBoardMain}>      
       <CommonHeader title={"Payment History"} onBackPress ={onBackPress} navigation={navigation}/>
       <View style={styles.details}>
@@ -178,6 +179,7 @@ export default function ViewPaymentHistoryTable ({ navigation }) {
         </ScrollView>
       </View>
     </ScrollView>
+    </SafeAreaView>
   )
 }
 

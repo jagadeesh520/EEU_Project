@@ -14,7 +14,7 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNFS from 'react-native-fs';  // Import RNFS
 import { ToWords } from 'to-words';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
-
+import { SafeAreaView } from 'react-native';
 
  // create a component
 const PaymentHistory = ({navigation}) => {
@@ -406,6 +406,7 @@ const PaymentHistory = ({navigation}) => {
     // }   
   }
     return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={styles.mainHeaderCon}>
       <CommonHeader title={t("Payment History")} onBackPress ={onBackPress} navigation={navigation}/>
          {isLoading &&
@@ -516,6 +517,7 @@ const PaymentHistory = ({navigation}) => {
                  {/* : null } */}
         </ScrollView>
       </View>  
+      </SafeAreaView>
     );
 };
  

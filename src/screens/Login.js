@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Dropdown } from 'react-native-element-dropdown';
+import { SafeAreaView } from 'react-native';
 
 // Component
 const Login = ({ navigation }) => {
@@ -210,9 +211,12 @@ const Login = ({ navigation }) => {
     );
   };
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
     <View style={styles.StartMain}>
       <View style={styles.StartSubContainer}>
-        <Image source={ImagePath.Logo} />
+      <View style={{ alignItems: 'center', marginTop: 20 }}>
+  <Image source={ImagePath.Logo} style={{ width: 120, height: 120, resizeMode: 'contain' }}/>
+      </View>
         <Text style={styles.StartMainHeader}>{t("Ethiopian Electric Utility")}</Text>
          <View style={{ display: 'flex', flexDirection: 'row', flex: 1, width: '90%', justifyContent: 'space-between', alignItems: 'center'}}> 
           <TouchableOpacity style={styles.callButton} onPress={() => { Linking.openURL(`tel:${905}`) }} >
@@ -239,7 +243,7 @@ const Login = ({ navigation }) => {
               
         </View> 
        </View>
-      <ScrollView style={styles.StartSubContainer1}>
+       <ScrollView style={styles.StartSubContainer1} keyboardShouldPersistTaps="handled">
         <View style={styles.StartSub}>
           <Text style={styles.StartMainHeader}>{t("Login to your account")}</Text>
           <View style={styles.Margin_10}>
@@ -409,6 +413,7 @@ const Login = ({ navigation }) => {
         </View>
       </Modal>
     </View>
+    </SafeAreaView>
   );
 };
 export default Login;
