@@ -18,6 +18,7 @@ import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import RNFS from 'react-native-fs';  // Import RNFS
 import { constant } from '../CommonComponent/Constant';
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
+import { Platform } from 'react-native';
 
 
 // create a component
@@ -221,24 +222,38 @@ const LoadChange = ({navigation}) => {
       return cameraGranted && storageGranted;
     };
     const handleImagePicker = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
-        setIsUploading(true);
-         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-          // Alert.alert(
-          //   '',
-          //   "The Gallery storage access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{} },
-          //   ]
-          // );
-         } 
+  try {
+    setIsUploading(true); // ✅ Prevents "Welcome Back" alert or premature modal closing
+
+    if (Platform.OS === 'android') {
+      let permission;
+
+      if (Platform.Version >= 33) {
+        // Android 13+ (API 33+)
+        permission = PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
+      } else {
+        // Android 12 and below
+        permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
       }
-      openGallery()
-    };
+
+      const result = await check(permission);
+      if (result !== RESULTS.GRANTED) {
+        const granted = await request(permission);
+        if (granted !== RESULTS.GRANTED) {
+          console.warn("Gallery access permission denied.");
+          return; // 🚫 Stop here if permission not granted
+        }
+      }
+    }
+
+    // ✅ Only open if permission was granted
+    openGallery();
+  } catch (error) {
+    console.error('Error checking gallery permission:', error);
+  } finally {
+    setIsUploading(false); // ✅ Restore normal behavior
+  }
+};
    const openGallery = async () => {
   if (typeof setIsUploading !== "function") {
     console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");
@@ -409,19 +424,38 @@ const openCamera = async () => {
       openCamera()
     };
     const handleImagePicker2 = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
-         setIsUploading(true);
-         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-         
-         } 
+  try {
+    setIsUploading(true); // ✅ Prevents "Welcome Back" alert or unexpected UI triggers
+
+    if (Platform.OS === 'android') {
+      let permission;
+
+      if (Platform.Version >= 33) {
+        // Android 13+ (API 33+)
+        permission = PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
+      } else {
+        // Android 12 and below
+        permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
       }
-      openGallery2()
-     
-    };
+
+      const result = await check(permission);
+      if (result !== RESULTS.GRANTED) {
+        const granted = await request(permission);
+        if (granted !== RESULTS.GRANTED) {
+          console.warn("Gallery access permission denied.");
+          return; // 🚫 Prevents opening gallery if permission not granted
+        }
+      }
+    }
+
+    // ✅ Safe to proceed
+    openGallery2();
+  } catch (error) {
+    console.error('Error checking gallery permission:', error);
+  } finally {
+    setIsUploading(false); // ✅ Always restore UI state
+  }
+};
     const openGallery2 = async () => {
       if (typeof setIsUploading !== "function") {
         console.error("setIsUploading is not a function. Make sure AppStateProvider wraps this component.");

@@ -21,6 +21,7 @@ import Close from 'react-native-vector-icons/AntDesign';
 import {data} from '../../Languages/data';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { AppStateContext } from '../CommonComponent/AppStateProvider';
+import { Platform } from 'react-native';
 
 const NewRegistration = ({navigation}) => {
     const toast = useToast();
@@ -1091,24 +1092,29 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
   
       return cameraGranted && storageGranted;
     };
-    const handleImagePicker = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
-         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-          // Alert.alert(
-          //   '',
-          //   "The Gallery storage access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{} },
-          //   ]
-          // );
-         } 
+  const handleImagePicker = async () => {
+    let permission;
+
+    if (Platform.OS === 'android') {
+      if (Platform.Version >= 33) {
+        permission = PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
+      } else {
+        permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
       }
-      openGallery()
-    };
+
+      const result = await check(permission);
+      if (result !== RESULTS.GRANTED) {
+        const granted = await request(permission);
+        if (granted !== RESULTS.GRANTED) {
+          console.warn('Permission denied');
+          return;
+        }
+      }
+    }
+
+    openGallery();
+  };
+
     openGallery = () => {
      try {
       setIsUploading(true); // Prevent Welcome Back alert
@@ -1164,23 +1170,22 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       }
     }
     const handleCameraCapture = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
-         const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-          console.log("denied")
-          //  Alert.alert(
-          //   '',
-          //   "The Camera access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{}  },
-          //   ]
-          // );
-         } 
+      if (Platform.OS === 'android') {
+        const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+        console.log('Camera check:', isPermitted);
+
+        if (isPermitted !== RESULTS.GRANTED) {
+          const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
+          console.log('Camera request:', isGranted);
+
+          if (isGranted !== RESULTS.GRANTED) {
+            console.warn('Camera permission denied');
+            return; // 🚫 don't continue if denied
+          }
+        }
       }
-      openCamera()
+
+      openCamera(); // ✅ only called if permission is granted
     };
     const handlePDFUpload = async () => { 
       try {
@@ -1203,23 +1208,30 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       }
     }
     const handleImagePicker2 = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
-         const isGranted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-          // Alert.alert(
-          //   '',
-          //   "The Gallery storage access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{} },
-          //   ]
-          // );
-         } 
+      let permission;
+
+      if (Platform.OS === 'android') {
+        if (Platform.Version >= 33) {
+          // Android 13 and above
+          permission = PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
+        } else {
+          // Android 12 and below
+          permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+        }
+
+        const isPermitted = await check(permission);
+        if (isPermitted !== RESULTS.GRANTED) {
+          const isGranted = await request(permission);
+          if (isGranted !== RESULTS.GRANTED) {
+            console.warn('Gallery access denied');
+            return;
+          }
+        }
       }
-      openGallery2()
+
+      openGallery2();
     };
+
     openGallery2 = () => {
      try{
       setIsUploading(true); 
@@ -1273,25 +1285,24 @@ const [selectedSubcity, setSelectedSubcity] = useState("");
       setIsUploading(false);
      }
     }
-    const handleCameraCapture2 = async () => {
-      const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
-      console.log(isPermitted);
-      if (isPermitted !== RESULTS.GRANTED) {
+   const handleCameraCapture2 = async () => {
+     if (Platform.OS === 'android') {
+       const isPermitted = await check(PERMISSIONS.ANDROID.CAMERA);
+       console.log('Camera2 check:', isPermitted);
+
+       if (isPermitted !== RESULTS.GRANTED) {
          const isGranted = await request(PERMISSIONS.ANDROID.CAMERA);
-         console.log(isGranted);
-         if(isGranted !== RESULTS.GRANTED) {
-          console.log("denied")
-          //  Alert.alert(
-          //   '',
-          //   "The Camera access is denied",
-          //   [
-          //     { text: 'OK', onPress: () =>{}  },
-          //   ]
-          // );
-         } 
-      }
-      openCamera2()
-    };
+         console.log('Camera2 request:', isGranted);
+
+         if (isGranted !== RESULTS.GRANTED) {
+           console.warn('Camera2 permission denied');
+           return; // 🚫 Do not open camera if not granted
+         }
+       }
+     }
+
+     openCamera2(); // ✅ Safe to open
+   };
     const handlePDFUpload2 = async () => { 
       try {
         setIsUploading(true);
