@@ -74,13 +74,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.ethiopian.electric.utility"
+    namespace "com.EthiopianElectricUtility"
     defaultConfig {
-        applicationId "com.ethiopian.electric.utility"
+        applicationId "com.EthiopianElectricUtility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 9
+        versionName "1.0.9"
     }
     signingConfigs {
         debug {
