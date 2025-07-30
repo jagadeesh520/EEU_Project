@@ -201,7 +201,7 @@ const ServiceRequestStatus = ({navigation}) => {
         <View style={{margin: 20}}>
           <View style={styles.ComplaintListMain}>
             <Text style={styles.ComplaintListTitle}>
-              {t('Recent Service Status')}
+              {t('Recent Service Requests')}
             </Text>
           </View>
 
@@ -228,7 +228,7 @@ const ServiceRequestStatus = ({navigation}) => {
                       style={{display: 'flex', flexDirection: 'row', flex: 1}}>
                       <View style={{display: 'flex', flex: 0.5}}>
                         <Text style={styles.ComplaintListHeader}>
-                          {t('Complaint No') + ' '}
+                          {t('Service Request No') + ' '}
                         </Text>
                         <Text style={styles.ComplaintListHeaderValue}>
                           {data.ComplaintNumber}
@@ -236,7 +236,7 @@ const ServiceRequestStatus = ({navigation}) => {
                       </View>
                       <View style={{display: 'flex', flex: 0.5}}>
                         <Text style={styles.ComplaintListHeader}>
-                          {t('Complaint Status') + ' '}
+                          {t('Service Status') + ' '}
                         </Text>
                         <Text style={styles.ComplaintListHeaderValue}>
                           {data?.ComplaintStatus}

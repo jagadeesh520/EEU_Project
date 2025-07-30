@@ -184,11 +184,11 @@ const Complaints = ({navigation}) => {
                   </TouchableOpacity>
                    <View style={{ display: 'flex', flexDirection: 'row', flex: 1}}>  
                     <View style={{ display: 'flex', flex: 0.5}}>
-                     <Text style={styles.ComplaintListHeader}>{t("Complaint No") + " "}</Text>
+                     <Text style={styles.ComplaintListHeader}>{t("Service Request No") + " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data.ComplaintNumber}</Text>
                     </View>
                     <View style={{ display: 'flex', flex: 0.5}}>
-                     <Text style={styles.ComplaintListHeader}>{t("Complaint Status") + " "}</Text>
+                     <Text style={styles.ComplaintListHeader}>{t("Service Status") + " "}</Text>
                      <Text style={styles.ComplaintListHeaderValue}>{data?.ComplaintStatus}</Text>
                     </View>
                    </View>
