@@ -79,31 +79,43 @@ const ForgetPassword = ({navigation}) => {
     const resetOnClick = () => {
       if (validateInputs()) {
         fetch(constant.BASE_URL + constant.RESET_PASSWORD, {
-            method: 'POST',
-            body: JSON.stringify({
-                Record: {
-                  ContractAccount: accountNo.CA_No,
-                  SecretAnswer: answer,
-                  Password: newPassword,
-                },
-            }),
+          method: 'POST',
+          body: JSON.stringify({
+            Record: {
+              ContractAccount: accNo,
+              SecretAnswer: answer,
+              Password: newPassword,
+            },
+          }),
         })
-            .then((response) => response.json())
-            .then(async (responseData) => {
-                if (responseData.Record.ValidationStatus === 'Password Successfully Updated') {
-                  showToast('success', responseData.Record.ValidationStatus);
-                  navigation.navigate("Login")
-                  setNewPassword("")
-                  setAnswer("")
-                } else {
-                  showToast('error', responseData.Record.ValidationStatus);
-                }
-            })
-            .catch((error) => {
-              notifyMessage(error)
-            });
-    }
-    }
+          .then(response => response.json())
+          .then(async responseData => {
+            if (
+              responseData.Record.ValidationStatus ===
+              'Password Successfully Updated'
+            ) {
+              showToast('success', responseData.Record.ValidationStatus);
+              Alert.alert('', t('Password Successfully Updated'), [
+                {
+                  text: 'Yes',
+                  onPress: () => {
+                    navigation.navigate('Login'), setVisible(false);
+                  },
+                },
+                {text: 'No', onPress: () => console.log('OK Pressed')},
+              ]);
+              navigation.navigate('Login');
+              setNewPassword('');
+              setAnswer('');
+            } else {
+              showToast('error', responseData.Record.ValidationStatus);
+            }
+          })
+          .catch(error => {
+            notifyMessage(error);
+          });
+      }
+    };
     return (
         <View style={styles.StartMain}>
            <View style={styles.ResetMainContainer}>
