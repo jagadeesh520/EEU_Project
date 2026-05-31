@@ -122,9 +122,9 @@ const Payment = ({navigation}) => {
 
     let externalRef =
       asyncData.CA_No +
-      '_' +
+      'A' +
       externalReference +
-      '_' +
+      'A' +
       num_of_attempt_convertion.toString();
     //console.log(externalRef, 'externalRef---->');
     var data = {

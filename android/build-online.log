@@ -1,0 +1,62 @@
+﻿To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:jar UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:jar UP-TO-DATE
+.\gradlew.bat : 
+At line:1 char:40
++ ... oject\android; .\gradlew.bat assembleRelease --no-daemon 2>&1 | Out-F ...
++                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+A problem occurred configuring project ':react-native-async-storage_async-storage'.
+> Could not resolve all dependencies for configuration ':react-native-async-storage_async-storage:classpath'.
+   > Could not resolve com.google.devtools.ksp:symbol-processing-gradle-plugin:1.9.24-1.0.20.
+     Required by:
+         project :react-native-async-storage_async-storage
+      > Could not resolve com.google.devtools.ksp:symbol-processing-gradle-plugin:1.9.24-1.0.20.
+         > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-gradl
+e-plugin/1.9.24-1.0.20/symbol-processing-gradle-plugin-1.9.24-1.0.20.pom'.
+            > Could not HEAD 'https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-gradle-plu
+gin/1.9.24-1.0.20/symbol-processing-gradle-plugin-1.9.24-1.0.20.pom'.
+               > Got SSL handshake exception during request. It might be caused by SSL misconfiguration
+                  > PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to 
+find valid certification path to requested target
+      > Could not resolve com.google.devtools.ksp:symbol-processing-gradle-plugin:1.9.24-1.0.20.
+         > Could not get resource 'https://dl.google.com/dl/android/maven2/com/google/devtools/ksp/symbol-processing-gr
+adle-plugin/1.9.24-1.0.20/symbol-processing-gradle-plugin-1.9.24-1.0.20.pom'.
+            > Could not HEAD 'https://dl.google.com/dl/android/maven2/com/google/devtools/ksp/symbol-processing-gradle-
+plugin/1.9.24-1.0.20/symbol-processing-gradle-plugin-1.9.24-1.0.20.pom'.
+               > Got SSL handshake exception during request. It might be caused by SSL misconfiguration
+                  > PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to 
+find valid certification path to requested target
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 29s
+13 actionable tasks: 3 executed, 10 up-to-date

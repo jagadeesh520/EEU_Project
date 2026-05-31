@@ -1,0 +1,629 @@
+﻿To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:jar UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:jar UP-TO-DATE
+
+> Configure project :react-native-reanimated
+Android gradle plugin: 8.6.0
+Gradle: 8.10.2
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateAutolinkingPackageList UP-TO-DATE
+> Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+> Task :app:generateCodegenArtifactsFromSchema SKIPPED
+> Task :app:generatePackageList
+> Task :app:preBuild
+> Task :app:preReleaseBuild
+> Task :app:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-async-storage_async-storage:preBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:preReleaseBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-clipboard_clipboard:preBuild UP-TO-DATE
+> Task :react-native-clipboard_clipboard:preReleaseBuild UP-TO-DATE
+> Task :react-native-clipboard_clipboard:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-community_datetimepicker:preBuild UP-TO-DATE
+> Task :react-native-community_datetimepicker:preReleaseBuild UP-TO-DATE
+> Task :react-native-community_datetimepicker:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-community_netinfo:preBuild UP-TO-DATE
+> Task :react-native-community_netinfo:preReleaseBuild UP-TO-DATE
+> Task :react-native-community_netinfo:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-date-picker:preBuild UP-TO-DATE
+> Task :react-native-date-picker:preReleaseBuild UP-TO-DATE
+> Task :react-native-date-picker:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-document-picker:preBuild UP-TO-DATE
+> Task :react-native-document-picker:preReleaseBuild UP-TO-DATE
+> Task :react-native-document-picker:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-fs:preBuild UP-TO-DATE
+> Task :react-native-fs:preReleaseBuild UP-TO-DATE
+> Task :react-native-fs:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-gesture-handler:preBuild UP-TO-DATE
+> Task :react-native-gesture-handler:preReleaseBuild UP-TO-DATE
+> Task :react-native-gesture-handler:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-html-to-pdf:preBuild UP-TO-DATE
+> Task :react-native-html-to-pdf:preReleaseBuild UP-TO-DATE
+> Task :react-native-html-to-pdf:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-image-crop-picker:preBuild UP-TO-DATE
+> Task :react-native-image-crop-picker:preReleaseBuild UP-TO-DATE
+> Task :react-native-image-crop-picker:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-image-picker:preBuild UP-TO-DATE
+> Task :react-native-image-picker:preReleaseBuild UP-TO-DATE
+> Task :react-native-image-picker:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-masked-view_masked-view:preBuild UP-TO-DATE
+> Task :react-native-masked-view_masked-view:preReleaseBuild UP-TO-DATE
+> Task :react-native-masked-view_masked-view:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-permissions:preBuild UP-TO-DATE
+> Task :react-native-permissions:preReleaseBuild UP-TO-DATE
+> Task :react-native-permissions:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-picker_picker:preBuild UP-TO-DATE
+> Task :react-native-picker_picker:preReleaseBuild UP-TO-DATE
+> Task :react-native-picker_picker:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-reanimated:prepareReanimatedHeadersForPrefabs
+> Task :react-native-reanimated:prepareWorkletsHeadersForPrefabs
+> Task :react-native-reanimated:preBuild
+> Task :react-native-reanimated:preReleaseBuild
+> Task :react-native-safe-area-context:preBuild UP-TO-DATE
+> Task :react-native-safe-area-context:preReleaseBuild UP-TO-DATE
+> Task :react-native-screens:preBuild UP-TO-DATE
+> Task :react-native-screens:preReleaseBuild UP-TO-DATE
+> Task :react-native-reanimated:writeReleaseAarMetadata
+> Task :react-native-sha256:preBuild UP-TO-DATE
+> Task :react-native-safe-area-context:writeReleaseAarMetadata
+> Task :react-native-sha256:preReleaseBuild UP-TO-DATE
+> Task :react-native-screens:writeReleaseAarMetadata
+> Task :react-native-vector-icons:preBuild UP-TO-DATE
+> Task :react-native-vector-icons:preReleaseBuild UP-TO-DATE
+> Task :react-native-sha256:writeReleaseAarMetadata
+> Task :react-native-vector-icons:writeReleaseAarMetadata
+
+> Task :app:createBundleReleaseJsAndAssets
+debug Using @react-naive-community/cli-tools' logger
+debug Reading Metro config from C:\EEU_Project\EEU_Project\metro.config.js
+ WARN  the transform cache was reset.
+                Welcome to Metro v0.81.5
+              Fast - Scalable - Integrated
+
+
+info Writing bundle output to: android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle
+info Writing sourcemap output to: android\app\build\intermediates\sourcemaps\react\release\index.android.bundle.packager.map
+info Done writing bundle output
+info Done writing sourcemap output
+info Copying 42 asset files
+info Done copying assets
+.\gradlew.bat : android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:1199:23: 
+warning: the variable "DebuggerInternal" was not declared in function "__shouldPauseOnThrow"
+At line:1 char:40
++ ... ct\android; .\gradlew.bat assembleRelease --no-daemon -x :react-nativ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (android\app\bui...ldPauseOnThrow":String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+        return typeof DebuggerInternal !== 'undefined' && DebuggerInternal.sh...
+                      ^~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:5541:7: warning: the variable 
+"setTimeout" was not declared in function "logCapturedError"
+      setTimeout(function () {
+      ^~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:3775:31: warning: the variable 
+"nativeFabricUIManager" was not declared in anonymous function " 134#"
+  var _nativeFabricUIManage = nativeFabricUIManager,
+                              ^~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:3803:21: warning: the variable 
+"clearTimeout" was not declared in anonymous function " 134#"
+    cancelTimeout = clearTimeout;
+                    ^~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:3816:51: warning: the variable 
+"RN$enableMicrotasksInReact" was not declared in anonymous function " 134#"
+... "undefined" !== typeof RN$enableMicrotasksInReact && !!RN$enableMicrotask...
+                           ^~~~~~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:3817:47: warning: the variable 
+"queueMicrotask" was not declared in anonymous function " 134#"
+...otask = "function" === typeof queueMicrotask ? queueMicrotask : scheduleTi...
+                                 ^~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:8238:30: warning: the variable 
+"__REACT_DEVTOOLS_GLOBAL_HOOK__" was not declared in anonymous function " 134#"
+  if ("undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__) {
+                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:10280:5: warning: the variable 
+"setImmediate" was not declared in function "handleResolved"
+    setImmediate(function () {
+    ^~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:13994:12: warning: the variable 
+"fetch" was not declared in anonymous function " 388#"
+    fetch: fetch,
+           ^~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:13995:14: warning: the variable 
+"Headers" was not declared in anonymous function " 388#"
+    Headers: Headers,
+             ^~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:13996:14: warning: the variable 
+"Request" was not declared in anonymous function " 388#"
+    Request: Request,
+             ^~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:13997:15: warning: the variable 
+"Response" was not declared in anonymous function " 388#"
+    Response: Response
+              ^~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:14154:24: warning: the variable 
+"FileReader" was not declared in function "readBlobAsArrayBuffer"
+      var reader = new FileReader();
+                       ^~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:14205:36: warning: the variable 
+"Blob" was not declared in anonymous function " 399#"
+        } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+                                   ^~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:14207:40: warning: the variable 
+"FormData" was not declared in anonymous function " 399#"
+        } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+                                       ^~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:14209:44: warning: the variable 
+"URLSearchParams" was not declared in anonymous function " 399#"
+...e if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body...
+                                 ^~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:14328:26: warning: the variable 
+"AbortController" was not declared in anonymous function " 405#"
+          var ctrl = new AbortController();
+                         ^~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:14462:23: warning: the variable 
+"XMLHttpRequest" was not declared in anonymous function " 409#"
+        var xhr = new XMLHttpRequest();
+                      ^~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:14007:71: warning: the variable 
+"self" was not declared in anonymous function " 391#"
+...undefined' && globalThis || typeof self !== 'undefined' && self ||
+                                      ^~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:22194:26: warning: the variable 
+"navigator" was not declared in anonymous function " 701#"
+  "undefined" !== typeof navigator && undefined !== navigator.scheduling && u...
+                         ^~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:22304:37: warning: the variable 
+"MessageChannel" was not declared in anonymous function " 701#"
+  };else if ("undefined" !== typeof MessageChannel) {
+                                    ^~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:22319:34: warning: the variable 
+"nativeRuntimeScheduler" was not declared in anonymous function " 701#"
+... = "undefined" !== typeof nativeRuntimeScheduler ? nativeRuntimeScheduler....
+                             ^~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:30404:34: warning: the variable 
+"requestAnimationFrame" was not declared in function "start 9#"
+...    this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
+                              ^~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:47218:9: warning: the property 
+"borderColor" was set multiple times in the object definition.
+        borderColor: '#D9D9D9',
+        ^~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:47212:9: note: The first 
+definition was here.
+        borderColor: 'lightgrey',
+        ^~~~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:47230:9: warning: the property 
+"borderColor" was set multiple times in the object definition.
+        borderColor: '#D9D9D9',
+        ^~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:47224:9: note: The first 
+definition was here.
+        borderColor: 'lightgrey',
+        ^~~~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:47241:9: warning: the property 
+"borderColor" was set multiple times in the object definition.
+        borderColor: '#D9D9D9',
+        ^~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:47236:9: note: The first 
+definition was here.
+        borderColor: 'lightgrey',
+        ^~~~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:142869:10: warning: the 
+variable "_WORKLET" was not declared in function "registerReanimatedError"
+    if (!_WORKLET) {
+         ^~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:143073:24: warning: Direct call 
+to eval(), but lexical scope is not supported.
+          workletFun = eval('(' + initData.code + '\n)');
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:143096:110: warning: the 
+variable "_toString" was not declared in function "valueUnpacker"
+...recognized by value unpacker: "${_toString(objectToUnpack)}".`);
+                                    ^~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:143675:132: warning: the 
+variable "location" was not declared in function "registerSensor"
+...E(_dependencyMap[5]).isWeb)() && location.protocol !== 'https:' ? ' Make s...
+                                    ^~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:146026:18: warning: the 
+variable "__reanimatedLoggerConfig" was not declared in function "createWorkletRuntime 3#"
+    var config = __reanimatedLoggerConfig;
+                 ^~~~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:157347:27: warning: the 
+variable "HTMLElement" was not declared in function "findDescendantWithExitingAnimation"
+    if (!(node instanceof HTMLElement)) {
+                          ^~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:157374:24: warning: the 
+variable "MutationObserver" was not declared in function "addHTMLMutationObserver"
+    var observer = new MutationObserver(function (mutationsList) {
+                       ^~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:159584:41: warning: the 
+variable "getComputedStyle" was not declared in function "fixElementPosition"
+...entBorderTopValue = parseInt(getComputedStyle(parent).borderTopWidth);
+                                ^~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:160028:26: warning: the 
+variable "structuredClone" was not declared in function "createAnimationWithInitialValues"
+    var animationStyle = structuredClone(_$$_REQUIRE(_dependencyMap[6]).Anima...
+                         ^~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:163824:24: warning: the 
+variable "_getAnimationTimestamp" was not declared in function "computeEasingProgress"
+    var elapsedTime = (_getAnimationTimestamp() - startingTimestamp) / 1000;
+                       ^~~~~~~~~~~~~~~~~~~~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:164188:5: warning: the variable 
+"jest" was not declared in function "beforeTest"
+    jest.useFakeTimers();
+    ^~~~
+android\app\build\generated\assets\createBundleReleaseJsAndAssets\index.android.bundle:171768:113: warning: the 
+variable "Intl" was not declared in function "PluralResolver"
+...ons.compatibilityJSON)) && (typeof Intl === 'undefined' || !Intl.PluralRul...
+                                      ^~~~
+
+> Task :app:checkReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :react-native-async-storage_async-storage:generateReleaseResValues
+> Task :react-native-async-storage_async-storage:generateReleaseResources
+> Task :react-native-async-storage_async-storage:packageReleaseResources
+> Task :react-native-clipboard_clipboard:generateReleaseResValues
+> Task :react-native-clipboard_clipboard:generateReleaseResources
+> Task :react-native-clipboard_clipboard:packageReleaseResources
+> Task :react-native-community_datetimepicker:generateReleaseResValues
+> Task :react-native-community_datetimepicker:generateReleaseResources
+> Task :react-native-community_datetimepicker:packageReleaseResources
+> Task :react-native-community_netinfo:generateReleaseResValues
+> Task :react-native-community_netinfo:generateReleaseResources
+> Task :react-native-community_netinfo:packageReleaseResources
+> Task :react-native-date-picker:generateReleaseResValues
+> Task :react-native-date-picker:generateReleaseResources
+> Task :react-native-date-picker:packageReleaseResources
+> Task :react-native-document-picker:generateReleaseResValues
+> Task :react-native-document-picker:generateReleaseResources
+> Task :react-native-document-picker:packageReleaseResources
+> Task :react-native-fs:generateReleaseResValues
+> Task :react-native-fs:generateReleaseResources
+> Task :react-native-fs:packageReleaseResources
+> Task :react-native-gesture-handler:generateReleaseResValues
+> Task :react-native-gesture-handler:generateReleaseResources
+> Task :react-native-gesture-handler:packageReleaseResources
+> Task :react-native-html-to-pdf:generateReleaseResValues
+> Task :react-native-html-to-pdf:generateReleaseResources
+> Task :react-native-html-to-pdf:packageReleaseResources
+> Task :react-native-image-crop-picker:generateReleaseResValues
+> Task :react-native-image-crop-picker:generateReleaseResources
+> Task :react-native-image-crop-picker:packageReleaseResources
+> Task :react-native-image-picker:generateReleaseResValues
+> Task :react-native-image-picker:generateReleaseResources
+> Task :react-native-image-picker:packageReleaseResources
+> Task :react-native-masked-view_masked-view:generateReleaseResValues
+> Task :react-native-masked-view_masked-view:generateReleaseResources
+> Task :react-native-masked-view_masked-view:packageReleaseResources
+> Task :react-native-permissions:generateReleaseResValues
+> Task :react-native-permissions:generateReleaseResources
+> Task :react-native-permissions:packageReleaseResources
+> Task :react-native-picker_picker:generateReleaseResValues
+> Task :react-native-picker_picker:generateReleaseResources
+> Task :react-native-picker_picker:packageReleaseResources
+> Task :react-native-reanimated:generateReleaseResValues
+> Task :react-native-reanimated:generateReleaseResources
+> Task :react-native-reanimated:packageReleaseResources
+> Task :react-native-safe-area-context:generateReleaseResValues
+> Task :react-native-safe-area-context:generateReleaseResources
+> Task :react-native-safe-area-context:packageReleaseResources
+> Task :react-native-screens:generateReleaseResValues
+> Task :react-native-screens:generateReleaseResources
+> Task :react-native-screens:packageReleaseResources
+> Task :react-native-sha256:generateReleaseResValues
+> Task :react-native-sha256:generateReleaseResources
+> Task :react-native-sha256:packageReleaseResources
+> Task :react-native-vector-icons:generateReleaseResValues
+> Task :react-native-vector-icons:generateReleaseResources
+> Task :react-native-vector-icons:packageReleaseResources
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :react-native-async-storage_async-storage:extractDeepLinksRelease
+> Task :app:parseReleaseLocalResources
+> Task :react-native-clipboard_clipboard:extractDeepLinksRelease
+> Task :react-native-community_datetimepicker:extractDeepLinksRelease
+> Task :react-native-community_netinfo:extractDeepLinksRelease
+> Task :react-native-date-picker:extractDeepLinksRelease
+> Task :react-native-community_datetimepicker:processReleaseManifest
+
+> Task :react-native-async-storage_async-storage:processReleaseManifest
+package="com.reactnativecommunity.asyncstorage" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-async-storage\async-storage\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.reactnativecommunity.asyncstorage" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-async-storage\async-storage\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-clipboard_clipboard:processReleaseManifest
+package="com.reactnativecommunity.clipboard" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-clipboard\clipboard\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.reactnativecommunity.clipboard" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-clipboard\clipboard\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-community_netinfo:processReleaseManifest
+package="com.reactnativecommunity.netinfo" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-community\netinfo\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.reactnativecommunity.netinfo" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-community\netinfo\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-date-picker:processReleaseManifest
+package="com.henninghall.date_picker" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-date-picker\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.henninghall.date_picker" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-date-picker\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-document-picker:extractDeepLinksRelease
+> Task :react-native-fs:extractDeepLinksRelease
+
+> Task :react-native-document-picker:processReleaseManifest
+package="com.reactnativedocumentpicker" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-document-picker\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.reactnativedocumentpicker" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-document-picker\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-gesture-handler:extractDeepLinksRelease
+
+> Task :react-native-fs:processReleaseManifest
+package="com.rnfs" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-fs\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.rnfs" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-fs\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-html-to-pdf:extractDeepLinksRelease
+> Task :react-native-image-crop-picker:extractDeepLinksRelease
+> Task :react-native-gesture-handler:processReleaseManifest
+> Task :react-native-image-picker:extractDeepLinksRelease
+
+> Task :react-native-image-crop-picker:processReleaseManifest
+package="com.reactnative.ivpusic.imagepicker" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-image-crop-picker\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.reactnative.ivpusic.imagepicker" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-image-crop-picker\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-html-to-pdf:processReleaseManifest
+package="com.christopherdro.htmltopdf" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-html-to-pdf\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.christopherdro.htmltopdf" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-html-to-pdf\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-masked-view_masked-view:extractDeepLinksRelease
+
+> Task :react-native-image-picker:processReleaseManifest
+package="com.imagepicker" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-image-picker\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.imagepicker" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-image-picker\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-permissions:extractDeepLinksRelease
+> Task :react-native-masked-view_masked-view:processReleaseManifest
+> Task :react-native-picker_picker:extractDeepLinksRelease
+> Task :react-native-permissions:processReleaseManifest
+> Task :react-native-reanimated:extractDeepLinksRelease
+
+> Task :react-native-picker_picker:processReleaseManifest
+package="com.reactnativecommunity.picker" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-picker\picker\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.reactnativecommunity.picker" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\@react-native-picker\picker\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-safe-area-context:extractDeepLinksRelease
+> Task :react-native-reanimated:processReleaseManifest
+> Task :react-native-screens:extractDeepLinksRelease
+
+> Task :react-native-safe-area-context:processReleaseManifest
+package="com.th3rdwave.safeareacontext" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-safe-area-context\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.th3rdwave.safeareacontext" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-safe-area-context\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-sha256:extractDeepLinksRelease
+
+> Task :react-native-screens:processReleaseManifest
+package="com.swmansion.rnscreens" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-screens\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.swmansion.rnscreens" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-screens\android\src\main\AndroidManifest.xml.
+
+> Task :app:mergeReleaseResources
+> Task :react-native-vector-icons:extractDeepLinksRelease
+
+> Task :react-native-sha256:processReleaseManifest
+package="com.sha256lib" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-sha256\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.sha256lib" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-sha256\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-vector-icons:processReleaseManifest
+package="com.oblador.vectoricons" found in source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-vector-icons\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.oblador.vectoricons" from the source AndroidManifest.xml: C:\EEU_Project\EEU_Project\node_modules\react-native-vector-icons\android\src\main\AndroidManifest.xml.
+
+> Task :react-native-async-storage_async-storage:compileReleaseLibraryResources
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :react-native-async-storage_async-storage:parseReleaseLocalResources
+> Task :react-native-clipboard_clipboard:compileReleaseLibraryResources
+> Task :app:processReleaseManifestForPackage
+> Task :react-native-clipboard_clipboard:parseReleaseLocalResources
+> Task :react-native-community_datetimepicker:compileReleaseLibraryResources
+> Task :react-native-community_netinfo:compileReleaseLibraryResources
+> Task :react-native-community_datetimepicker:parseReleaseLocalResources
+> Task :react-native-community_netinfo:parseReleaseLocalResources
+> Task :react-native-clipboard_clipboard:generateReleaseRFile
+> Task :react-native-async-storage_async-storage:generateReleaseRFile
+> Task :react-native-date-picker:compileReleaseLibraryResources
+> Task :react-native-community_datetimepicker:generateReleaseRFile
+> Task :react-native-community_netinfo:generateReleaseRFile
+> Task :react-native-document-picker:compileReleaseLibraryResources
+> Task :react-native-date-picker:parseReleaseLocalResources
+> Task :react-native-document-picker:parseReleaseLocalResources
+> Task :react-native-fs:compileReleaseLibraryResources
+> Task :react-native-date-picker:generateReleaseRFile
+> Task :react-native-document-picker:generateReleaseRFile
+> Task :react-native-fs:parseReleaseLocalResources
+> Task :react-native-gesture-handler:compileReleaseLibraryResources
+> Task :react-native-gesture-handler:parseReleaseLocalResources
+> Task :react-native-fs:generateReleaseRFile
+> Task :react-native-html-to-pdf:compileReleaseLibraryResources
+> Task :react-native-html-to-pdf:parseReleaseLocalResources
+> Task :react-native-image-crop-picker:compileReleaseLibraryResources
+> Task :react-native-image-crop-picker:parseReleaseLocalResources
+> Task :react-native-gesture-handler:generateReleaseRFile
+> Task :react-native-html-to-pdf:generateReleaseRFile
+> Task :react-native-image-picker:compileReleaseLibraryResources
+> Task :react-native-image-crop-picker:generateReleaseRFile
+> Task :react-native-image-picker:parseReleaseLocalResources
+> Task :react-native-masked-view_masked-view:compileReleaseLibraryResources
+> Task :react-native-masked-view_masked-view:parseReleaseLocalResources
+> Task :react-native-permissions:compileReleaseLibraryResources
+> Task :react-native-image-picker:generateReleaseRFile
+> Task :react-native-permissions:parseReleaseLocalResources
+> Task :react-native-masked-view_masked-view:generateReleaseRFile
+> Task :react-native-picker_picker:compileReleaseLibraryResources
+> Task :react-native-reanimated:compileReleaseLibraryResources
+> Task :react-native-picker_picker:parseReleaseLocalResources
+> Task :react-native-permissions:generateReleaseRFile
+> Task :react-native-reanimated:parseReleaseLocalResources
+> Task :react-native-picker_picker:generateReleaseRFile
+> Task :react-native-safe-area-context:compileReleaseLibraryResources
+> Task :react-native-reanimated:generateReleaseRFile
+> Task :react-native-safe-area-context:parseReleaseLocalResources
+> Task :react-native-sha256:compileReleaseLibraryResources
+> Task :react-native-screens:parseReleaseLocalResources
+> Task :react-native-safe-area-context:generateReleaseRFile
+> Task :react-native-sha256:parseReleaseLocalResources
+> Task :react-native-screens:compileReleaseLibraryResources
+> Task :react-native-screens:generateReleaseRFile
+> Task :react-native-vector-icons:compileReleaseLibraryResources
+> Task :react-native-sha256:generateReleaseRFile
+> Task :react-native-vector-icons:parseReleaseLocalResources
+> Task :react-native-async-storage_async-storage:generateReleaseBuildConfig
+> Task :react-native-vector-icons:generateReleaseRFile
+> Task :react-native-async-storage_async-storage:javaPreCompileRelease
+> Task :react-native-clipboard_clipboard:generateReleaseBuildConfig
+> Task :app:processReleaseResources
+
+> Task :react-native-async-storage_async-storage:compileReleaseJavaWithJavac
+C:\EEU_Project\EEU_Project\node_modules\@react-native-async-storage\async-storage\android\src\main\java\com\reactnative
+community\asyncstorage\AsyncStorageModule.java:84: warning: [removal] onCatalystInstanceDestroy() in NativeModule has 
+been deprecated and marked for removal
+  public void onCatalystInstanceDestroy() {
+              ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\EEU_Project\EEU_Project\node_modules\@react-native-async-storage\async-storage\android\src\javaPackage\java\co
+m\reactnativecommunity\asyncstorage\AsyncStoragePackage.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+1 warning
+
+> Task :react-native-clipboard_clipboard:javaPreCompileRelease
+> Task :react-native-community_datetimepicker:generateReleaseBuildConfig
+> Task :react-native-async-storage_async-storage:bundleLibCompileToJarRelease
+
+> Task :react-native-clipboard_clipboard:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\EEU_Project\EEU_Project\node_modules\@react-native-clipboard\clipboard\android\src\main\java\com\reactnativeco
+mmunity\clipboard\ClipboardPackage.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :react-native-community_datetimepicker:javaPreCompileRelease
+> Task :react-native-clipboard_clipboard:bundleLibCompileToJarRelease
+> Task :react-native-community_netinfo:generateReleaseBuildConfig
+
+> Task :react-native-community_datetimepicker:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :react-native-community_netinfo:javaPreCompileRelease
+> Task :react-native-date-picker:generateReleaseBuildConfig
+> Task :react-native-community_datetimepicker:bundleLibCompileToJarRelease
+
+> Task :react-native-community_netinfo:compileReleaseJavaWithJavac
+C:\EEU_Project\EEU_Project\node_modules\@react-native-community\netinfo\android\src\main\java\com\reactnativecommunity\
+netinfo\NetInfoModule.java:47: warning: [removal] onCatalystInstanceDestroy() in NativeModule has been deprecated and 
+marked for removal
+    public void onCatalystInstanceDestroy() {
+                ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+1 warning
+
+> Task :react-native-date-picker:javaPreCompileRelease
+> Task :react-native-document-picker:generateReleaseBuildConfig
+> Task :react-native-community_netinfo:bundleLibCompileToJarRelease
+
+Note: Some input files use or override a deprecated API.
+> Task :react-native-date-picker:compileReleaseJavaWithJavac
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :react-native-document-picker:javaPreCompileRelease
+> Task :react-native-fs:generateReleaseBuildConfig
+> Task :react-native-date-picker:bundleLibCompileToJarRelease
+
+> Task :react-native-document-picker:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :react-native-gesture-handler:checkKotlinGradlePluginConfigurationErrors
+> Task :react-native-fs:javaPreCompileRelease
+> Task :react-native-document-picker:bundleLibCompileToJarRelease
+> Task :react-native-gesture-handler:generateReleaseBuildConfig
+
+> Task :react-native-fs:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :react-native-reanimated:generateReleaseBuildConfig
+> Task :react-native-reanimated:packageNdkLibs NO-SOURCE
+> Task :react-native-reanimated:javaPreCompileRelease
+> Task :react-native-fs:bundleLibCompileToJarRelease
+> Task :react-native-gesture-handler:javaPreCompileRelease
+
+> Task :react-native-reanimated:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :react-native-html-to-pdf:generateReleaseBuildConfig
+> Task :react-native-html-to-pdf:javaPreCompileRelease
+> Task :react-native-reanimated:bundleLibCompileToJarRelease
+> Task :react-native-image-crop-picker:generateReleaseBuildConfig
+> Task :react-native-gesture-handler:compileReleaseKotlin FAILED
+
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+243 actionable tasks: 217 executed, 26 up-to-date
+Execution failed for task ':react-native-gesture-handler:compileReleaseKotlin'.
+> Inconsistent JVM-target compatibility detected for tasks 'compileReleaseJavaWithJavac' (1.8) and 
+'compileReleaseKotlin' (17).
+  
+  Consider using JVM Toolchain: https://kotl.in/gradle/jvm/toolchain
+  Learn more about JVM-target validation: https://kotl.in/gradle/jvm/target-validation 
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 12m 50s

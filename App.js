@@ -1,5 +1,6 @@
   import React, { useState, useEffect, useRef } from 'react';
   import { Image, StatusBar, AppState, Alert } from 'react-native';
+  import { checkForUpdate, UpdateFlow } from 'react-native-in-app-updates';
 
   // Screens
   import Dashboard from './src/screens/Dashboard';
@@ -261,6 +262,10 @@
   const App = () => {
     const { styles } = Styles();
     const [currentRoute, setCurrentRoute] = useState(null);
+
+    useEffect(() => {
+      checkForUpdate(UpdateFlow.IMMEDIATE).catch(() => {});
+    }, []);
 
     const onStateChange = () => {
       const state = navigationRef.current?.getRootState();

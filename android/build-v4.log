@@ -1,0 +1,425 @@
+﻿To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:jar UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:jar UP-TO-DATE
+
+> Configure project :react-native-reanimated
+Android gradle plugin: 8.6.0
+Gradle: 8.10.2
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateAutolinkingPackageList UP-TO-DATE
+> Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+> Task :app:generateCodegenArtifactsFromSchema SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig UP-TO-DATE
+> Task :app:checkReleaseAarMetadata
+> Task :app:createBundleReleaseJsAndAssets UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:packageReleaseResources UP-TO-DATE
+> Task :app:parseReleaseLocalResources UP-TO-DATE
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:copyReactNativeVectorIconFonts UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:mergeReleaseResources
+> Task :app:mergeReleaseNativeLibs
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
+> Task :app:stripReleaseDebugSymbols
+> Task :app:processReleaseManifestForPackage
+> Task :app:mergeExtDexRelease
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:mergeReleaseArtProfile
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:compressReleaseAssets
+> Task :app:collectReleaseDependencies
+> Task :app:sdkReleaseDependencyData
+> Task :app:validateSigningRelease
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :react-native-async-storage_async-storage:preBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:preReleaseBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:mergeReleaseJniLibFolders
+> Task :react-native-async-storage_async-storage:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-async-storage_async-storage:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-async-storage_async-storage:generateReleaseResValues UP-TO-DATE
+> Task :react-native-async-storage_async-storage:copyReleaseJniLibsProjectAndLocalJars
+> Task :react-native-async-storage_async-storage:extractDeepLinksForAarRelease
+> Task :react-native-async-storage_async-storage:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateReleaseResources UP-TO-DATE
+> Task :react-native-async-storage_async-storage:packageReleaseResources UP-TO-DATE
+> Task :react-native-async-storage_async-storage:parseReleaseLocalResources UP-TO-DATE
+> Task :react-native-async-storage_async-storage:generateReleaseRFile UP-TO-DATE
+> Task :react-native-async-storage_async-storage:extractReleaseAnnotations
+> Task :react-native-async-storage_async-storage:javaPreCompileRelease UP-TO-DATE
+> Task :react-native-async-storage_async-storage:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :react-native-async-storage_async-storage:mergeReleaseGeneratedProguardFiles
+> Task :react-native-async-storage_async-storage:mergeReleaseConsumerProguardFiles
+> Task :react-native-async-storage_async-storage:mergeReleaseShaders
+> Task :react-native-async-storage_async-storage:compileReleaseShaders NO-SOURCE
+> Task :react-native-async-storage_async-storage:generateReleaseAssets UP-TO-DATE
+> Task :react-native-async-storage_async-storage:packageReleaseAssets
+> Task :react-native-async-storage_async-storage:prepareLintJarForPublish UP-TO-DATE
+> Task :react-native-async-storage_async-storage:prepareReleaseArtProfile
+> Task :react-native-async-storage_async-storage:processReleaseManifest UP-TO-DATE
+> Task :react-native-async-storage_async-storage:processReleaseJavaRes NO-SOURCE
+> Task :react-native-async-storage_async-storage:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-async-storage_async-storage:mapReleaseSourceSetPaths
+> Task :react-native-async-storage_async-storage:mergeReleaseJavaResource
+> Task :react-native-async-storage_async-storage:mergeReleaseResources
+> Task :react-native-async-storage_async-storage:syncReleaseLibJars
+> Task :react-native-async-storage_async-storage:bundleReleaseAar
+> Task :react-native-clipboard_clipboard:preBuild UP-TO-DATE
+> Task :react-native-clipboard_clipboard:preReleaseBuild UP-TO-DATE
+> Task :react-native-clipboard_clipboard:mergeReleaseJniLibFolders
+> Task :react-native-clipboard_clipboard:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-clipboard_clipboard:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-clipboard_clipboard:copyReleaseJniLibsProjectAndLocalJars
+> Task :react-native-clipboard_clipboard:generateReleaseResValues UP-TO-DATE
+> Task :react-native-clipboard_clipboard:extractDeepLinksForAarRelease
+> Task :react-native-clipboard_clipboard:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-clipboard_clipboard:generateReleaseResources UP-TO-DATE
+> Task :react-native-clipboard_clipboard:packageReleaseResources UP-TO-DATE
+> Task :react-native-clipboard_clipboard:parseReleaseLocalResources UP-TO-DATE
+> Task :react-native-clipboard_clipboard:generateReleaseRFile UP-TO-DATE
+> Task :react-native-clipboard_clipboard:extractReleaseAnnotations
+> Task :react-native-clipboard_clipboard:javaPreCompileRelease UP-TO-DATE
+> Task :react-native-clipboard_clipboard:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :react-native-clipboard_clipboard:mergeReleaseGeneratedProguardFiles
+> Task :react-native-clipboard_clipboard:mergeReleaseConsumerProguardFiles
+> Task :react-native-clipboard_clipboard:mergeReleaseShaders
+> Task :react-native-clipboard_clipboard:compileReleaseShaders NO-SOURCE
+> Task :react-native-clipboard_clipboard:generateReleaseAssets UP-TO-DATE
+> Task :react-native-clipboard_clipboard:packageReleaseAssets
+> Task :react-native-clipboard_clipboard:prepareLintJarForPublish UP-TO-DATE
+> Task :react-native-clipboard_clipboard:prepareReleaseArtProfile
+> Task :react-native-clipboard_clipboard:processReleaseManifest UP-TO-DATE
+> Task :react-native-clipboard_clipboard:processReleaseJavaRes NO-SOURCE
+> Task :react-native-clipboard_clipboard:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-clipboard_clipboard:mapReleaseSourceSetPaths
+> Task :react-native-clipboard_clipboard:mergeReleaseJavaResource
+> Task :app:processReleaseResources
+> Task :react-native-async-storage_async-storage:verifyReleaseResources
+> Task :react-native-clipboard_clipboard:mergeReleaseResources
+> Task :react-native-async-storage_async-storage:assembleRelease
+> Task :react-native-clipboard_clipboard:syncReleaseLibJars
+> Task :react-native-clipboard_clipboard:bundleReleaseAar
+> Task :react-native-community_datetimepicker:preBuild UP-TO-DATE
+> Task :react-native-community_datetimepicker:preReleaseBuild UP-TO-DATE
+> Task :react-native-community_datetimepicker:mergeReleaseJniLibFolders
+> Task :react-native-community_datetimepicker:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-community_datetimepicker:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-community_datetimepicker:copyReleaseJniLibsProjectAndLocalJars
+> Task :react-native-community_datetimepicker:generateReleaseResValues UP-TO-DATE
+> Task :react-native-community_datetimepicker:extractDeepLinksForAarRelease
+> Task :react-native-community_datetimepicker:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-community_datetimepicker:generateReleaseResources UP-TO-DATE
+> Task :react-native-community_datetimepicker:packageReleaseResources UP-TO-DATE
+> Task :react-native-community_datetimepicker:parseReleaseLocalResources UP-TO-DATE
+> Task :react-native-community_datetimepicker:generateReleaseRFile UP-TO-DATE
+> Task :react-native-community_datetimepicker:extractReleaseAnnotations
+> Task :react-native-community_datetimepicker:javaPreCompileRelease UP-TO-DATE
+> Task :react-native-community_datetimepicker:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :react-native-community_datetimepicker:mergeReleaseGeneratedProguardFiles
+> Task :react-native-community_datetimepicker:mergeReleaseConsumerProguardFiles
+> Task :react-native-community_datetimepicker:mergeReleaseShaders
+> Task :react-native-community_datetimepicker:compileReleaseShaders NO-SOURCE
+> Task :react-native-community_datetimepicker:generateReleaseAssets UP-TO-DATE
+> Task :react-native-community_datetimepicker:packageReleaseAssets
+> Task :react-native-community_datetimepicker:prepareLintJarForPublish UP-TO-DATE
+> Task :react-native-community_datetimepicker:prepareReleaseArtProfile
+> Task :react-native-community_datetimepicker:processReleaseManifest UP-TO-DATE
+> Task :react-native-community_datetimepicker:processReleaseJavaRes NO-SOURCE
+> Task :react-native-community_datetimepicker:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-community_datetimepicker:mapReleaseSourceSetPaths
+> Task :react-native-community_datetimepicker:mergeReleaseJavaResource
+> Task :react-native-clipboard_clipboard:verifyReleaseResources
+> Task :react-native-community_datetimepicker:mergeReleaseResources
+> Task :react-native-clipboard_clipboard:assembleRelease
+> Task :react-native-community_datetimepicker:syncReleaseLibJars
+> Task :react-native-community_datetimepicker:bundleReleaseAar
+> Task :react-native-community_netinfo:preBuild UP-TO-DATE
+> Task :react-native-community_netinfo:preReleaseBuild UP-TO-DATE
+> Task :react-native-community_netinfo:mergeReleaseJniLibFolders
+> Task :react-native-community_netinfo:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-community_netinfo:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-community_netinfo:generateReleaseResValues UP-TO-DATE
+> Task :react-native-community_netinfo:extractDeepLinksForAarRelease
+> Task :react-native-community_netinfo:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-community_netinfo:generateReleaseResources UP-TO-DATE
+> Task :react-native-community_netinfo:packageReleaseResources UP-TO-DATE
+> Task :react-native-community_netinfo:parseReleaseLocalResources UP-TO-DATE
+> Task :react-native-community_netinfo:generateReleaseRFile UP-TO-DATE
+> Task :react-native-community_netinfo:extractReleaseAnnotations
+> Task :react-native-community_netinfo:javaPreCompileRelease UP-TO-DATE
+> Task :react-native-community_netinfo:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :react-native-community_netinfo:mergeReleaseGeneratedProguardFiles
+> Task :react-native-community_netinfo:mergeReleaseConsumerProguardFiles
+> Task :react-native-community_netinfo:mergeReleaseShaders
+> Task :react-native-community_netinfo:compileReleaseShaders NO-SOURCE
+> Task :react-native-community_netinfo:generateReleaseAssets UP-TO-DATE
+> Task :react-native-community_netinfo:packageReleaseAssets
+> Task :react-native-community_netinfo:copyReleaseJniLibsProjectAndLocalJars
+> Task :react-native-community_netinfo:prepareLintJarForPublish UP-TO-DATE
+> Task :react-native-community_netinfo:prepareReleaseArtProfile
+> Task :react-native-community_netinfo:processReleaseManifest UP-TO-DATE
+> Task :react-native-community_netinfo:processReleaseJavaRes NO-SOURCE
+> Task :react-native-community_netinfo:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-community_netinfo:mapReleaseSourceSetPaths
+> Task :react-native-community_netinfo:mergeReleaseJavaResource
+> Task :app:compileReleaseKotlin
+> Task :react-native-community_datetimepicker:verifyReleaseResources
+> Task :react-native-community_netinfo:mergeReleaseResources
+
+> Task :app:compileReleaseJavaWithJavac FAILED
+.\gradlew.bat : C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\Pac
+kageList.java:14: error: package com.reactnativecommunity.asyncstorage does not exist
+At line:1 char:40
++ ... oject\android; .\gradlew.bat assembleRelease --no-daemon 2>&1 | Out-F ...
++                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\EEU_Project\... does not exist:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+                                            ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:16
+: error: package com.reactnativecommunity.clipboard does not exist
+import com.reactnativecommunity.clipboard.ClipboardPackage;
+                                         ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:18
+: error: package com.reactcommunity.rndatetimepicker does not exist
+import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
+                                          ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:20
+: error: package com.reactnativecommunity.netinfo does not exist
+import com.reactnativecommunity.netinfo.NetInfoPackage;
+                                       ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:22
+: error: package org.reactnative.maskedview does not exist
+import org.reactnative.maskedview.RNCMaskedViewPackage;
+                                 ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:24
+: error: package com.reactnativecommunity.picker does not exist
+import com.reactnativecommunity.picker.RNCPickerPackage;
+                                      ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:26
+: error: package com.henninghall.date_picker does not exist
+import com.henninghall.date_picker.DatePickerPackage;
+                                  ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:28
+: error: package com.reactnativedocumentpicker does not exist
+import com.reactnativedocumentpicker.RNDocumentPickerPackage;
+                                    ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:30
+: error: package com.rnfs does not exist
+import com.rnfs.RNFSPackage;
+               ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:32
+: error: package com.swmansion.gesturehandler does not exist
+import com.swmansion.gesturehandler.RNGestureHandlerPackage;
+                                   ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:34
+: error: package com.christopherdro.htmltopdf does not exist
+import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
+                                   ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:36
+: error: package com.reactnative.ivpusic.imagepicker does not exist
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+                                          ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:38
+: error: package com.imagepicker does not exist
+import com.imagepicker.ImagePickerPackage;
+                      ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:40
+: error: package com.zoontek.rnpermissions does not exist
+import com.zoontek.rnpermissions.RNPermissionsPackage;
+                                ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:42
+: error: package com.swmansion.reanimated does not exist
+import com.swmansion.reanimated.ReanimatedPackage;
+                               ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:44
+: error: package com.th3rdwave.safeareacontext does not exist
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
+                                    ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:46
+: error: package com.swmansion.rnscreens does not exist
+import com.swmansion.rnscreens.RNScreensPackage;
+                              ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:48
+: error: package com.sha256lib does not exist
+import com.sha256lib.Sha256Package;
+                    ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:50
+: error: package com.oblador.vectoricons does not exist
+import com.oblador.vectoricons.VectorIconsPackage;
+                              ^
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:96
+: error: cannot find symbol
+      new AsyncStoragePackage(),
+          ^
+  symbol:   class AsyncStoragePackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:97
+: error: cannot find symbol
+      new ClipboardPackage(),
+          ^
+  symbol:   class ClipboardPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:98
+: error: cannot find symbol
+      new RNDateTimePickerPackage(),
+          ^
+  symbol:   class RNDateTimePickerPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:99
+: error: cannot find symbol
+      new NetInfoPackage(),
+          ^
+  symbol:   class NetInfoPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+0: error: cannot find symbol
+      new RNCMaskedViewPackage(),
+          ^
+  symbol:   class RNCMaskedViewPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+1: error: cannot find symbol
+      new RNCPickerPackage(),
+          ^
+  symbol:   class RNCPickerPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+2: error: cannot find symbol
+      new DatePickerPackage(),
+          ^
+  symbol:   class DatePickerPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+3: error: cannot find symbol
+      new RNDocumentPickerPackage(),
+          ^
+  symbol:   class RNDocumentPickerPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+4: error: cannot find symbol
+      new RNFSPackage(),
+          ^
+  symbol:   class RNFSPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+5: error: cannot find symbol
+      new RNGestureHandlerPackage(),
+          ^
+  symbol:   class RNGestureHandlerPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+6: error: cannot find symbol
+      new RNHTMLtoPDFPackage(),
+          ^
+  symbol:   class RNHTMLtoPDFPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+7: error: cannot find symbol
+      new PickerPackage(),
+          ^
+  symbol:   class PickerPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+8: error: cannot find symbol
+      new ImagePickerPackage(),
+          ^
+  symbol:   class ImagePickerPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:10
+9: error: cannot find symbol
+      new RNPermissionsPackage(),
+          ^
+  symbol:   class RNPermissionsPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:11
+0: error: cannot find symbol
+      new ReanimatedPackage(),
+          ^
+
+> Task :app:optimizeReleaseResources
+  symbol:   class ReanimatedPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:11
+1: error: cannot find symbol
+      new SafeAreaContextPackage(),
+          ^
+  symbol:   class SafeAreaContextPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:11
+2: error: cannot find symbol
+      new RNScreensPackage(),
+          ^
+  symbol:   class RNScreensPackage
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:11
+3: error: cannot find symbol
+      new Sha256Package(),
+          ^
+  symbol:   class Sha256Package
+  location: class PackageList
+C:\EEU_Project\EEU_Project\android\app\build\generated\autolinking\src\main\java\com\facebook\react\PackageList.java:11
+4: error: cannot find symbol
+      new VectorIconsPackage()
+          ^
+  symbol:   class VectorIconsPackage
+  location: class PackageList
+38 errors
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileReleaseJavaWithJavac'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+> Run with --info option to get more log output.
+
+> Run with --scan to get full insights.
+
+BUILD FAILED in 2m 51s
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+156 actionable tasks: 89 executed, 67 up-to-date
